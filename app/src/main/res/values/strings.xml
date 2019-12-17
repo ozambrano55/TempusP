@@ -1,0 +1,32 @@
+<resources>
+    <string name="app_name">CasaLinda</string>
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+    <string name="nav_header_title">Android Studio</string>
+    <string name="nav_header_subtitle">android.studio@android.com</string>
+    <string name="nav_header_desc">Navigation header</string>
+    <string name="action_settings">Settings</string>
+    <string name="txt_view_Mayorista">Mayoristas</string>
+    <string name="txt_Codigo">Cod.</string>
+
+    <string name="txt_Nombre">NOMBRE</string>
+    <string name="txt_Min">Minimo a la Venta</string>
+    <string name="txt_Prom">Promedio</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="title_activity_producto">Producto</string>
+    <string name="title_activity_cartera">CarteraActivity</string>
+    <string name="title_activity_punto">PuntoActivity</string>
+    <string name="costos">COSTOS</string>
+    <string name="precios">PRECIOS</string>
+    <string name="button">Button</string>
+    <string name="_3702">3702</string>
+    <string name="_3701">3701</string>
+    <string name="existencias">EXISTENCIAS</string>
+    <string name="negocio">Negocio</string>
+    <string name="publico">Publico</string>
+    <string name="gran_mayor">Gran Mayor</string>
+    <string name="milagro">Milagro</string>
+    <string name="cantidad">Cant.</string>
+</resources>

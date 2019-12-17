@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:gravity="center_horizontal"
+    android:orientation="vertical"
+    android:paddingLeft="16dp"
+    android:paddingTop="16dp"
+    android:paddingRight="16dp"
+    android:paddingBottom="16dp">
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="USUARIO" />
+
+    <EditText
+        android:id="@+id/ET_Username"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Digite su usuario del siinf" />
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:text="CONTRASEÑA" />
+
+    <EditText
+        android:id="@+id/ET_Password"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Digite su clave persona"
+        android:inputType="textPassword" />
+
+    <Button
+        android:id="@+id/btn_login"
+        android:layout_width="155dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:text="INGRESAR" />
+
+    <ProgressBar
+        android:id="@+id/progressBar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+
+    <Button
+        android:id="@+id/btnSalir"
+        android:layout_width="146dp"
+        android:layout_height="wrap_content"
+        android:onClick="salir"
+        android:text="Salir" />
+
+
+</LinearLayout>

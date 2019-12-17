@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:showIn="navigation_view">
+
+    <group android:checkableBehavior="single">
+        <item
+            android:id="@+id/nav_inicio"
+            android:icon="@drawable/hom"
+            android:title="Inicio" />
+        <item
+            android:id="@+id/nav_cartera"
+            android:icon="@drawable/car"
+            android:title="Cartera" />
+        <item
+            android:id="@+id/nav_Pedidos"
+            android:icon="@drawable/ped"
+            android:title="Pedidos" />
+        <item
+            android:id="@+id/nav_Productos"
+            android:icon="@drawable/prod"
+            android:title="Productos" />
+
+    </group>
+
+    <item android:title="Sistema">
+        <menu>
+            <item
+                android:id="@+id/nav_salir"
+                android:icon="@drawable/salir"
+                android:title="Salir" />
+
+        </menu>
+    </item>
+
+</menu>
