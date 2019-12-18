@@ -34,7 +34,7 @@ public class PedidoActivity extends AppCompatActivity {
 
     int SOLICITO_UTILIZAR_CAMARA;
     private ZXingScannerView vistaescaner;
-    EditText etCodigo,etCant;
+    EditText etCodigo,etCant,etCedula;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -44,14 +44,17 @@ public class PedidoActivity extends AppCompatActivity {
         //Permiso por el usuario
         ActivityCompat.requestPermissions(this,new String[]{Manifest.permission.CAMERA},SOLICITO_UTILIZAR_CAMARA);
 
-        Button btnAgregar=findViewById(R.id.btnAgregar);
+        final Button btnAgregar=findViewById(R.id.btnAgregar);
         Button btnGrabar= findViewById(R.id.btnGuardar);
-        Button btnEscaner=findViewById(R.id.btnEscaner);
+        final Button btnEscaner=findViewById(R.id.btnEscaner);
         RecyclerView recyclerViewPedidos =findViewById(R.id.pRecycler);
 
         etCodigo=findViewById(R.id.edtCodigo);
         etCant=findViewById(R.id.edtCant);
+        etCedula=findViewById(R.id.edtCedula);
         final TextView textViewProforma=findViewById(R.id.txtProforma);
+        final TextView textViewFactura=findViewById(R.id.txtFactura);
+        final  TextView textViewPedido=findViewById(R.id.txtPedido);
 
         final AdaptadorRecyclerView adaptadorRecyclerView=new AdaptadorRecyclerView(new InterfazClickRecyclerView() {
             @Override
@@ -74,35 +77,37 @@ public class PedidoActivity extends AppCompatActivity {
             public void onClick(View v) {
                try {
                    String codigo = etCodigo.getText().toString();
-                   double ca=Double.parseDouble(etCant.getText().toString()) ;
+                   String ca=etCant.getText().toString() ;
                    claseGlobal objLectura = (claseGlobal) getApplicationContext();
 
                    //String cantidad=editTextCantidad.getText().toString();
                    //String unitario =editTextUnitario.getText().toString();
                    // String total=editTextTotal.getText().toString();
-                   if (codigo.isEmpty()|cant.isEmpty()) {
+                   if (codigo.isEmpty()|ca.isEmpty()) {
                        Toast.makeText(PedidoActivity.this, "Rellena los campos", Toast.LENGTH_SHORT).show();
                        return;
-                   }
-                   consultarproducto(codigo,ca);
-                   if (cod.isEmpty()|cant.isEmpty()) {
-                       //adaptadorRecyclerView.agregarPedido(new Pedido(cod.toString(), cant.toString(), unit.toString(), total.toString()));
-                       etCodigo.setText("");
-                       etCodigo.setHint("Codigo No existe");
-                       etCant.setText("");
-                       etCant.setHint("Cant.");
-                       //Toast.makeText(PedidoActivity.this,"Codigo No existe",Toast.LENGTH_LONG).show();
-                       //textViewProforma.setText( (adaptadorRecyclerView.totString)) ;
-                   } else {
-                       adaptadorRecyclerView.agregarPedido(new Pedido(cod, cant, unit, total));
-                       etCodigo.setText("");
-                       etCodigo.setHint("Código de Producto");
-                       etCant.setText("");
-                       etCant.setHint("Cant.");
-                       textViewProforma.setText( (adaptadorRecyclerView.tot.toString())) ;
+                   }else {
+                       consultarproducto(codigo, Double.parseDouble(ca));
+                       if (cod.isEmpty() | cant.isEmpty()) {
+                           //adaptadorRecyclerView.agregarPedido(new Pedido(cod.toString(), cant.toString(), unit.toString(), total.toString()));
+                           etCodigo.setText("");
+                           etCodigo.setHint("Codigo No existe");
+                           etCant.setText("");
+                           etCant.setHint("Cant.");
+                           //Toast.makeText(PedidoActivity.this,"Codigo No existe",Toast.LENGTH_LONG).show();
+                           //textViewProforma.setText( (adaptadorRecyclerView.totString)) ;
+                       } else {
+                           adaptadorRecyclerView.agregarPedido(new Pedido(cod, cant, unit, total));
+                           etCodigo.setText("");
+                           etCodigo.setHint("Código de Producto");
+                           etCant.setText("");
+                           etCant.setHint("Cant.");
+                           textViewProforma.setText(String.valueOf((double) Math.round(((adaptadorRecyclerView.tot)) * 100d) / 100));
+                           textViewFactura.setText(String.valueOf((double) Math.round((((adaptadorRecyclerView.tot))*1.12) * 100d) / 100));
 
-                   }
 
+                       }
+                   }
                } catch (Exception e){
                    Toast.makeText(PedidoActivity.this,"Error"+e.getMessage() ,Toast.LENGTH_LONG).show();
                }
@@ -117,14 +122,23 @@ public class PedidoActivity extends AppCompatActivity {
                 try {
                     escaner();
                 }catch (Exception e){
-                    Toast.makeText(PedidoActivity.this,e.getMessage(),Toast.LENGTH_LONG).show();
+                    Toast.makeText(PedidoActivity.this, e.getMessage(),Toast.LENGTH_LONG).show();
                 }
             }
         });
         btnGrabar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                String Ced = etCedula.getText().toString();
+                if (Ced.isEmpty()) {
+                    Toast.makeText(PedidoActivity.this, "Digite cédula cliente", Toast.LENGTH_SHORT).show();
+                    return;
+                }else
+                {
+                    textViewPedido.setText("25800001");
+                    btnAgregar.setEnabled(false);
+                    btnEscaner.setEnabled(false );
+                }
             }
         });
 
@@ -148,8 +162,8 @@ public class PedidoActivity extends AppCompatActivity {
             }
             else {
                 CallableStatement call=connect.prepareCall("{call sp_BuscaProducto (?,?)}");
-                call.setString(1,objLectura.getC_punto_venta().toString());
-                call.setString(2,c.toString());
+                call.setString(1, objLectura.getC_punto_venta());
+                call.setString(2, c);
 
                 ResultSet rs=call.executeQuery();
 
@@ -253,7 +267,7 @@ public class PedidoActivity extends AppCompatActivity {
                 Toast.makeText(this,"Cancelaste el escaneo", Toast.LENGTH_LONG).show();
 
             }else   {
-                etCodigo.setText(result.getContents().toString());
+                etCodigo.setText(result.getContents());
             }
 
         }else {

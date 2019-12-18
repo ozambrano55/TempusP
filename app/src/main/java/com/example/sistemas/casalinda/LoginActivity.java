@@ -3,13 +3,14 @@ package com.example.sistemas.casalinda;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import androidx.appcompat.app.AppCompatActivity;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.sistemas.casalinda.Utilidades.claseGlobal;
 
@@ -24,11 +25,6 @@ public class LoginActivity extends AppCompatActivity  {
     ProgressBar progressBar;
     TextView txtcFun;
 
-    //claseGlobal objEscritura=(claseGlobal)getApplicationContext();
-   // claseGlobal objLectura=(claseGlobal)getApplicationContext();
-
-    // End Declaring layout button, edit texts
-    // Declaring connection variables
     Connection connect;
     String UserNameStr,PasswordStr,c_punto_venta;
     //End Declaring connection variables
@@ -38,10 +34,10 @@ public class LoginActivity extends AppCompatActivity  {
         setContentView(R.layout.activity_login);
 
         // Getting values from button, texts and progress bar
-        btn_login = (Button) findViewById(R.id.btn_login);
-        ET_Username = (EditText) findViewById(R.id.ET_Username);
-        ET_Password = (EditText) findViewById(R.id.ET_Password);
-        progressBar = (ProgressBar) findViewById(R.id.progressBar);
+        btn_login = findViewById(R.id.btn_login);
+        ET_Username = findViewById(R.id.ET_Username);
+        ET_Password = findViewById(R.id.ET_Password);
+        progressBar = findViewById(R.id.progressBar);
 
         claseGlobal objEscritura=(claseGlobal)getApplicationContext();
         claseGlobal objLectura=(claseGlobal)getApplicationContext();
@@ -83,15 +79,10 @@ public class LoginActivity extends AppCompatActivity  {
                 //Toast.makeText(LoginActivity.this , "Bienvenido "+ UserNameStr , Toast.LENGTH_LONG).show();
                 //finish();
 
-                String aux=  c_punto_venta.toString();
+                String aux= c_punto_venta;
                 if (aux.isEmpty()) {
                     //Toast.makeText(LoginActivity.this,"Vacio",Toast.LENGTH_SHORT).show();
                     Intent nuevoform = new Intent(LoginActivity.this, PuntoActivity.class);
-                    //paso de valores al otro formulario
-                    //nuevoform.putExtra("c_funcionario", c_funcionario);
-                    //nuevoform.putExtra("funcionario", funcionario);
-                    //nuevoform.putExtra("c_punto",c_punto);
-                    //nuevoform.putExtra("punto",punto);
                     startActivity(nuevoform);
                     finish();
                 }
@@ -99,13 +90,6 @@ public class LoginActivity extends AppCompatActivity  {
                 {
                     //Toast.makeText(LoginActivity.this,"Leno",Toast.LENGTH_SHORT).show();
                     Intent nuevoform = new Intent(LoginActivity.this, MainActivity.class);
-                    //paso de valores al otro formulario
-                    //nuevoform.putExtra("c_funcionario", c_funcionario);
-                    //nuevoform.putExtra("funcionario", funcionario);
-                    //nuevoform.putExtra("c_punto_venta",c_punto_venta);
-                    //nuevoform.putExtra("punto",punto);
-                    //nuevoform.putExtra("c_punto",c_punto);
-                    //nuevoform.putExtra("punto",punto);
                     startActivity(nuevoform);
                     finish();
                 }
@@ -137,7 +121,7 @@ public class LoginActivity extends AppCompatActivity  {
                         String query = "select f.C_Funcionario,f.Funcionario,rtrim(f.C_Punto_Venta)c_punto_venta," +
                                 "rtrim(p.C_Punto_Venta)+'-'+rtrim(p.N_Punto_Venta)Punto, p.c_bodega from v_Gen_Funcionarios as f " +
                                 "left join Fac_Puntos_Venta as p on f.C_Punto_Venta=p.C_Punto_Venta where flag_activo=1 " +
-                                "and C_Funcionario='" + usernam.toString() + "' and Clave_Funcionario='"+ passwordd.toString() +"'  ";
+                                "and C_Funcionario='" + usernam + "' and Clave_Funcionario='"+ passwordd +"'  ";
                         Statement stmt = connect.createStatement();
                         ResultSet rs = stmt.executeQuery(query);
                         if(rs.next())

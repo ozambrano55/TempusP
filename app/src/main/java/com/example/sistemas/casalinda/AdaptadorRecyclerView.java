@@ -1,13 +1,13 @@
 package com.example.sistemas.casalinda;
 
-import androidx.annotation.NonNull;
-import androidx.recyclerview.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
 
-import java.text.DecimalFormat;
+import androidx.annotation.NonNull;
+import androidx.recyclerview.widget.RecyclerView;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -17,7 +17,7 @@ public class AdaptadorRecyclerView  extends RecyclerView.Adapter<ViewHolderPedid
     public Double tot,un, canti;
     public String totString="0";
     EditText can,to;
-    DecimalFormat formater = new DecimalFormat("#.##");
+    //DecimalFormat formater = new DecimalFormat("#.##");
 
     public AdaptadorRecyclerView(List <Pedido>pedidos){
         this.pedidos=pedidos;
@@ -81,8 +81,6 @@ public class AdaptadorRecyclerView  extends RecyclerView.Adapter<ViewHolderPedid
         holder.getTextViewProducto().setText(String.valueOf(pedido.getCodigo()));
         holder.getTextViewCantidad().setText(String.valueOf(pedido.getCantidad()));
         holder.getTextViewUnitario().setText(String.valueOf(pedido.getUnitario()));
-
-
         holder.getTextViewTotal().setText(String.valueOf(pedido.getTotal()));
 
     /*   can=(EditText)can.findViewById(R.id.edtCantidad);

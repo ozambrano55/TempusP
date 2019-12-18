@@ -3,91 +3,62 @@ package com.example.sistemas.casalinda;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
-import com.google.android.material.navigation.NavigationView;
-import androidx.fragment.app.FragmentManager;
-import androidx.core.view.GravityCompat;
-import androidx.drawerlayout.widget.DrawerLayout;
-import androidx.appcompat.app.ActionBarDrawerToggle;
-import androidx.appcompat.app.AlertDialog;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
 
+import androidx.appcompat.app.ActionBarDrawerToggle;
+import androidx.appcompat.app.AlertDialog;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
+import androidx.core.view.GravityCompat;
+import androidx.drawerlayout.widget.DrawerLayout;
+import androidx.fragment.app.FragmentManager;
+
 import com.example.sistemas.casalinda.Utilidades.claseGlobal;
+import com.google.android.material.navigation.NavigationView;
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
-    TextView edtFuncionario, edtPunto;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-
-    //recibirDatos();
-        /*FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
-            }
-        });*/
-        claseGlobal objEscritura=(claseGlobal)getApplicationContext();
         claseGlobal objLectura=(claseGlobal)getApplicationContext();
 
-        //Bundle extras =getIntent().getExtras();
-        //String d1=extras.getString("c_funcionario");
-        //String d2=extras.getString("funcionario");
-        //String d3=extras.getString("c_punto_venta");
-        //String d4=extras.getString("punto");
-        //Llenamos nombre de punto y funcionaio
-        //edtFuncionario=(TextView) findViewById(R.id.edtFuncionario);
-        //edtPunto=(TextView)findViewById(R.id.edtPunto) ;
 
-        //edtFuncionario.setText(d2);
-        //edtPunto.setText(d3);
 
-        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        DrawerLayout drawer = findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
                 this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
         drawer.addDrawerListener(toggle);
         toggle.syncState();
 
-        NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
+        NavigationView navigationView = findViewById(R.id.nav_view);
         //codigo nuevo
         View hView =navigationView.getHeaderView(0);
-        TextView punto=(TextView)hView.findViewById(R.id.edtPunto);
-        TextView funcionario=(TextView)hView.findViewById(R.id.edtFuncionario);
+        TextView punto= hView.findViewById(R.id.edtPunto);
+        TextView funcionario= hView.findViewById(R.id.edtFuncionario);
         punto.setText(objLectura.getPunto());
         funcionario.setText(objLectura.getFuncionario());
         //fin codigo nuevo
         navigationView.setNavigationItemSelectedListener(this);
         navigationView.setItemIconTintList(null);
-
-
-
     }
 
-    /*public void recibirDatos(){
-        Bundle extras= getIntent().getExtras();
-        String d1= extras.getString("dato01");
-        edtFuncionario=(TextView) findViewById(R.id.edtFuncionario);
-        edtFuncionario.setText(d1);
-
-    }
-    */
     @Override
     public void onBackPressed() {
-        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        salir();
+    }
+    public void salir(){
+        DrawerLayout drawer = findViewById(R.id.drawer_layout);
         if (drawer.isDrawerOpen(GravityCompat.START)) {
             drawer.closeDrawer(GravityCompat.START);
         } else {
@@ -97,7 +68,8 @@ public class MainActivity extends AppCompatActivity
                     .setPositiveButton("Si", new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialog, int which) {
-                            finish();
+                           finish();
+                            //super.finish();
                         }
                     })
                     .setNegativeButton("No", new DialogInterface.OnClickListener() {
@@ -159,10 +131,29 @@ public class MainActivity extends AppCompatActivity
             Intent intent= new Intent( MainActivity.this, ProductoActivity.class );
             startActivity(intent);
         } else if (id == R.id.nav_salir) {
-            super.finish();
+            AlertDialog.Builder alerta=new AlertDialog.Builder(this);
+            alerta.setMessage("Desea Salir de la Aplicacion")
+                    .setCancelable(false)
+                    .setPositiveButton("Si", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+
+                            finish();
+                        }
+                    })
+                    .setNegativeButton("No", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            dialog.cancel();
+                        }
+                    });
+            AlertDialog titulo=alerta.create();
+            titulo.setTitle("Salida");
+            titulo.show();
+
         }
 
-        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        DrawerLayout drawer = findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
         return true;
     }

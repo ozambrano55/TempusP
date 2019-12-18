@@ -2,12 +2,13 @@ package com.example.sistemas.casalinda;
 
 import android.content.Intent;
 import android.os.Bundle;
-import androidx.appcompat.app.AppCompatActivity;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.sistemas.casalinda.Utilidades.claseGlobal;
 
@@ -34,20 +35,16 @@ public class PuntoActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_punto);
 
-        //Bundle extras = getIntent().getExtras();
-        //String d1 = extras.getString("c_funcionario");
-        //String d2 = extras.getString("funcionario");
 
         claseGlobal objEscritura=(claseGlobal)getApplicationContext();
         claseGlobal objLectura=(claseGlobal)getApplicationContext();
 
 
-        twfuncioanrio = (TextView) findViewById(R.id.txtFuncionario);
+        twfuncioanrio = findViewById(R.id.txtFuncionario);
         twfuncioanrio.setText(objLectura.getFuncionario());
-        //c_funcionario=
-        //funcionario=d2;
+
         consultarpersona();
-        comboPersonas = (Spinner) findViewById(R.id.comboPersonas);
+        comboPersonas = findViewById(R.id.comboPersonas);
         ArrayAdapter<CharSequence> adaptador=new ArrayAdapter(this,android.R.layout.simple_spinner_dropdown_item,listaPuntos);
         comboPersonas.setAdapter(adaptador);
 
@@ -68,9 +65,7 @@ public class PuntoActivity extends AppCompatActivity {
             if (rs!=null) {
                 while (rs.next()) {
                     puntosList.add(new Punto(rs.getString("c_punto"),rs.getString("n_Punto_venta")));
-                   // c_punto_venta=rs.getString(1);
-                    //objEscritura.setC_punto_venta(rs.getString(1));
-                    //objEscritura.setC_funcionario(rs.getString(3));
+
                 }
             }
             obtenerLista();
@@ -90,8 +85,7 @@ public class PuntoActivity extends AppCompatActivity {
 
     public void goMainP(View view) {
         Intent goMainP = new Intent(PuntoActivity.this, MainActivity.class);
-        //goMainP.putExtra("c_funcionario",c_funcionario);
-        //goMainP.putExtra("funcionario", funcionario);
+
         claseGlobal objEscritura=(claseGlobal)getApplicationContext();
         claseGlobal objLectura=(claseGlobal)getApplicationContext();
 
@@ -100,10 +94,6 @@ public class PuntoActivity extends AppCompatActivity {
 
         objEscritura.setPunto(seleccion);
        objEscritura.setC_punto_venta(seleccion.substring(0,3));
-        //goMainP.putExtra("c_funcionario", c_funcionario);
-        //goMainP.putExtra("funcionario", funcionario);
-        //goMainP.putExtra("c_punto_venta", c_punto_venta);
-        //goMainP.putExtra("punto",punto);
 
         startActivity(goMainP);
         finish();
