@@ -1,5 +1,7 @@
 package com.example.sistemas.casalinda;
 
+import android.content.Context;
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,6 +17,7 @@ public class AdaptadorRecyclerView  extends RecyclerView.Adapter<ViewHolderPedid
     private List<Pedido> pedidos;
     private InterfazClickRecyclerView interfazClickRecyclerView;
     public Double tot,un, canti;
+    public String cod;
     public String totString="0";
     EditText can,to;
     //DecimalFormat formater = new DecimalFormat("#.##");
@@ -96,5 +99,25 @@ public class AdaptadorRecyclerView  extends RecyclerView.Adapter<ViewHolderPedid
     @Override
     public int getItemCount(){
             return this.pedidos.size();
+    }
+
+    public class PedidoViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
+
+
+
+        public PedidoViewHolder(@NonNull View itemView) {
+            super(itemView);
+            itemView.setOnClickListener(this);
+        }
+
+        @Override
+        public void onClick(View v) {
+            Context context=v.getContext();
+            int position=getAdapterPosition();
+            Pedido pedido=pedidos.get(position);
+
+            Intent intent =new Intent(v.getContext(),PedidoEditar.class);
+            //intent.putExtra();
+        }
     }
 }

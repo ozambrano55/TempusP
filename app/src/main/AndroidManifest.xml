@@ -18,6 +18,7 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         tools:ignore="InnerclassSeparator">
+        <activity android:name=".PedidoEditar"></activity>
         <activity
             android:name=".LoginActivity"
             android:label="@string/app_name"
@@ -46,7 +47,7 @@
             android:label="@string/title_activity_producto"
             android:theme="@style/AppTheme" />
         <activity android:name=".PedidoActivity" />
-        <activity android:name=".PuntoActivity"></activity>
+        <activity android:name=".PuntoActivity" />
     </application>
 
 </manifest>
