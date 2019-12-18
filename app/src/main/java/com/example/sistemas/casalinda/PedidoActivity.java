@@ -80,7 +80,7 @@ public class PedidoActivity extends AppCompatActivity {
                    //String cantidad=editTextCantidad.getText().toString();
                    //String unitario =editTextUnitario.getText().toString();
                    // String total=editTextTotal.getText().toString();
-                   if (codigo.isEmpty()|cant.isEmpty()) {
+                   if (codigo.isEmpty()|String.valueOf(ca).isEmpty()) {
                        Toast.makeText(PedidoActivity.this, "Rellena los campos", Toast.LENGTH_SHORT).show();
                        return;
                    }
@@ -99,7 +99,8 @@ public class PedidoActivity extends AppCompatActivity {
                        etCodigo.setHint("Código de Producto");
                        etCant.setText("");
                        etCant.setHint("Cant.");
-                       textViewProforma.setText( (adaptadorRecyclerView.tot.toString())) ;
+                       textViewProforma.setText(String.valueOf( (double)Math.round (( (adaptadorRecyclerView.tot))*100d)/100)) ;
+
 
                    }
 
