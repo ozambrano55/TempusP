@@ -34,7 +34,7 @@ public class PedidoActivity extends AppCompatActivity {
 
     int SOLICITO_UTILIZAR_CAMARA;
     private ZXingScannerView vistaescaner;
-    EditText etCodigo,etCant;
+    EditText etCodigo,etCant,etCedula;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -51,8 +51,11 @@ public class PedidoActivity extends AppCompatActivity {
 
         etCodigo=findViewById(R.id.edtCodigo);
         etCant=findViewById(R.id.edtCant);
+        etCedula=findViewById(R.id.edtCedula);
         final TextView textViewProforma=findViewById(R.id.txtProforma);
         final TextView textViewFactura=findViewById(R.id.txtFactura);
+        final  TextView textViewPedido=findViewById(R.id.txtPedido);
+
         final AdaptadorRecyclerView adaptadorRecyclerView=new AdaptadorRecyclerView(new InterfazClickRecyclerView() {
             @Override
             public void onClick(View v, Pedido p) {
@@ -126,7 +129,14 @@ public class PedidoActivity extends AppCompatActivity {
         btnGrabar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                String Ced = etCedula.getText().toString();
+                if (Ced.isEmpty()) {
+                    Toast.makeText(PedidoActivity.this, "Digite cédula cliente", Toast.LENGTH_SHORT).show();
+                    return;
+                }else
+                {
+                    textViewPedido.setText("25800001");
+                }
             }
         });
 
