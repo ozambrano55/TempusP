@@ -9,11 +9,11 @@
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="100dp"
+        android:layout_height="wrap_content"
         android:orientation="vertical">
 
         <EditText
-            android:id="@+id/etcCedula"
+            android:id="@+id/etdCedula"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:ems="10"
@@ -21,18 +21,14 @@
             android:inputType="textPersonName" />
 
         <TextView
-            android:id="@+id/textView7"
+            android:id="@+id/txtCliente"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginStart="5dp"
             android:layout_marginLeft="5dp"
             android:text="Cliente"
             android:textSize="18sp" />
 
-        <TextView
-            android:id="@+id/txtCliente"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:textSize="18sp" />
     </LinearLayout>
 
     <LinearLayout
@@ -48,7 +44,7 @@
                 android:id="@+id/btnEscaner"
                 android:layout_width="40dp"
                 android:layout_height="40dp"
-
+                android:layout_marginLeft="5dp"
                 android:background="@drawable/qr" />
 
             <EditText
@@ -73,10 +69,7 @@
                 android:id="@+id/btnAgregar"
                 android:layout_width="40dp"
                 android:layout_height="40dp"
-
-                android:layout_marginLeft="5dp"
-                android:layout_marginTop="7dp"
-
+                android:layout_marginRight="5dp"
                 android:background="@drawable/agr"
                 android:clickable="true" />
 
@@ -102,6 +95,22 @@
                 android:layout_marginLeft="5dp"
                 android:textSize="24sp"
                 android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/textView23"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Factura"
+                android:textColor="@color/common_google_signin_btn_text_dark_focused"
+                android:textSize="24sp" />
+
+            <TextView
+                android:id="@+id/txtFactura"
+                android:layout_width="100dp"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="5dp"
+                android:textSize="24sp"
+                android:textStyle="bold"/>
 
         </LinearLayout>
 

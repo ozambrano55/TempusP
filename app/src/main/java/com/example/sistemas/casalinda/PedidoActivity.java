@@ -52,7 +52,7 @@ public class PedidoActivity extends AppCompatActivity {
         etCodigo=findViewById(R.id.edtCodigo);
         etCant=findViewById(R.id.edtCant);
         final TextView textViewProforma=findViewById(R.id.txtProforma);
-
+        final TextView textViewFactura=findViewById(R.id.txtFactura);
         final AdaptadorRecyclerView adaptadorRecyclerView=new AdaptadorRecyclerView(new InterfazClickRecyclerView() {
             @Override
             public void onClick(View v, Pedido p) {
@@ -74,36 +74,37 @@ public class PedidoActivity extends AppCompatActivity {
             public void onClick(View v) {
                try {
                    String codigo = etCodigo.getText().toString();
-                   double ca=Double.parseDouble(etCant.getText().toString()) ;
+                   String ca=etCant.getText().toString() ;
                    claseGlobal objLectura = (claseGlobal) getApplicationContext();
 
                    //String cantidad=editTextCantidad.getText().toString();
                    //String unitario =editTextUnitario.getText().toString();
                    // String total=editTextTotal.getText().toString();
-                   if (codigo.isEmpty()|String.valueOf(ca).isEmpty()) {
+                   if (codigo.isEmpty()|ca.isEmpty()) {
                        Toast.makeText(PedidoActivity.this, "Rellena los campos", Toast.LENGTH_SHORT).show();
                        return;
+                   }else {
+                       consultarproducto(codigo, Double.parseDouble(ca));
+                       if (cod.isEmpty() | cant.isEmpty()) {
+                           //adaptadorRecyclerView.agregarPedido(new Pedido(cod.toString(), cant.toString(), unit.toString(), total.toString()));
+                           etCodigo.setText("");
+                           etCodigo.setHint("Codigo No existe");
+                           etCant.setText("");
+                           etCant.setHint("Cant.");
+                           //Toast.makeText(PedidoActivity.this,"Codigo No existe",Toast.LENGTH_LONG).show();
+                           //textViewProforma.setText( (adaptadorRecyclerView.totString)) ;
+                       } else {
+                           adaptadorRecyclerView.agregarPedido(new Pedido(cod, cant, unit, total));
+                           etCodigo.setText("");
+                           etCodigo.setHint("Código de Producto");
+                           etCant.setText("");
+                           etCant.setHint("Cant.");
+                           textViewProforma.setText(String.valueOf((double) Math.round(((adaptadorRecyclerView.tot)) * 100d) / 100));
+                           textViewFactura.setText(String.valueOf((double) Math.round((((adaptadorRecyclerView.tot))*1.12) * 100d) / 100));
+
+
+                       }
                    }
-                   consultarproducto(codigo,ca);
-                   if (cod.isEmpty()|cant.isEmpty()) {
-                       //adaptadorRecyclerView.agregarPedido(new Pedido(cod.toString(), cant.toString(), unit.toString(), total.toString()));
-                       etCodigo.setText("");
-                       etCodigo.setHint("Codigo No existe");
-                       etCant.setText("");
-                       etCant.setHint("Cant.");
-                       //Toast.makeText(PedidoActivity.this,"Codigo No existe",Toast.LENGTH_LONG).show();
-                       //textViewProforma.setText( (adaptadorRecyclerView.totString)) ;
-                   } else {
-                       adaptadorRecyclerView.agregarPedido(new Pedido(cod, cant, unit, total));
-                       etCodigo.setText("");
-                       etCodigo.setHint("Código de Producto");
-                       etCant.setText("");
-                       etCant.setHint("Cant.");
-                       textViewProforma.setText(String.valueOf( (double)Math.round (( (adaptadorRecyclerView.tot))*100d)/100)) ;
-
-
-                   }
-
                } catch (Exception e){
                    Toast.makeText(PedidoActivity.this,"Error"+e.getMessage() ,Toast.LENGTH_LONG).show();
                }
@@ -118,7 +119,7 @@ public class PedidoActivity extends AppCompatActivity {
                 try {
                     escaner();
                 }catch (Exception e){
-                    Toast.makeText(PedidoActivity.this,e.getMessage(),Toast.LENGTH_LONG).show();
+                    Toast.makeText(PedidoActivity.this, e.getMessage(),Toast.LENGTH_LONG).show();
                 }
             }
         });
