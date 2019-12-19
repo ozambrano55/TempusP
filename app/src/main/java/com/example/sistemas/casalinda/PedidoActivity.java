@@ -252,10 +252,12 @@ public class PedidoActivity extends AppCompatActivity {
         intent.setDesiredBarcodeFormats(IntentIntegrator.ALL_CODE_TYPES);
 
         intent.setPrompt("ESCANEAR CODIGO")
+
                 .setCameraId(0)
+                //.setCaptureActivity(CaptureActivity.class)
                 .setOrientationLocked(false)
-                .setBeepEnabled(false)
-                .setBarcodeImageEnabled(false)
+                //.setBeepEnabled(false)
+                //.setBarcodeImageEnabled(false)
                 .initiateScan();
     }
 
@@ -271,7 +273,7 @@ public class PedidoActivity extends AppCompatActivity {
             }
 
         }else {
-            super .onActivityResult(requestCode,resultCode,data);
+            super.onActivityResult(requestCode,resultCode,data);
         }
     }
 }
