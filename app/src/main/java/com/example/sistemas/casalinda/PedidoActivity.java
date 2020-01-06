@@ -321,9 +321,22 @@ public class PedidoActivity extends AppCompatActivity {
 
                     @Override
                     public void onSwiped(@NonNull RecyclerView.ViewHolder viewHolder, int direction) {
-                        deleteItem(viewHolder.getAdapterPosition());
-                        //textViewProforma.setText(String.valueOf((double) Math.round(((adaptadorRecyclerView.tot)) * 100d) / 100));
-                        //textViewFactura.setText(String.valueOf((double) Math.round((((adaptadorRecyclerView.tot)) * 1.12) * 100d) / 100));
+                        final TextView textViewProforma=findViewById(R.id.txtProforma);
+                        final TextView textViewFactura=findViewById(R.id.txtFactura);
+                       try {
+                           deleteItem(viewHolder.getAdapterPosition());
+                           if (adaptadorRecyclerView.tot==0){
+                               textViewProforma.setText("0.00");
+                               textViewFactura.setText("0.00");
+                           }
+                           else {
+                               textViewProforma.setText(String.valueOf((double) Math.round(((adaptadorRecyclerView.tot)) * 100d) / 100));
+                               textViewFactura.setText(String.valueOf((double) Math.round((((adaptadorRecyclerView.tot)) * 1.12) * 100d) / 100));
+                           }
+                       }catch(Exception e){
+                           Toast.makeText(getApplicationContext(),e.getMessage(), Toast.LENGTH_SHORT).show();
+
+                       }
                     }
                 };
         return simpleCallback;

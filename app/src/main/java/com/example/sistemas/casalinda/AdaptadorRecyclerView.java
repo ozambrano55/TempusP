@@ -13,14 +13,22 @@ import androidx.recyclerview.widget.RecyclerView;
 import java.util.ArrayList;
 import java.util.List;
 
-public class AdaptadorRecyclerView  extends RecyclerView.Adapter<ViewHolderPedido>  {
+public class AdaptadorRecyclerView  extends RecyclerView.Adapter<ViewHolderPedido> {
+
+    public static final String COD="Codigo";
+    public static final String NOM="Nombre";
+    public static final String CAN="Cantidad";
+    public static final String UNI="Unitario";
+    public static final String TOT="Total";
+
     private List<Pedido> pedidos;
     private InterfazClickRecyclerView interfazClickRecyclerView;
     public Double tot,un;
-    public String cod;
+    //public String cod,nomb;
     public String totString="0";
     EditText can,to;
-    //DecimalFormat formater = new DecimalFormat("#.##");
+    private com.example.sistemas.casalinda.ViewHolderPedido holder;
+    private int position;
 
     public AdaptadorRecyclerView(List <Pedido>pedidos){
         this.pedidos=pedidos;
@@ -59,12 +67,19 @@ public class AdaptadorRecyclerView  extends RecyclerView.Adapter<ViewHolderPedid
         if (indice <0 || indice >=this.getItemCount())return;
         this.pedidos.remove(indice);
         this.notifyItemRemoved(indice);
+        tot=0.00;
+        for (Pedido data:pedidos){
+            tot+=Double.parseDouble(data.getTotal());
+        }
+
+        totString=String.valueOf(tot);
     }
     @NonNull
     @Override
 
     public ViewHolderPedido onCreateViewHolder(@NonNull ViewGroup parent, int viewType){
         //Esta es la vista del layout que muestra los detalles del peddio (layout_recycler.xml)
+
         View vista= LayoutInflater.from(parent.getContext()).inflate(R.layout.layout_recycler,parent,false);
         //Crear el viewholder a partir de esta visa. Mira la calse ViewHolderPedido si quieres
         final ViewHolderPedido viewHolder=new ViewHolderPedido(vista);
@@ -73,14 +88,28 @@ public class AdaptadorRecyclerView  extends RecyclerView.Adapter<ViewHolderPedid
             @Override
             public void onClick(View v) {
                 interfazClickRecyclerView.onClick(v,pedidos.get(viewHolder.getAdapterPosition()));
+                Context context =v.getContext();
+                int position=viewHolder.getAdapterPosition();
+                Pedido pedido=pedidos.get(position);
+
+                Intent intent =new Intent(v.getContext(),PedidoEditar.class);
+                intent.putExtra(COD,pedido.getCodigo());
+                intent.putExtra(NOM,pedido.getNombre());
+                intent.putExtra(CAN,pedido.getCantidad());
+                context.startActivity(intent);
             }
         });
         return viewHolder;
     }
+
+
     @Override
     public void onBindViewHolder(@NonNull ViewHolderPedido holder, int position){
+
         //Dibujar la fila del pedido con los datos de pedido actualmente solicitadao segun la variable position
         Pedido pedido= this.pedidos.get(position);
+        //holder.tvCodigo=
+
         holder.getTextViewProducto().setText(String.valueOf(pedido.getCodigo()));
         holder.getTextViewNombre().setText(String.valueOf(pedido.getNombre()));
         holder.getTextViewCantidad().setText(String.valueOf(pedido.getCantidad()));
@@ -98,27 +127,15 @@ public class AdaptadorRecyclerView  extends RecyclerView.Adapter<ViewHolderPedid
 */
     }
     @Override
+    public int getItemViewType(int position){
+        int viewType=1;
+        if(position==0)viewType=0;
+        return viewType;
+    }
+    @Override
     public int getItemCount(){
             return this.pedidos.size();
     }
 
-    public class PedidoViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
 
-
-
-        public PedidoViewHolder(@NonNull View itemView) {
-            super(itemView);
-            itemView.setOnClickListener(this);
-        }
-
-        @Override
-        public void onClick(View v) {
-            Context context=v.getContext();
-            int position=getAdapterPosition();
-            Pedido pedido=pedidos.get(position);
-
-            Intent intent =new Intent(v.getContext(),PedidoEditar.class);
-            //intent.putExtra();
-        }
-    }
 }
