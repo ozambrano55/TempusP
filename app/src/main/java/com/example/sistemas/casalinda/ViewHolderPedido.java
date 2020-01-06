@@ -8,29 +8,35 @@ import android.widget.TextView;
 
 class ViewHolderPedido extends RecyclerView.ViewHolder
 {
-   private EditText editTextCodigo, editTextCantidad,editTextUnitario, editTextTotal;
+   private TextView txtCodigo, txtNombre, txtCantidad,txtUnitario, txtTotal;
 
    ViewHolderPedido(@NonNull View itemView){
        super(itemView);
-       editTextCodigo=itemView.findViewById(R.id.edtCodigo);
-       editTextCantidad=itemView.findViewById(R.id.edtCantidad);
-       editTextUnitario=itemView.findViewById(R.id.edtUnitario);
-       editTextTotal=itemView.findViewById(R.id.edtTotal);
+       txtCodigo=itemView.findViewById(R.id.txtCodigo);
+       txtNombre=itemView.findViewById(R.id.txtNombre);
+       txtCantidad=itemView.findViewById(R.id.txtCantidad);
+       txtUnitario=itemView.findViewById(R.id.txtUnitario);
+       txtTotal=itemView.findViewById(R.id.txtTotal);
    }
 
     public TextView getTextViewProducto() {
-        return editTextCodigo;
+        return txtCodigo;
+    }
+    public TextView getTextViewNombre(){
+       return txtNombre;
     }
 
     public TextView getTextViewCantidad() {
-        return editTextCantidad;
+        return txtCantidad;
     }
 
     public TextView getTextViewUnitario() {
-        return editTextUnitario;
+        return txtUnitario;
     }
 
     public TextView getTextViewTotal() {
-        return editTextTotal;
+        return txtTotal;
     }
+
+
 }

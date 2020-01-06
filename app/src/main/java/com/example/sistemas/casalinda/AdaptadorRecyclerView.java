@@ -16,7 +16,7 @@ import java.util.List;
 public class AdaptadorRecyclerView  extends RecyclerView.Adapter<ViewHolderPedido>  {
     private List<Pedido> pedidos;
     private InterfazClickRecyclerView interfazClickRecyclerView;
-    public Double tot,un, canti;
+    public Double tot,un;
     public String cod;
     public String totString="0";
     EditText can,to;
@@ -82,6 +82,7 @@ public class AdaptadorRecyclerView  extends RecyclerView.Adapter<ViewHolderPedid
         //Dibujar la fila del pedido con los datos de pedido actualmente solicitadao segun la variable position
         Pedido pedido= this.pedidos.get(position);
         holder.getTextViewProducto().setText(String.valueOf(pedido.getCodigo()));
+        holder.getTextViewNombre().setText(String.valueOf(pedido.getNombre()));
         holder.getTextViewCantidad().setText(String.valueOf(pedido.getCantidad()));
         holder.getTextViewUnitario().setText(String.valueOf(pedido.getUnitario()));
         holder.getTextViewTotal().setText(String.valueOf(pedido.getTotal()));

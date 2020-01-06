@@ -11,11 +11,13 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.recyclerview.widget.DividerItemDecoration;
+import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -29,12 +31,20 @@ import java.sql.ResultSet;
 
 import me.dm7.barcodescanner.zxing.ZXingScannerView;
 public class PedidoActivity extends AppCompatActivity {
-    String cod,cant,unit,total;
+    String cod,nomb,cant,cant1,unit,total;
     Connection connect;
 
     int SOLICITO_UTILIZAR_CAMARA;
     private ZXingScannerView vistaescaner;
-    EditText etCodigo,etCant,etCedula;
+    EditText etCodigo,etNomb, etCant,etCedula;
+    TextView textViewProforma, textViewFactura,textViewPedido;
+    final AdaptadorRecyclerView adaptadorRecyclerView=new AdaptadorRecyclerView(new InterfazClickRecyclerView() {
+        @Override
+        public void onClick(View v, Pedido p) {
+            Toast.makeText(PedidoActivity.this,p.toString(),Toast.LENGTH_LONG).show();
+        }
+    });
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -50,18 +60,18 @@ public class PedidoActivity extends AppCompatActivity {
         RecyclerView recyclerViewPedidos =findViewById(R.id.pRecycler);
 
         etCodigo=findViewById(R.id.edtCodigo);
+        //etNomb=findViewById(R.id.edtNombre);
         etCant=findViewById(R.id.edtCant);
         etCedula=findViewById(R.id.edtCedula);
+
         final TextView textViewProforma=findViewById(R.id.txtProforma);
         final TextView textViewFactura=findViewById(R.id.txtFactura);
         final  TextView textViewPedido=findViewById(R.id.txtPedido);
 
-        final AdaptadorRecyclerView adaptadorRecyclerView=new AdaptadorRecyclerView(new InterfazClickRecyclerView() {
-            @Override
-            public void onClick(View v, Pedido p) {
-                Toast.makeText(PedidoActivity.this,p.toString(),Toast.LENGTH_LONG).show();
-            }
-        });
+
+        ItemTouchHelper itemTouchHelper=new ItemTouchHelper(createHelperCallback());
+        itemTouchHelper.attachToRecyclerView(recyclerViewPedidos);
+
        //Configuramos cómo se va a organizar las vistas dentro del RecyclerView; simplemente con un LinearLayout para que
         //aparezcan una debajo de otra
         LinearLayoutManager linearLayoutManager=new LinearLayoutManager(PedidoActivity.this  );
@@ -97,15 +107,32 @@ public class PedidoActivity extends AppCompatActivity {
                            //Toast.makeText(PedidoActivity.this,"Codigo No existe",Toast.LENGTH_LONG).show();
                            //textViewProforma.setText( (adaptadorRecyclerView.totString)) ;
                        } else {
-                           adaptadorRecyclerView.agregarPedido(new Pedido(cod, cant, unit, total));
-                           etCodigo.setText("");
-                           etCodigo.setHint("Código de Producto");
-                           etCant.setText("");
-                           etCant.setHint("Cant.");
-                           textViewProforma.setText(String.valueOf((double) Math.round(((adaptadorRecyclerView.tot)) * 100d) / 100));
-                           textViewFactura.setText(String.valueOf((double) Math.round((((adaptadorRecyclerView.tot))*1.12) * 100d) / 100));
-
-
+                           if (Double.valueOf(cant1) >=Double.valueOf(cant)) {
+                               adaptadorRecyclerView.agregarPedido(new Pedido(cod, nomb, cant, unit, total));
+                               etCodigo.setText("");
+                               etCodigo.setHint("Código de Producto");
+                               etCant.setText("");
+                               etCant.setHint("Cant.");
+                               textViewProforma.setText(String.valueOf((double) Math.round(((adaptadorRecyclerView.tot)) * 100d) / 100));
+                               textViewFactura.setText(String.valueOf((double) Math.round((((adaptadorRecyclerView.tot)) * 1.12) * 100d) / 100));
+                           }
+                           else {
+                               if (Double.valueOf(cant1) > 0) {
+                                   Toast.makeText(PedidoActivity.this, "Ingrese una cantidad Menor o igual a " + cant1, Toast.LENGTH_LONG).show();
+                                   etCant.setText("");
+                                   etCant.setHint("Cant.");
+                                   etCant.requestFocus();
+                               }
+                               else
+                               {
+                                   Toast.makeText(PedidoActivity.this, "No hay existencia, digite otro producto" , Toast.LENGTH_LONG).show();
+                                   etCodigo.setText("");
+                                   etCodigo.setHint("Codigo No existe");
+                                   etCant.setText("");
+                                   etCant.setHint("Cant.");
+                                   etCodigo.requestFocus();
+                               }
+                           }
                        }
                    }
                } catch (Exception e){
@@ -170,13 +197,20 @@ public class PedidoActivity extends AppCompatActivity {
 
                 if (rs.next()) {
                     cod=(rs.getString(2));
-                    unit=(rs.getString(8));
+                    nomb=(rs.getString(3));
+                    if(((double)Math.round( Double.valueOf( rs.getString(8))*100d)/100)==0){
+                        unit= String.valueOf ((double)Math.round( Double.valueOf( rs.getString(12))*100d)/100);
+                    }else{
+                        unit= String.valueOf ((double)Math.round( Double.valueOf( rs.getString(8))*100d)/100);
+                    }
 
+                    cant1=(rs.getString(13));
                     cant=String.valueOf(ca);
                     total=String.valueOf( (double)Math.round ((Double.valueOf(unit)*Double.valueOf(cant))*100d)/100) ;
                 }
                 else{
                     cod="";
+                    nomb="";
                     unit="";
                     cant="";
                     total="0.00";
@@ -275,5 +309,27 @@ public class PedidoActivity extends AppCompatActivity {
         }else {
             super.onActivityResult(requestCode,resultCode,data);
         }
+    }
+    private ItemTouchHelper.Callback createHelperCallback(){
+        ItemTouchHelper.SimpleCallback simpleCallback=
+                new ItemTouchHelper.SimpleCallback(ItemTouchHelper.UP| ItemTouchHelper.DOWN,
+                        ItemTouchHelper.LEFT|ItemTouchHelper.RIGHT) {
+                    @Override
+                    public boolean onMove(@NonNull RecyclerView recyclerView, @NonNull RecyclerView.ViewHolder viewHolder, @NonNull RecyclerView.ViewHolder target) {
+                        return false;
+                    }
+
+                    @Override
+                    public void onSwiped(@NonNull RecyclerView.ViewHolder viewHolder, int direction) {
+                        deleteItem(viewHolder.getAdapterPosition());
+                        //textViewProforma.setText(String.valueOf((double) Math.round(((adaptadorRecyclerView.tot)) * 100d) / 100));
+                        //textViewFactura.setText(String.valueOf((double) Math.round((((adaptadorRecyclerView.tot)) * 1.12) * 100d) / 100));
+                    }
+                };
+        return simpleCallback;
+    }
+    private void deleteItem(final int position){
+        adaptadorRecyclerView.eliminar(position);
+
     }
 }
