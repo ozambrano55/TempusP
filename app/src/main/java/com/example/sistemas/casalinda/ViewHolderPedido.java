@@ -1,16 +1,16 @@
 package com.example.sistemas.casalinda;
 
-import androidx.annotation.NonNull;
-import androidx.recyclerview.widget.RecyclerView;
 import android.view.View;
-import android.widget.EditText;
 import android.widget.TextView;
 
-class ViewHolderPedido extends RecyclerView.ViewHolder
+import androidx.annotation.NonNull;
+import androidx.recyclerview.widget.RecyclerView;
+
+public class ViewHolderPedido extends RecyclerView.ViewHolder
 {
    private TextView txtCodigo, txtNombre, txtCantidad,txtUnitario, txtTotal;
 
-   ViewHolderPedido(@NonNull View itemView){
+   public ViewHolderPedido(@NonNull View itemView){
        super(itemView);
        txtCodigo=itemView.findViewById(R.id.txtCodigo);
        txtNombre=itemView.findViewById(R.id.txtNombre);

@@ -22,6 +22,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.sistemas.casalinda.Utilidades.claseGlobal;
+import com.example.sistemas.casalinda.adaptadores.AdaptadorRecyclerView;
 import com.google.zxing.integration.android.IntentIntegrator;
 import com.google.zxing.integration.android.IntentResult;
 
@@ -37,7 +38,7 @@ public class PedidoActivity extends AppCompatActivity {
     int SOLICITO_UTILIZAR_CAMARA;
     private ZXingScannerView vistaescaner;
     EditText etCodigo,etNomb, etCant,etCedula;
-    TextView textViewProforma, textViewFactura,textViewPedido;
+
     final AdaptadorRecyclerView adaptadorRecyclerView=new AdaptadorRecyclerView(new InterfazClickRecyclerView() {
         @Override
         public void onClick(View v, Pedido p) {
@@ -290,13 +291,14 @@ public class PedidoActivity extends AppCompatActivity {
                 .setCameraId(0)
                 //.setCaptureActivity(CaptureActivity.class)
                 .setOrientationLocked(false)
-                //.setBeepEnabled(false)
-                //.setBarcodeImageEnabled(false)
+                .setBeepEnabled(false)
+                .setBarcodeImageEnabled(false)
                 .initiateScan();
     }
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        etCodigo=findViewById(R.id.edtCodigo);
         IntentResult result =IntentIntegrator.parseActivityResult(requestCode,resultCode,data);
         if (result!=null){
             if (result.getContents()==null){

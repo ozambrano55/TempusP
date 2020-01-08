@@ -1,6 +1,7 @@
 package com.example.sistemas.casalinda;
 
 import android.os.Bundle;
+import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.TextView;
@@ -16,11 +17,11 @@ import java.sql.ResultSet;
 import java.sql.Statement;
 import java.util.ArrayList;
 
-import static com.example.sistemas.casalinda.AdaptadorRecyclerView.CAN;
-import static com.example.sistemas.casalinda.AdaptadorRecyclerView.COD;
-import static com.example.sistemas.casalinda.AdaptadorRecyclerView.NOM;
-import static com.example.sistemas.casalinda.AdaptadorRecyclerView.TOT;
-import static com.example.sistemas.casalinda.AdaptadorRecyclerView.UNI;
+import static com.example.sistemas.casalinda.adaptadores.AdaptadorRecyclerView.CAN;
+import static com.example.sistemas.casalinda.adaptadores.AdaptadorRecyclerView.COD;
+import static com.example.sistemas.casalinda.adaptadores.AdaptadorRecyclerView.NOM;
+import static com.example.sistemas.casalinda.adaptadores.AdaptadorRecyclerView.TOT;
+import static com.example.sistemas.casalinda.adaptadores.AdaptadorRecyclerView.UNI;
 
 public class PedidoEditar extends AppCompatActivity {
 
@@ -39,6 +40,9 @@ public class PedidoEditar extends AppCompatActivity {
     TextView tvTotal;
     ArrayList<Existencia> existenciaList;
     ArrayList<String> listaExistencias;
+
+    ArrayList<String> listaPrecios;
+    ArrayList<Precio>preciosList;
     Connection connect;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -54,15 +58,15 @@ public class PedidoEditar extends AppCompatActivity {
         tvCodigo= findViewById(R.id.tvCod);
         tvCodigo.setText(codigo);
 
-        tvNombre= findViewById(R.id.tvNomb);
+        tvNombre= findViewById(R.id.tvNom);
         tvNombre.setText(nombre);
 
         edCant= findViewById(R.id.edtCan);
         edCant.setText(cantidad);
 
         spUni= findViewById(R.id.spnUni);
-        //spUni.
-
+        ArrayAdapter<CharSequence> adaptador=new ArrayAdapter(this,android.R.layout.simple_dropdown_item_1line,listaPrecios);
+        spUni.setAdapter(adaptador);
         tvTotal= findViewById(R.id.tvTot);
         tvTotal.setText(total);
 
@@ -112,6 +116,37 @@ public class PedidoEditar extends AppCompatActivity {
         }
     }
 
+    public void consultarprecio() {
+        try {
+            Precio precio = null;
 
+            preciosList = new ArrayList<Precio>();
+
+            ConnectionStr conStr = new ConnectionStr();
+            connect = conStr.connectionclasss();        // Connect to database
+
+            String query = "select Rtrim(C_Punto_Venta)C_punto, rtrim(N_Punto_Venta)n_Punto_venta, C_Bodega from Fac_Puntos_Venta where Flag_Vigente=1";
+            Statement stmt = connect.createStatement();
+            ResultSet rs = stmt.executeQuery(query);
+            if (rs!=null) {
+                while (rs.next()) {
+                   // preciosList.add(new Precio(rs.getString("tipo"),rs.getString("precio")));
+
+                }
+            }
+            obtenerLista();
+        } catch (Exception e) {
+            Toast.makeText(getApplicationContext(), e.getMessage(), Toast.LENGTH_SHORT).show();
+        }
+    }
+
+
+    private void obtenerLista() {
+        listaPrecios = new ArrayList<String>();
+        //listaPuntos.add("Seleccione");
+        for (int i = 0; i < preciosList.size(); i++) {
+            listaPrecios.add(preciosList.get(i).getTipo() + " - " + preciosList.get(i).getPrecio());
+        }
+    }
 
 }

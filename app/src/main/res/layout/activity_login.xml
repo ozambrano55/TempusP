@@ -41,17 +41,17 @@
         android:layout_marginTop="20dp"
         android:text="INGRESAR" />
 
-    <ProgressBar
-        android:id="@+id/progressBar"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
-
     <Button
         android:id="@+id/btnSalir"
         android:layout_width="146dp"
         android:layout_height="wrap_content"
         android:onClick="salir"
         android:text="Salir" />
+
+    <ProgressBar
+        android:id="@+id/progressBar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
 
 
 </LinearLayout>

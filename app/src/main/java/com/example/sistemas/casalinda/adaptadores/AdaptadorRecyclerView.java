@@ -1,4 +1,4 @@
-package com.example.sistemas.casalinda;
+package com.example.sistemas.casalinda.adaptadores;
 
 import android.content.Context;
 import android.content.Intent;
@@ -9,6 +9,12 @@ import android.widget.EditText;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
+
+import com.example.sistemas.casalinda.InterfazClickRecyclerView;
+import com.example.sistemas.casalinda.Pedido;
+import com.example.sistemas.casalinda.PedidoEditar;
+import com.example.sistemas.casalinda.R;
+import com.example.sistemas.casalinda.ViewHolderPedido;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -47,6 +53,10 @@ public class AdaptadorRecyclerView  extends RecyclerView.Adapter<ViewHolderPedid
         this.interfazClickRecyclerView=interfazClickRecyclerView;
         this.pedidos=new ArrayList<>();
 
+    }
+    public void actualizarPedido (int indice,Pedido pedido){
+        this.pedidos.set(indice,pedido);
+        this.notifyItemChanged(indice);
     }
     public void agregarPedido (Pedido pedido){
         this.pedidos.add(pedido);
@@ -92,7 +102,7 @@ public class AdaptadorRecyclerView  extends RecyclerView.Adapter<ViewHolderPedid
                 int position=viewHolder.getAdapterPosition();
                 Pedido pedido=pedidos.get(position);
 
-                Intent intent =new Intent(v.getContext(),PedidoEditar.class);
+                Intent intent =new Intent(v.getContext(), PedidoEditar.class);
                 intent.putExtra(COD,pedido.getCodigo());
                 intent.putExtra(NOM,pedido.getNombre());
                 intent.putExtra(CAN,pedido.getCantidad());
