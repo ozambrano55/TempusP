@@ -96,6 +96,7 @@ public class AdaptadorRecyclerView  extends RecyclerView.Adapter<ViewHolderPedid
                 intent.putExtra(COD,pedido.getCodigo());
                 intent.putExtra(NOM,pedido.getNombre());
                 intent.putExtra(CAN,pedido.getCantidad());
+                intent.putExtra(TOT,pedido.getTotal());
                 context.startActivity(intent);
             }
         });
