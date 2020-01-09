@@ -98,7 +98,7 @@ public class PedidoActivity extends AppCompatActivity {
                        Toast.makeText(PedidoActivity.this, "Rellena los campos", Toast.LENGTH_SHORT).show();
                        return;
                    }else {
-                       consultarproducto(codigo, Double.parseDouble(ca));
+                       consultarproducto(codigo,Integer.parseInt(ca) );
                        if (cod.isEmpty() | cant.isEmpty()) {
                            //adaptadorRecyclerView.agregarPedido(new Pedido(cod.toString(), cant.toString(), unit.toString(), total.toString()));
                            etCodigo.setText("");
@@ -173,7 +173,7 @@ public class PedidoActivity extends AppCompatActivity {
 
 
     }
-    public void consultarproducto(String c, double ca){
+    public void consultarproducto(String c, int ca){
         String ConnectionResult = "";
 
 

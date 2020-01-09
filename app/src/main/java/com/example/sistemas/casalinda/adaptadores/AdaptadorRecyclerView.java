@@ -5,7 +5,6 @@ import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.EditText;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -33,9 +32,9 @@ public class AdaptadorRecyclerView  extends RecyclerView.Adapter<ViewHolderPedid
     public Double tot,un;
     //public String cod,nomb;
     public String totString="0";
-    EditText can,to;
-    private com.example.sistemas.casalinda.ViewHolderPedido holder;
-    private int position;
+    //EditText can,to;
+   // private com.example.sistemas.casalinda.ViewHolderPedido holder;
+    //private int position;
 
     public AdaptadorRecyclerView(List <Pedido>pedidos){
         this.pedidos=pedidos;

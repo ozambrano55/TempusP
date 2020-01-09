@@ -69,7 +69,7 @@
                 android:layout_weight="1"
                 android:ems="10"
                 android:hint="@string/cantidad"
-                android:inputType="numberDecimal" />
+                android:inputType="number" />
 
             <Button
                 android:id="@+id/btnAgregar"

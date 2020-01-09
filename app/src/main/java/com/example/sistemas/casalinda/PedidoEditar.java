@@ -2,7 +2,6 @@ package com.example.sistemas.casalinda;
 
 import android.content.DialogInterface;
 import android.os.Bundle;
-import android.telephony.euicc.DownloadableSubscription;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.View;
@@ -14,17 +13,17 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.view.GravityCompat;
-import androidx.drawerlayout.widget.DrawerLayout;
+import androidx.recyclerview.widget.ItemTouchHelper;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.sistemas.casalinda.Utilidades.claseGlobal;
 
 import java.sql.CallableStatement;
 import java.sql.Connection;
 import java.sql.ResultSet;
-import java.sql.Statement;
 import java.util.ArrayList;
 
 import static com.example.sistemas.casalinda.adaptadores.AdaptadorRecyclerView.CAN;
@@ -42,12 +41,23 @@ public class PedidoEditar extends AppCompatActivity {
     private String total;
 
     String bodega, nbodega, canti,ubica;
+    /*final AdaptadorRecyclerViewE adaptadorRecyclerViewE=new AdaptadorRecyclerViewE(new InterfazClickRecyclerViewE() {
+        @Override
+        public void onClick(View vw, Existencia e) {
+        }
 
+    });
+*/
     TextView tvCodigo;
     TextView tvNombre;
     EditText edCant;
+    EditText edUnit;
     Spinner spUni;
     TextView tvTotal;
+ ///   RecyclerView recyclerViewExistencias=findViewById(R.id.eRecycler);
+
+
+
     ArrayList<Existencia> existenciaList;
     ArrayList<String> listaExistencias;
 
@@ -77,6 +87,8 @@ public class PedidoEditar extends AppCompatActivity {
         edCant= findViewById(R.id.edtCan);
         edCant.setText(cantidad);
 
+        edUnit=findViewById(R.id.edtUni);
+        edUnit.setText(unitario);
 
         tvTotal= findViewById(R.id.tvTot);
         tvTotal.setText(total);
@@ -84,12 +96,27 @@ public class PedidoEditar extends AppCompatActivity {
             consultarExistencias(codigo);
             consultarprecio(codigo);
 
+/*
+            ItemTouchHelper itemTouchHelper=new ItemTouchHelper(createHelperCallback());
+            itemTouchHelper.attachToRecyclerView(recyclerViewExistencias);
+            //Configuramos cómo se va a organizar las vistas dentro del RecyclerView; simplemente con un LinearLayout para que
+            //aparezcan una debajo de otra
+            LinearLayoutManager linearLayoutManager=new LinearLayoutManager(PedidoEditar.this  );
+            recyclerViewExistencias.setLayoutManager(linearLayoutManager);
+            //La línea que divide los elementos
+            recyclerViewExistencias.addItemDecoration(new DividerItemDecoration(PedidoEditar.this ,LinearLayoutManager.VERTICAL));
+            //El adaptador que se encarga de toda la lógica
+            recyclerViewExistencias.setAdapter(adaptadorRecyclerViewE);
+            //adaptadorRecyverView.agregarPedido(new Pedido());
+
+*/
+
             spUni= findViewById(R.id.spnUni);
             ArrayAdapter<String> adaptador;
             adaptador=new ArrayAdapter<String>(this,android.R.layout.simple_dropdown_item_1line,listaPrecios);
             spUni.setAdapter(adaptador);
 
-            int seleccion=spUni.getSelectedItemPosition();
+          //  int seleccion=spUni.getSelectedItemPosition();
             // ca=adaptador.getItem(seleccion).toString();
 
             spUni.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
@@ -97,8 +124,10 @@ public class PedidoEditar extends AppCompatActivity {
                 public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                     unitario=(String) spUni.getItemAtPosition(position);
                     unitario=getNumeros(unitario);
+                    edUnit.setText(unitario);
 
                     cantidad=edCant.getText().toString();
+                    unitario=edUnit.getText().toString();
 
                     total=String.valueOf(Double.valueOf(cantidad)* Double.valueOf(unitario));
                     tvTotal.setText( total);
@@ -110,6 +139,37 @@ public class PedidoEditar extends AppCompatActivity {
                 }
             });
 
+            edUnit.addTextChangedListener(new TextWatcher() {
+                @Override
+                public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+                }
+
+                @Override
+                public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+                }
+
+                @Override
+                public void afterTextChanged(Editable s) {
+                    try{
+                        cantidad=edCant.getText().toString();
+                        if(cantidad.equals("")){
+                            cantidad="0";
+                        }
+                        unitario=edUnit.getText().toString();
+                        if(unitario.equals("")){
+                            unitario="0";
+                        }
+                        total=String.valueOf((double)Math.round ((Double.valueOf(cantidad)* Double.valueOf(unitario))*100d)/100);
+                        tvTotal.setText( total);
+                    }
+                    catch (Exception e){
+                        salir(e.getMessage());
+                    }
+                }
+            });
+
             edCant.addTextChangedListener(new TextWatcher() {
                 @Override
                 public void beforeTextChanged(CharSequence s, int start, int count, int after) {
@@ -118,7 +178,7 @@ public class PedidoEditar extends AppCompatActivity {
 
                 @Override
                 public void onTextChanged(CharSequence s, int start, int before, int count) {
-                    try{
+             /*       try{
                         cantidad=edCant.getText().toString();
                         if(cantidad.equals("")){
                             cantidad="0";
@@ -129,7 +189,7 @@ public class PedidoEditar extends AppCompatActivity {
                     }
                     catch (Exception e){
                         salir(e.getMessage());
-                    }
+                    }*/
                 }
 
                 @Override
@@ -139,7 +199,10 @@ public class PedidoEditar extends AppCompatActivity {
                         if(cantidad.equals("")){
                             cantidad="0";
                         }
-
+                        unitario=edUnit.getText().toString();
+                        if(unitario.equals("")){
+                            unitario="0";
+                        }
                         total=String.valueOf((double)Math.round ((Double.valueOf(cantidad)* Double.valueOf(unitario))*100d)/100);
                         tvTotal.setText( total);
                     }
@@ -228,6 +291,7 @@ public class PedidoEditar extends AppCompatActivity {
 
                 if (rs != null) {
                     while (rs.next()) {
+                     ///   adaptadorRecyclerViewE.agregarExistencia(new Existencia(rs.getString(10),rs.getString(11),rs.getString(13),rs.getString(16)));
                         existenciaList.add(new Existencia(rs.getString(10),rs.getString(11),rs.getString(13),rs.getString(16)));
                        /* bodega = (rs.getString(10));
                         nbodega = (rs.getString(11));
@@ -235,6 +299,7 @@ public class PedidoEditar extends AppCompatActivity {
                         ubica = (rs.getString(16));
 */
                     }
+
 
 
                 }
@@ -280,5 +345,37 @@ public class PedidoEditar extends AppCompatActivity {
             listaPrecios.add(preciosList.get(i).getTipo() + " - " + preciosList.get(i).getPrecio());
         }
     }
+    private ItemTouchHelper.Callback createHelperCallback(){
+        ItemTouchHelper.SimpleCallback simpleCallback=
+                new ItemTouchHelper.SimpleCallback(ItemTouchHelper.UP| ItemTouchHelper.DOWN,
+                        ItemTouchHelper.LEFT|ItemTouchHelper.RIGHT) {
+                    @Override
+                    public boolean onMove(@NonNull RecyclerView recyclerView, @NonNull RecyclerView.ViewHolder viewHolder, @NonNull RecyclerView.ViewHolder target) {
+                        return false;
+                    }
 
+                    @Override
+                    public void onSwiped(@NonNull RecyclerView.ViewHolder viewHolder, int direction) {
+                       // final TextView textViewProforma=findViewById(R.id.txtProforma);
+                      //  final TextView textViewFactura=findViewById(R.id.txtFactura);
+                        try {
+                         /*   deleteItem(viewHolder.getAdapterPosition());
+                            if (adaptadorRecyclerView.tot==0){
+                                textViewProforma.setText("0.00");
+                                textViewFactura.setText("0.00");
+
+
+                            }
+                            else {
+                                textViewProforma.setText(String.valueOf((double) Math.round(((adaptadorRecyclerView.tot)) * 100d) / 100));
+                                textViewFactura.setText(String.valueOf((double) Math.round((((adaptadorRecyclerView.tot)) * 1.12) * 100d) / 100));
+                            }*/
+                        }catch(Exception e){
+                            Toast.makeText(getApplicationContext(),e.getMessage(), Toast.LENGTH_SHORT).show();
+
+                        }
+                    }
+                };
+        return simpleCallback;
+    }
 }
