@@ -6,6 +6,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
@@ -97,17 +98,21 @@ public class AdaptadorRecyclerView  extends RecyclerView.Adapter<ViewHolderPedid
         vista.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
                 interfazClickRecyclerView.onClick(v,pedidos.get(viewHolder.getAdapterPosition()));
                 Context context =v.getContext();
                 int position=viewHolder.getAdapterPosition();
                 Pedido pedido=pedidos.get(position);
+                try{Intent intent =new Intent(v.getContext(), PedidoEditar.class);
+                    intent.putExtra(COD,pedido.getCodigo());
+                    intent.putExtra(NOM,pedido.getNombre());
+                    intent.putExtra(CAN,pedido.getCantidad());
+                    intent.putExtra(TOT,pedido.getTotal());
+                    context.startActivity(intent);
+                }catch (Exception e){
+                    Toast.makeText( v.getContext(), e.getMessage(), Toast.LENGTH_SHORT).show();
+                }
 
-                Intent intent =new Intent(v.getContext(), PedidoEditar.class);
-                intent.putExtra(COD,pedido.getCodigo());
-                intent.putExtra(NOM,pedido.getNombre());
-                intent.putExtra(CAN,pedido.getCantidad());
-                intent.putExtra(TOT,pedido.getTotal());
-                context.startActivity(intent);
             }
         });
         return viewHolder;

@@ -2,7 +2,7 @@ package com.example.sistemas.casalinda;
 
 public class Precio {
     private String tipo;
-    private Double precio;
+    private String precio;
 
 
     public String getTipo() {
@@ -13,15 +13,15 @@ public class Precio {
         this.tipo = tipo;
     }
 
-    public Double getPrecio() {
+    public String getPrecio() {
         return precio;
     }
 
-    public void setPrecio(Double precio) {
+    public void setPrecio(String precio) {
         this.precio = precio;
     }
 
-    public Precio(String tipo, Double Precio){
+    public Precio(String tipo, String precio){
         this.tipo=tipo;
         this.precio=precio;
     }
