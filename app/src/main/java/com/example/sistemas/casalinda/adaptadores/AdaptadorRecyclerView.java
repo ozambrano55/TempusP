@@ -57,6 +57,7 @@ public class AdaptadorRecyclerView  extends RecyclerView.Adapter<ViewHolderPedid
     }
     public void actualizarPedido ( int i,Pedido pedido){
         this.pedidos.set(i,pedido);
+
         this.notifyItemChanged(i);
     }
     public void agregarPedido (Pedido pedido){

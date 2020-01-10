@@ -31,9 +31,14 @@ import java.sql.Connection;
 import java.sql.ResultSet;
 
 import me.dm7.barcodescanner.zxing.ZXingScannerView;
+
+import static com.example.sistemas.casalinda.adaptadores.AdaptadorRecyclerView.POS;
+
 public class PedidoActivity extends AppCompatActivity {
     String cod,nomb,cant,cant1,unit,total;
     Connection connect;
+
+    private String posicion;
 
     int SOLICITO_UTILIZAR_CAMARA;
     private ZXingScannerView vistaescaner;
@@ -42,8 +47,15 @@ public class PedidoActivity extends AppCompatActivity {
     final AdaptadorRecyclerView adaptadorRecyclerView=new AdaptadorRecyclerView(new InterfazClickRecyclerView() {
         @Override
         public void onClick(View v, Pedido p) {
-            Toast.makeText(PedidoActivity.this,p.toString(),Toast.LENGTH_LONG).show();
+            //Toast.makeText(PedidoActivity.this, "Daniel es "+p.toString(),Toast.LENGTH_LONG).show();
+            try{
+                adaptadorRecyclerView.actualizarPedido( Integer.valueOf(posicion),new Pedido(cod, nomb, cant, unit, total));
+            }catch (Exception e){
+                Toast.makeText(PedidoActivity.this,"Error: "+e.getMessage()+ "Causa: "+ e.getCause(),15 ).show();
+            }
+
         }
+
     });
 
 
@@ -51,6 +63,8 @@ public class PedidoActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_pedido);
+
+        posicion=getIntent().getStringExtra(POS);
 
         //Permiso por el usuario
         ActivityCompat.requestPermissions(this,new String[]{Manifest.permission.CAMERA},SOLICITO_UTILIZAR_CAMARA);
@@ -82,6 +96,8 @@ public class PedidoActivity extends AppCompatActivity {
         //El adaptador que se encarga de toda la lógica
         recyclerViewPedidos.setAdapter(adaptadorRecyclerView);
         //adaptadorRecyverView.agregarPedido(new Pedido());
+
+
 
         btnAgregar.setOnClickListener(new View.OnClickListener() {
             @Override

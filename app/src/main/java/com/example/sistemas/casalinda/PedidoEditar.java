@@ -39,6 +39,7 @@ import static com.example.sistemas.casalinda.adaptadores.AdaptadorRecyclerView.T
 import static com.example.sistemas.casalinda.adaptadores.AdaptadorRecyclerView.UNI;
 
 public class PedidoEditar extends AppCompatActivity {
+
     private String posicion;
     private String codigo;
     private String nombre;
@@ -247,9 +248,14 @@ public class PedidoEditar extends AppCompatActivity {
                     cantidad=edCant.getText().toString();
                     unitario=edUnit.getText().toString();
                     total=tvTotal.getText().toString();
-                    adaptadorRecyclerView.actualizarPedido(Integer.parseInt(posicion) ,new Pedido(codigo, nombre, cantidad, unitario, total));
+                   //posicion=
+                    try{
+                         adaptadorRecyclerView.actualizarPedido(Integer.parseInt(posicion) ,new Pedido(codigo, nombre, cantidad, unitario, total));
+                    }
+                        catch(Exception e){salir("Error"+ e.getMessage()+"Cuasa:"+ e.getCause()+"Linea:"+e.getLocalizedMessage());}
 
-                    finish();
+
+                   // finish();
                 }
             });
 
