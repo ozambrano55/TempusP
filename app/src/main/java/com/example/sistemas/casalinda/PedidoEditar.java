@@ -7,6 +7,7 @@ import android.text.TextWatcher;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.Spinner;
@@ -16,10 +17,14 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.ItemTouchHelper;
+import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.sistemas.casalinda.Utilidades.claseGlobal;
+import com.example.sistemas.casalinda.adaptadores.AdaptadorRecyclerView;
+import com.example.sistemas.casalinda.adaptadores.AdaptadorRecyclerViewE;
 
 import java.sql.CallableStatement;
 import java.sql.Connection;
@@ -29,18 +34,19 @@ import java.util.ArrayList;
 import static com.example.sistemas.casalinda.adaptadores.AdaptadorRecyclerView.CAN;
 import static com.example.sistemas.casalinda.adaptadores.AdaptadorRecyclerView.COD;
 import static com.example.sistemas.casalinda.adaptadores.AdaptadorRecyclerView.NOM;
+import static com.example.sistemas.casalinda.adaptadores.AdaptadorRecyclerView.POS;
 import static com.example.sistemas.casalinda.adaptadores.AdaptadorRecyclerView.TOT;
 import static com.example.sistemas.casalinda.adaptadores.AdaptadorRecyclerView.UNI;
 
 public class PedidoEditar extends AppCompatActivity {
-
+    private String posicion;
     private String codigo;
     private String nombre;
     private String cantidad;
     private String unitario;
     private String total;
 
-    String bodega, nbodega, canti,ubica;
+    String bodega, nbodega, unidades,ubicacion;
     /*final AdaptadorRecyclerViewE adaptadorRecyclerViewE=new AdaptadorRecyclerViewE(new InterfazClickRecyclerViewE() {
         @Override
         public void onClick(View vw, Existencia e) {
@@ -48,13 +54,26 @@ public class PedidoEditar extends AppCompatActivity {
 
     });
 */
+    final AdaptadorRecyclerView adaptadorRecyclerView=new AdaptadorRecyclerView(new InterfazClickRecyclerView() {
+        @Override
+        public void onClick(View v, Pedido p) {
+
+        }
+    });
+   final AdaptadorRecyclerViewE adaptadorRecyclerViewE=new AdaptadorRecyclerViewE(new InterfazClickRecyclerViewE() {
+        @Override
+        public void onClick(View vw, Existencia e) {
+
+        }
+    });
     TextView tvCodigo;
     TextView tvNombre;
     EditText edCant;
     EditText edUnit;
     Spinner spUni;
     TextView tvTotal;
- ///   RecyclerView recyclerViewExistencias=findViewById(R.id.eRecycler);
+    Button btAceptar;
+    Button btEliminar;
 
 
 
@@ -72,6 +91,7 @@ public class PedidoEditar extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_pedido_editar);
 
+        posicion=getIntent().getStringExtra(POS);
         codigo=getIntent().getStringExtra(COD);
         nombre=getIntent().getStringExtra(NOM);
         cantidad=getIntent().getStringExtra(CAN);
@@ -92,11 +112,18 @@ public class PedidoEditar extends AppCompatActivity {
 
         tvTotal= findViewById(R.id.tvTot);
         tvTotal.setText(total);
+
+        RecyclerView recyclerViewExistencias=findViewById(R.id.eRecycler);
+
+        btAceptar=findViewById(R.id.btAceptar);
+        btEliminar=findViewById(R.id.btEliminar);
+
         try{
             consultarExistencias(codigo);
             consultarprecio(codigo);
 
-/*
+
+
             ItemTouchHelper itemTouchHelper=new ItemTouchHelper(createHelperCallback());
             itemTouchHelper.attachToRecyclerView(recyclerViewExistencias);
             //Configuramos cómo se va a organizar las vistas dentro del RecyclerView; simplemente con un LinearLayout para que
@@ -109,7 +136,7 @@ public class PedidoEditar extends AppCompatActivity {
             recyclerViewExistencias.setAdapter(adaptadorRecyclerViewE);
             //adaptadorRecyverView.agregarPedido(new Pedido());
 
-*/
+
 
             spUni= findViewById(R.id.spnUni);
             ArrayAdapter<String> adaptador;
@@ -212,6 +239,19 @@ public class PedidoEditar extends AppCompatActivity {
                 }
             });
 
+            btAceptar.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    codigo=tvCodigo.getText().toString();
+                    nombre=tvNombre.getText().toString();
+                    cantidad=edCant.getText().toString();
+                    unitario=edUnit.getText().toString();
+                    total=tvTotal.getText().toString();
+                    adaptadorRecyclerView.actualizarPedido(Integer.parseInt(posicion) ,new Pedido(codigo, nombre, cantidad, unitario, total));
+
+                    finish();
+                }
+            });
 
         }
         catch (Exception e){
@@ -268,9 +308,7 @@ public class PedidoEditar extends AppCompatActivity {
         try {
         String ConnectionResult = "";
 
-            Existencia peresona = null;
-
-            existenciaList = new ArrayList<Existencia>();
+          //  existenciaList = new ArrayList<Existencia>();
 
         claseGlobal objEscritura=(claseGlobal)getApplicationContext();
         claseGlobal objLectura=(claseGlobal)getApplicationContext();
@@ -291,16 +329,16 @@ public class PedidoEditar extends AppCompatActivity {
 
                 if (rs != null) {
                     while (rs.next()) {
-                     ///   adaptadorRecyclerViewE.agregarExistencia(new Existencia(rs.getString(10),rs.getString(11),rs.getString(13),rs.getString(16)));
-                        existenciaList.add(new Existencia(rs.getString(10),rs.getString(11),rs.getString(13),rs.getString(16)));
-                       /* bodega = (rs.getString(10));
+
+                      //  existenciaList.add(new Existencia(rs.getString(10),rs.getString(11),rs.getString(13),rs.getString(16)));
+                       bodega = (rs.getString(10));
                         nbodega = (rs.getString(11));
-                        canti = (rs.getString(13));
-                        ubica = (rs.getString(16));
-*/
+                        unidades = (rs.getString(13));
+                        ubicacion = (rs.getString(16));
+                        adaptadorRecyclerViewE.agregarExistencia(new Existencia(bodega,nbodega,unidades,ubicacion));
                     }
 
-
+                    //adaptadorRecyclerViewE.agregarExistencia(new Existencia(existenciaList.,nbodega,unidades,ubicacion));
 
                 }
             }

@@ -21,6 +21,7 @@ import java.util.List;
 
 public class AdaptadorRecyclerView  extends RecyclerView.Adapter<ViewHolderPedido> {
 
+    public static final String POS="Posicion";
     public static final String COD="Codigo";
     public static final String NOM="Nombre";
     public static final String CAN="Cantidad";
@@ -54,14 +55,12 @@ public class AdaptadorRecyclerView  extends RecyclerView.Adapter<ViewHolderPedid
         this.pedidos=new ArrayList<>();
 
     }
-    public void actualizarPedido (int indice,Pedido pedido){
-        this.pedidos.set(indice,pedido);
-        this.notifyItemChanged(indice);
+    public void actualizarPedido ( int i,Pedido pedido){
+        this.pedidos.set(i,pedido);
+        this.notifyItemChanged(i);
     }
     public void agregarPedido (Pedido pedido){
         this.pedidos.add(pedido);
-
-
         un=Double.parseDouble(pedido.getUnitario()) ;
 
         this.notifyItemInserted(this.pedidos.size()-1);
@@ -103,6 +102,7 @@ public class AdaptadorRecyclerView  extends RecyclerView.Adapter<ViewHolderPedid
                 int position=viewHolder.getAdapterPosition();
                 Pedido pedido=pedidos.get(position);
                 try{Intent intent =new Intent(v.getContext(), PedidoEditar.class);
+                    intent.putExtra(POS,String.valueOf(position) );
                     intent.putExtra(COD,pedido.getCodigo());
                     intent.putExtra(NOM,pedido.getNombre());
                     intent.putExtra(CAN,pedido.getCantidad());

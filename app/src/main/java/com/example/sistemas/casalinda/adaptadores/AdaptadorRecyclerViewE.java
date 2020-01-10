@@ -18,14 +18,14 @@ import java.util.List;
 
 public class AdaptadorRecyclerViewE extends RecyclerView.Adapter<ViewHolderExistencia> {
 
-    String c_bodega,n_bodega,existencia,ubicacion;
+    //String c_bodega,n_bodega,existencia,ubicacion;
 
     private List<Existencia>existencias;
 
     private InterfazClickRecyclerViewE interfazClickRecyclerViewE;
 
 
-    public AdaptadorRecyclerViewE(InterfazClickRecyclerViewE interfazClickRecyclerView){
+    public AdaptadorRecyclerViewE(InterfazClickRecyclerViewE interfazClickRecyclerViewE){
         this.interfazClickRecyclerViewE=interfazClickRecyclerViewE;
         this.existencias=new ArrayList<>();
 
@@ -33,9 +33,7 @@ public class AdaptadorRecyclerViewE extends RecyclerView.Adapter<ViewHolderExist
 
     public void agregarExistencia (Existencia existencia){
         this.existencias.add(existencia);
-
-
-        this.notifyItemInserted(this.existencias.size()-1);
+        this.notifyItemInserted(this.existencias.size());
 
 
     }
@@ -47,7 +45,9 @@ public class AdaptadorRecyclerViewE extends RecyclerView.Adapter<ViewHolderExist
     @NonNull
     @Override
     public ViewHolderExistencia onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View vista = LayoutInflater.from(parent.getContext()).inflate(R.layout.layout_recycler_existencia,parent,false);
+        View vista = LayoutInflater
+                .from(parent.getContext())
+                .inflate(R.layout.layout_recycler_existencia,parent,false);
         final ViewHolderExistencia viewHolder=new ViewHolderExistencia(vista);
         vista.setOnClickListener(new View.OnClickListener() {
             @Override
