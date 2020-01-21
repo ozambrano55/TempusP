@@ -51,7 +51,10 @@ public class MainActivity extends AppCompatActivity
         //fin codigo nuevo
         navigationView.setNavigationItemSelectedListener(this);
         navigationView.setItemIconTintList(null);
+
+
     }
+
 
     @Override
     public void onBackPressed() {

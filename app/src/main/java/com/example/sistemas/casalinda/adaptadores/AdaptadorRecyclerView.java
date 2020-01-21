@@ -37,7 +37,7 @@ public class AdaptadorRecyclerView  extends RecyclerView.Adapter<ViewHolderPedid
    // private com.example.sistemas.casalinda.ViewHolderPedido holder;
     //private int position;
 
-    public AdaptadorRecyclerView(List <Pedido>pedidos){
+    public AdaptadorRecyclerView(){
         this.pedidos=pedidos;
     }
 
@@ -57,8 +57,14 @@ public class AdaptadorRecyclerView  extends RecyclerView.Adapter<ViewHolderPedid
     }
     public void actualizarPedido ( int i,Pedido pedido){
         this.pedidos.set(i,pedido);
-
+        un=Double.parseDouble(pedido.getUnitario()) ;
         this.notifyItemChanged(i);
+        tot=0.00;
+        for (Pedido data:pedidos){
+            tot+=Double.parseDouble(data.getTotal());
+        }
+
+        totString=String.valueOf(tot);
     }
     public void agregarPedido (Pedido pedido){
         this.pedidos.add(pedido);
@@ -94,27 +100,28 @@ public class AdaptadorRecyclerView  extends RecyclerView.Adapter<ViewHolderPedid
         //Crear el viewholder a partir de esta visa. Mira la calse ViewHolderPedido si quieres
         final ViewHolderPedido viewHolder=new ViewHolderPedido(vista);
         //En el clic de la vista (el pedido en general) invocamos a nuestra interfaz personalizada pasandole la vista y el pedido
-        vista.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
 
-                interfazClickRecyclerView.onClick(v,pedidos.get(viewHolder.getAdapterPosition()));
-                Context context =v.getContext();
-                int position=viewHolder.getAdapterPosition();
-                Pedido pedido=pedidos.get(position);
-                try{Intent intent =new Intent(v.getContext(), PedidoEditar.class);
-                    intent.putExtra(POS,String.valueOf(position) );
-                    intent.putExtra(COD,pedido.getCodigo());
-                    intent.putExtra(NOM,pedido.getNombre());
-                    intent.putExtra(CAN,pedido.getCantidad());
-                    intent.putExtra(TOT,pedido.getTotal());
-                    context.startActivity(intent);
-                }catch (Exception e){
-                    Toast.makeText( v.getContext(), e.getMessage(), Toast.LENGTH_SHORT).show();
-                }
+        vista.setOnClickListener(v -> {
 
+            interfazClickRecyclerView.onClick(v,pedidos.get(viewHolder.getAdapterPosition()));
+            Context context =v.getContext();
+            int position=viewHolder.getAdapterPosition();
+            Pedido pedido=pedidos.get(position);
+            try{Intent intent =new Intent(v.getContext(), PedidoEditar.class);
+                intent.putExtra(POS,String.valueOf(position) );
+                intent.putExtra(COD,pedido.getCodigo());
+                intent.putExtra(NOM,pedido.getNombre());
+                intent.putExtra(CAN,pedido.getCantidad());
+                intent.putExtra(TOT,pedido.getTotal());
+                context.startActivity(intent);
+
+            }catch (Exception e){
+                Toast.makeText( v.getContext(), e.getMessage(), Toast.LENGTH_SHORT).show();
             }
+
         });
+
+
         return viewHolder;
     }
 

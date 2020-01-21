@@ -14,11 +14,9 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.DividerItemDecoration;
-import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -97,7 +95,8 @@ public class PedidoEditar extends AppCompatActivity {
         nombre=getIntent().getStringExtra(NOM);
         cantidad=getIntent().getStringExtra(CAN);
         unitario=getIntent().getStringExtra(UNI);
-        total=getIntent().getStringExtra(TOT);
+       // total=getIntent().getStringExtra(TOT);
+        total=String.valueOf( (double)Math.round ((Double.valueOf(getIntent().getStringExtra(TOT)))*100d)/100) ;
 
         tvCodigo= findViewById(R.id.tvCod);
         tvCodigo.setText(codigo);
@@ -125,8 +124,8 @@ public class PedidoEditar extends AppCompatActivity {
 
 
 
-            ItemTouchHelper itemTouchHelper=new ItemTouchHelper(createHelperCallback());
-            itemTouchHelper.attachToRecyclerView(recyclerViewExistencias);
+            //ItemTouchHelper itemTouchHelper=new ItemTouchHelper(createHelperCallback());
+           // itemTouchHelper.attachToRecyclerView(recyclerViewExistencias);
             //Configuramos cómo se va a organizar las vistas dentro del RecyclerView; simplemente con un LinearLayout para que
             //aparezcan una debajo de otra
             LinearLayoutManager linearLayoutManager=new LinearLayoutManager(PedidoEditar.this  );
@@ -250,12 +249,28 @@ public class PedidoEditar extends AppCompatActivity {
                     total=tvTotal.getText().toString();
                    //posicion=
                     try{
-                         adaptadorRecyclerView.actualizarPedido(Integer.parseInt(posicion) ,new Pedido(codigo, nombre, cantidad, unitario, total));
+                        // adaptadorRecyclerView.actualizarPedido(Integer.parseInt(posicion) ,new Pedido(codigo, nombre, cantidad, unitario, total));
+                        claseGlobal objEscritura=(claseGlobal)getApplicationContext();
+                        objEscritura.setPos(Integer.parseInt( posicion));
+                        objEscritura.setCodigo(codigo);
+                        objEscritura.setNombre(nombre);
+                        objEscritura.setCantidad(Double.parseDouble(cantidad) );
+                        objEscritura.setUnitario(Double.parseDouble(unitario));
+                        objEscritura.setTotal(Double.parseDouble(total));
+
+
+                        try{
+
+
+                        }catch (Exception e){
+                            Toast.makeText( v.getContext(), e.getMessage(), Toast.LENGTH_SHORT).show();
+                        }
+
                     }
-                        catch(Exception e){salir("Error"+ e.getMessage()+"Cuasa:"+ e.getCause()+"Linea:"+e.getLocalizedMessage());}
+                        catch(Exception e){salir("Error: "+ e.getMessage());}
 
 
-                   // finish();
+                    finish();
                 }
             });
 
@@ -389,37 +404,5 @@ public class PedidoEditar extends AppCompatActivity {
             listaPrecios.add(preciosList.get(i).getTipo() + " - " + preciosList.get(i).getPrecio());
         }
     }
-    private ItemTouchHelper.Callback createHelperCallback(){
-        ItemTouchHelper.SimpleCallback simpleCallback=
-                new ItemTouchHelper.SimpleCallback(ItemTouchHelper.UP| ItemTouchHelper.DOWN,
-                        ItemTouchHelper.LEFT|ItemTouchHelper.RIGHT) {
-                    @Override
-                    public boolean onMove(@NonNull RecyclerView recyclerView, @NonNull RecyclerView.ViewHolder viewHolder, @NonNull RecyclerView.ViewHolder target) {
-                        return false;
-                    }
 
-                    @Override
-                    public void onSwiped(@NonNull RecyclerView.ViewHolder viewHolder, int direction) {
-                       // final TextView textViewProforma=findViewById(R.id.txtProforma);
-                      //  final TextView textViewFactura=findViewById(R.id.txtFactura);
-                        try {
-                         /*   deleteItem(viewHolder.getAdapterPosition());
-                            if (adaptadorRecyclerView.tot==0){
-                                textViewProforma.setText("0.00");
-                                textViewFactura.setText("0.00");
-
-
-                            }
-                            else {
-                                textViewProforma.setText(String.valueOf((double) Math.round(((adaptadorRecyclerView.tot)) * 100d) / 100));
-                                textViewFactura.setText(String.valueOf((double) Math.round((((adaptadorRecyclerView.tot)) * 1.12) * 100d) / 100));
-                            }*/
-                        }catch(Exception e){
-                            Toast.makeText(getApplicationContext(),e.getMessage(), Toast.LENGTH_SHORT).show();
-
-                        }
-                    }
-                };
-        return simpleCallback;
-    }
 }

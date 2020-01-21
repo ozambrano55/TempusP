@@ -9,10 +9,30 @@ public class claseGlobal extends Application {
 
     private String funcionario;
     private String punto;
+    private Integer pos;
+
+    public Integer getPos() {
+        return pos;
+    }
+
+    public void setPos(Integer pos) {
+        this.pos = pos;
+    }
 
     private String codigo;
+    private String nombre;
     private Double cantidad;
     private Double unitario;
+    private Double total;
+
+    public Double getTotal() {
+        return total;
+    }
+
+    public void setTotal(Double total) {
+        this.total = total;
+    }
+
     private Double proforma;
 
     public Double getProforma() {
@@ -85,5 +105,14 @@ public class claseGlobal extends Application {
 
     public void setC_funcionario(String c_funcionario) {
         this.c_funcionario = c_funcionario;
+    }
+
+
+    public String getNombre() {
+        return nombre;
+    }
+
+    public void setNombre(String nombre) {
+        this.nombre = nombre;
     }
 }

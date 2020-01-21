@@ -32,26 +32,27 @@ import java.sql.ResultSet;
 
 import me.dm7.barcodescanner.zxing.ZXingScannerView;
 
-import static com.example.sistemas.casalinda.adaptadores.AdaptadorRecyclerView.POS;
-
 public class PedidoActivity extends AppCompatActivity {
-    String cod,nomb,cant,cant1,unit,total;
+    String  cod,nomb,cant,cant1,unit,total;
+    int posicion;
+
     Connection connect;
 
-    private String posicion;
+
 
     int SOLICITO_UTILIZAR_CAMARA;
     private ZXingScannerView vistaescaner;
     EditText etCodigo,etNomb, etCant,etCedula;
+
 
     final AdaptadorRecyclerView adaptadorRecyclerView=new AdaptadorRecyclerView(new InterfazClickRecyclerView() {
         @Override
         public void onClick(View v, Pedido p) {
             //Toast.makeText(PedidoActivity.this, "Daniel es "+p.toString(),Toast.LENGTH_LONG).show();
             try{
-                adaptadorRecyclerView.actualizarPedido( Integer.valueOf(posicion),new Pedido(cod, nomb, cant, unit, total));
+                //adaptadorRecyclerView.actualizarPedido( Integer.valueOf(posicion),new Pedido(cod, nomb, cant, unit, total));
             }catch (Exception e){
-                Toast.makeText(PedidoActivity.this,"Error: "+e.getMessage()+ "Causa: "+ e.getCause(),15 ).show();
+               // Toast.makeText(PedidoActivity.this,"Error: "+e.getMessage(),Toast.LENGTH_LONG ).show();
             }
 
         }
@@ -63,8 +64,6 @@ public class PedidoActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_pedido);
-
-        posicion=getIntent().getStringExtra(POS);
 
         //Permiso por el usuario
         ActivityCompat.requestPermissions(this,new String[]{Manifest.permission.CAMERA},SOLICITO_UTILIZAR_CAMARA);
@@ -97,35 +96,58 @@ public class PedidoActivity extends AppCompatActivity {
         recyclerViewPedidos.setAdapter(adaptadorRecyclerView);
         //adaptadorRecyverView.agregarPedido(new Pedido());
 
-
-
         btnAgregar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                try {
                    String codigo = etCodigo.getText().toString();
                    String ca=etCant.getText().toString() ;
-                   claseGlobal objLectura = (claseGlobal) getApplicationContext();
+                    String dato="";
 
-                   //String cantidad=editTextCantidad.getText().toString();
-                   //String unitario =editTextUnitario.getText().toString();
-                   // String total=editTextTotal.getText().toString();
                    if (codigo.isEmpty()|ca.isEmpty()) {
                        Toast.makeText(PedidoActivity.this, "Rellena los campos", Toast.LENGTH_SHORT).show();
                        return;
                    }else {
                        consultarproducto(codigo,Integer.parseInt(ca) );
                        if (cod.isEmpty() | cant.isEmpty()) {
-                           //adaptadorRecyclerView.agregarPedido(new Pedido(cod.toString(), cant.toString(), unit.toString(), total.toString()));
                            etCodigo.setText("");
                            etCodigo.setHint("Codigo No existe");
                            etCant.setText("");
                            etCant.setHint("Cant.");
-                           //Toast.makeText(PedidoActivity.this,"Codigo No existe",Toast.LENGTH_LONG).show();
-                           //textViewProforma.setText( (adaptadorRecyclerView.totString)) ;
+
                        } else {
                            if (Double.valueOf(cant1) >=Double.valueOf(cant)) {
-                               adaptadorRecyclerView.agregarPedido(new Pedido(cod, nomb, cant, unit, total));
+                               int registros =adaptadorRecyclerView.getItemCount();
+                                int a=0;
+                                int d=0;
+                                int pa=0;
+                                int c;
+                                Double u;
+                               while ( a<registros)
+                               {
+                                   dato=adaptadorRecyclerView.getPedidos().get(a).getCodigo();
+                                   c=Integer.parseInt( adaptadorRecyclerView.getPedidos().get(a).getCantidad());
+                                   u=Double.parseDouble(adaptadorRecyclerView.getPedidos().get(a).getUnitario());
+                                   //dato=adaptadorRecyclerView;
+                                    if(cod.equals( dato)){
+                                        d=d+1;
+                                        pa=a;
+                                        cant=String.valueOf(c+Integer.parseInt(cant)) ;
+                                        total=String.valueOf( (double)Math.round ((u*Double.valueOf(cant))*100d)/100) ;
+                                    }
+                                       a++;
+                               }
+                               if (d==1){
+                                   adaptadorRecyclerView.actualizarPedido(pa, new Pedido(cod, nomb, cant, unit, total));
+                                   textViewProforma.setText(String.valueOf((double) Math.round(((adaptadorRecyclerView.tot)) * 100d) / 100));
+                                   textViewFactura.setText(String.valueOf((double) Math.round((((adaptadorRecyclerView.tot)) * 1.12) * 100d) / 100));
+                                   etCodigo.requestFocus();
+                               }else {
+                                   adaptadorRecyclerView.agregarPedido(new Pedido(cod, nomb, cant, unit, total));
+                                   etCodigo.requestFocus();
+                                    }
+                               //cod=adaptadorRecyclerView.getPedidos().get(i ).getCodigo()
+
                                etCodigo.setText("");
                                etCodigo.setHint("Código de Producto");
                                etCant.setText("");
@@ -153,7 +175,7 @@ public class PedidoActivity extends AppCompatActivity {
                        }
                    }
                } catch (Exception e){
-                   Toast.makeText(PedidoActivity.this,"Error"+e.getMessage() ,Toast.LENGTH_LONG).show();
+                   Toast.makeText(PedidoActivity.this,"Error ONCREATE: "+e.getMessage() ,Toast.LENGTH_LONG).show();
                }
 
                 }
@@ -188,6 +210,33 @@ public class PedidoActivity extends AppCompatActivity {
 
 
 
+    }
+    public void onSaveInstanceState(Bundle estado) {
+
+        super.onSaveInstanceState(estado);
+        //estado.putIntArray("Pedido",Pedido);
+    }
+
+    public void onResume() {
+        super.onResume();
+        final TextView textViewProforma=findViewById(R.id.txtProforma);
+        final TextView textViewFactura=findViewById(R.id.txtFactura);
+        claseGlobal objLectura = (claseGlobal) getApplicationContext();
+        try {
+                if(objLectura.getPos()!=null) {
+                    posicion = objLectura.getPos();
+                    cod = objLectura.getCodigo();
+                    nomb = objLectura.getNombre();
+                    cant = objLectura.getCantidad().toString();
+                    unit = objLectura.getUnitario().toString();
+                    total = objLectura.getTotal().toString();
+                    adaptadorRecyclerView.actualizarPedido(posicion, new Pedido(cod, nomb, cant, unit, total));
+                    textViewProforma.setText(String.valueOf((double) Math.round(((adaptadorRecyclerView.tot)) * 100d) / 100));
+                    textViewFactura.setText(String.valueOf((double) Math.round((((adaptadorRecyclerView.tot)) * 1.12) * 100d) / 100));
+                }
+        }catch (Exception e){
+            Toast.makeText(PedidoActivity.this,"ERROR ON RESUME:"+ e.getMessage(),Toast.LENGTH_LONG).show();
+            }
     }
     public void consultarproducto(String c, int ca){
         String ConnectionResult = "";
@@ -280,7 +329,7 @@ public class PedidoActivity extends AppCompatActivity {
         return super.onKeyDown(keyCode, event);
     }
 
-   /* public void EscanearP(View view){
+  /*  public void escaner(){
         vistaescaner=new ZXingScannerView(this);
         vistaescaner.setResultHandler(new zxingscanner());
         setContentView(vistaescaner);
@@ -295,19 +344,18 @@ public class PedidoActivity extends AppCompatActivity {
             EditText codigo = (EditText) findViewById(R.id.edtCodigo);
             codigo.setText(dato);
         }
-    }*/
-
+    }
+*/
    //METODO PARA ESCANEAR
-    public void escaner(){
+public void escaner(){
         IntentIntegrator intent =new IntentIntegrator(this);
         intent.setDesiredBarcodeFormats(IntentIntegrator.ALL_CODE_TYPES);
 
         intent.setPrompt("ESCANEAR CODIGO")
-
                 .setCameraId(0)
-                //.setCaptureActivity(CaptureActivity.class)
                 .setOrientationLocked(false)
                 .setBeepEnabled(false)
+                .setCaptureActivity(CaptureActivityPortrait.class)
                 .setBarcodeImageEnabled(false)
                 .initiateScan();
     }
@@ -346,6 +394,7 @@ public class PedidoActivity extends AppCompatActivity {
                            if (adaptadorRecyclerView.tot==0){
                                textViewProforma.setText("0.00");
                                textViewFactura.setText("0.00");
+
                            }
                            else {
                                textViewProforma.setText(String.valueOf((double) Math.round(((adaptadorRecyclerView.tot)) * 100d) / 100));

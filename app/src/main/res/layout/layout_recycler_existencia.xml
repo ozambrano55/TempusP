@@ -6,19 +6,19 @@
 
     <TextView
         android:id="@+id/tvBodega"
-        android:layout_width="70dp"
+        android:layout_width="30dp"
         android:layout_height="wrap_content"
         android:hint="Bodega" />
 
     <TextView
         android:id="@+id/tvNombre"
-        android:layout_width="300dp"
+        android:layout_width="230dp"
         android:layout_height="wrap_content"
         android:hint="Nombre " />
 
     <TextView
         android:id="@+id/tvExistencia"
-        android:layout_width="wrap_content"
+        android:layout_width="40dp"
         android:layout_height="wrap_content"
         android:hint="Cantidad  " />
 
