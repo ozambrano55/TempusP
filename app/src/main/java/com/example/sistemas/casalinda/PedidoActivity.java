@@ -235,14 +235,11 @@ public class PedidoActivity extends AppCompatActivity {
                     textViewFactura.setText(String.valueOf((double) Math.round((((adaptadorRecyclerView.tot)) * 1.12) * 100d) / 100));
                 }
         }catch (Exception e){
-            Toast.makeText(PedidoActivity.this,"ERROR ON RESUME:"+ e.getMessage(),Toast.LENGTH_LONG).show();
+            //Toast.makeText(PedidoActivity.this,"ERROR ON RESUME:"+ e.getMessage(),Toast.LENGTH_LONG).show();
             }
     }
     public void consultarproducto(String c, int ca){
         String ConnectionResult = "";
-
-
-
         claseGlobal objEscritura=(claseGlobal)getApplicationContext();
         claseGlobal objLectura=(claseGlobal)getApplicationContext();
 
@@ -252,6 +249,7 @@ public class PedidoActivity extends AppCompatActivity {
             if (connect == null)
             {
                 ConnectionResult = "Revisar tu conexion a internet!";
+                Toast.makeText(getApplicationContext(),ConnectionResult,Toast.LENGTH_LONG).show();
             }
             else {
                 CallableStatement call=connect.prepareCall("{call sp_BuscaProducto (?,?)}");
@@ -329,23 +327,7 @@ public class PedidoActivity extends AppCompatActivity {
         return super.onKeyDown(keyCode, event);
     }
 
-  /*  public void escaner(){
-        vistaescaner=new ZXingScannerView(this);
-        vistaescaner.setResultHandler(new zxingscanner());
-        setContentView(vistaescaner);
-        vistaescaner.startCamera();
-    }
-    class zxingscanner implements ZXingScannerView.ResultHandler{
-        @Override
-        public void handleResult(Result result){
-            String dato=result.getText();
-            //setContentView(R.layout.activity_pedido);
-            vistaescaner.stopCamera();
-            EditText codigo = (EditText) findViewById(R.id.edtCodigo);
-            codigo.setText(dato);
-        }
-    }
-*/
+
    //METODO PARA ESCANEAR
 public void escaner(){
         IntentIntegrator intent =new IntentIntegrator(this);
@@ -370,6 +352,7 @@ public void escaner(){
 
             }else   {
                 etCodigo.setText(result.getContents());
+                etCant.requestFocus();
             }
 
         }else {
