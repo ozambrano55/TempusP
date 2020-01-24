@@ -25,6 +25,16 @@ public class claseGlobal extends Application {
     private Double unitario;
     private Double total;
 
+    public Double getInventario() {
+        return inventario;
+    }
+
+    public void setInventario(Double inventario) {
+        this.inventario = inventario;
+    }
+
+    private Double inventario;
+
     public Double getTotal() {
         return total;
     }

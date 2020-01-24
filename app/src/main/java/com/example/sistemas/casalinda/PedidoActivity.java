@@ -121,12 +121,12 @@ public class PedidoActivity extends AppCompatActivity {
                                 int a=0;
                                 int d=0;
                                 int pa=0;
-                                int c;
-                                Double u;
+                                Double c=0.00;
+                                Double u=0.00;
                                while ( a<registros)
                                {
                                    dato=adaptadorRecyclerView.getPedidos().get(a).getCodigo();
-                                   c=Integer.parseInt( adaptadorRecyclerView.getPedidos().get(a).getCantidad());
+                                   c=Double.parseDouble( adaptadorRecyclerView.getPedidos().get(a).getCantidad());
                                    u=Double.parseDouble(adaptadorRecyclerView.getPedidos().get(a).getUnitario());
                                    //dato=adaptadorRecyclerView;
                                     if(cod.equals( dato)){
@@ -158,6 +158,7 @@ public class PedidoActivity extends AppCompatActivity {
                            else {
                                if (Double.valueOf(cant1) > 0) {
                                    Toast.makeText(PedidoActivity.this, "Ingrese una cantidad Menor o igual a " + cant1, Toast.LENGTH_LONG).show();
+                                   cant="";
                                    etCant.setText("");
                                    etCant.setHint("Cant.");
                                    etCant.requestFocus();
