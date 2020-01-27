@@ -31,14 +31,20 @@ import java.util.ArrayList;
 
 import static com.example.sistemas.casalinda.adaptadores.AdaptadorRecyclerView.CAN;
 import static com.example.sistemas.casalinda.adaptadores.AdaptadorRecyclerView.COD;
+import static com.example.sistemas.casalinda.adaptadores.AdaptadorRecyclerView.COL;
+import static com.example.sistemas.casalinda.adaptadores.AdaptadorRecyclerView.CUV;
 import static com.example.sistemas.casalinda.adaptadores.AdaptadorRecyclerView.NOM;
 import static com.example.sistemas.casalinda.adaptadores.AdaptadorRecyclerView.POS;
+import static com.example.sistemas.casalinda.adaptadores.AdaptadorRecyclerView.PVP;
+import static com.example.sistemas.casalinda.adaptadores.AdaptadorRecyclerView.TIP;
 import static com.example.sistemas.casalinda.adaptadores.AdaptadorRecyclerView.TOT;
 import static com.example.sistemas.casalinda.adaptadores.AdaptadorRecyclerView.UNI;
 
 public class PedidoEditar extends AppCompatActivity {
 
     private String posicion;
+    private String tipo;
+    private String color;
     private String codigo;
     private String nombre;
     private String cantidad;
@@ -46,6 +52,8 @@ public class PedidoEditar extends AppCompatActivity {
     private String unitario;
     private String total;
     private String inventario;
+    private String pvp;
+    private String cuv;
 
     String bodega, nbodega, unidades,ubicacion;
     /*final AdaptadorRecyclerViewE adaptadorRecyclerViewE=new AdaptadorRecyclerViewE(new InterfazClickRecyclerViewE() {
@@ -78,8 +86,8 @@ public class PedidoEditar extends AppCompatActivity {
 
 
 
-    ArrayList<Existencia> existenciaList;
-    ArrayList<String> listaExistencias;
+    //ArrayList<Existencia> existenciaList;
+   // ArrayList<String> listaExistencias;
 
     ArrayList<String> listaPrecios;
     ArrayList<Precio>preciosList;
@@ -93,11 +101,15 @@ public class PedidoEditar extends AppCompatActivity {
         setContentView(R.layout.activity_pedido_editar);
 
         posicion=getIntent().getStringExtra(POS);
+        tipo=getIntent().getStringExtra(TIP);
+        color=getIntent().getStringExtra(COL);
         codigo=getIntent().getStringExtra(COD);
         nombre=getIntent().getStringExtra(NOM);
         cantidad=getIntent().getStringExtra(CAN);
         unitario=getIntent().getStringExtra(UNI);
         total=String.valueOf( (double)Math.round ((Double.valueOf(getIntent().getStringExtra(TOT)))*100d)/100) ;
+        pvp=getIntent().getStringExtra(PVP);
+        cuv=getIntent().getStringExtra(CUV);
 
         tvCodigo= findViewById(R.id.tvCod);
         tvCodigo.setText(codigo);
@@ -364,6 +376,7 @@ public class PedidoEditar extends AppCompatActivity {
                         nbodega = (rs.getString(11));
                         unidades = (rs.getString(13));
                         ubicacion = (rs.getString(16));
+
                         if (ubicacion.equals("Actual")){
                            inventario= unidades;
                         }

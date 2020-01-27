@@ -22,11 +22,15 @@ import java.util.List;
 public class AdaptadorRecyclerView  extends RecyclerView.Adapter<ViewHolderPedido> {
 
     public static final String POS="Posicion";
+    public static final String TIP="Tipo";
+    public static final String COL="Color";
     public static final String COD="Codigo";
     public static final String NOM="Nombre";
     public static final String CAN="Cantidad";
     public static final String UNI="Unitario";
     public static final String TOT="Total";
+    public static final String PVP="Pvp";
+    public static final String CUV="cuv";
 
     private List<Pedido> pedidos;
     private InterfazClickRecyclerView interfazClickRecyclerView;
@@ -109,10 +113,14 @@ public class AdaptadorRecyclerView  extends RecyclerView.Adapter<ViewHolderPedid
             Pedido pedido=pedidos.get(position);
             try{Intent intent =new Intent(v.getContext(), PedidoEditar.class);
                 intent.putExtra(POS,String.valueOf(position) );
+                intent.putExtra(TIP,pedido.getTipo());
+                intent.putExtra(COL,pedido.getColor());
                 intent.putExtra(COD,pedido.getCodigo());
                 intent.putExtra(NOM,pedido.getNombre());
                 intent.putExtra(CAN,pedido.getCantidad());
                 intent.putExtra(TOT,pedido.getTotal());
+                intent.putExtra(PVP,pedido.getPvp());
+                intent.putExtra(CUV,pedido.getCuv());
                 context.startActivity(intent);
 
             }catch (Exception e){

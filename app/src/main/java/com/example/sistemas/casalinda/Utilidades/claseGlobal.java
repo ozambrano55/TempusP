@@ -29,11 +29,15 @@ public class claseGlobal extends Application {
         this.pos = pos;
     }
 
+    private String tip;
+    private String col;
     private String codigo;
     private String nombre;
     private Double cantidad;
     private Double unitario;
     private Double total;
+    private Double pvp;
+    private String cuv;
 
     public Double getInventario() {
         return inventario;
@@ -41,6 +45,38 @@ public class claseGlobal extends Application {
 
     public void setInventario(Double inventario) {
         this.inventario = inventario;
+    }
+
+    public String getTip() {
+        return tip;
+    }
+
+    public void setTip(String tip) {
+        this.tip = tip;
+    }
+
+    public String getCol() {
+        return col;
+    }
+
+    public void setCol(String col) {
+        this.col = col;
+    }
+
+    public Double getPvp() {
+        return pvp;
+    }
+
+    public void setPvp(Double pvp) {
+        this.pvp = pvp;
+    }
+
+    public String getCuv() {
+        return cuv;
+    }
+
+    public void setCuv(String cuv) {
+        this.cuv = cuv;
     }
 
     private Double inventario;

@@ -1,14 +1,40 @@
 package com.example.sistemas.casalinda;
 
 public class Pedido {
-    private String codigo, nombre, cantidad,unitario, total;
+    private String tipo, color, codigo, nombre, cantidad,unitario, total,pvp, cuv, bod;
 
-    public Pedido(String codigo, String nombre, String cantidad, String unitario, String total){
+
+    public Pedido(String tipo, String color, String  codigo, String nombre, String cantidad, String unitario, String total, String pvp, String cuv, String bod){
+        this.tipo=tipo;
+        this.color=color;
         this.codigo=codigo;
         this.nombre=nombre;
         this.cantidad=cantidad;
         this.unitario=unitario;
         this.total=total;
+        this.pvp=pvp;
+        this.cuv=cuv;
+        this.bod=bod;
+    }
+
+    public String getTipo() {
+        return tipo;
+    }
+
+    public String getBod() {
+        return bod;
+    }
+
+    public String getColor() {
+        return color;
+    }
+
+    public String getPvp() {
+        return pvp;
+    }
+
+    public String getCuv() {
+        return cuv;
     }
 
     public String getCodigo() {
@@ -33,11 +59,16 @@ public class Pedido {
     @Override
     public  String toString (){
         return "Pedido{" +
+                "tipo='" + tipo + '\'' +
+                "color='" + color + '\'' +
                 "producto='" + codigo + '\'' +
                 ", nombre=" + nombre + '\'' +
                 ", cantidad=" + cantidad + '\'' +
                 ", unitario=" + unitario + '\'' +
-                ", total=" + total +
+                ", total=" + total + '\'' +
+                ", pvp=" + pvp + '\'' +
+                ", cuv=" + cuv + '\'' +
+                ", bod=" + bod +
                 '}';
     }
 }
