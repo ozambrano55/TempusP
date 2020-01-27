@@ -48,7 +48,7 @@ import me.dm7.barcodescanner.zxing.ZXingScannerView;
 public class PedidoActivity extends AppCompatActivity {
     String  cod,nomb,cant,cant1,unit,total;
     //clientes
-    String c_tipo_tercero,c_cod_cliente,cliente, direccion, ciudad,tel1,fax,c_vendedor,c_director,c_lider,c_zona_fac,c_lista_precios,c_codicion_pago,c_dcto_financiero;
+    String c_tipo_tercero,c_cod_cliente,cliente, direccion,rciudad, ciudad,tel1,fax,c_vendedor,c_director,c_lider,c_zona_fac,c_lista_precios,c_codicion_pago,c_dcto_financiero;
     //pedido
     String C_Empresa,
             N_Orden_Pedido,
@@ -441,8 +441,8 @@ salir(e.getMessage());
         claseGlobal objLectura=(claseGlobal)getApplicationContext();
         //GrabaEncaPedido
         try{
-            obtenerNPedido(c);
-
+             obtenerNPedido(c);
+             grabaPedioEnca(c);
 
         }
         catch (Exception e){
@@ -454,6 +454,116 @@ salir(e.getMessage());
         }
         catch (Exception e){
             salir(e.getMessage());
+        }
+    }
+    public void grabaPedioEnca(String p){
+        String ConnectionResult = "";
+        claseGlobal objEscritura=(claseGlobal)getApplicationContext();
+        claseGlobal objLectura=(claseGlobal)getApplicationContext();
+
+        try {
+            ConnectionStr conStr=new ConnectionStr();
+            connect=conStr.connectionclasss();
+            if (connect == null)
+            {
+                ConnectionResult = "Revisar tu conexion a internet!";
+                Toast.makeText(getApplicationContext(),ConnectionResult,Toast.LENGTH_LONG).show();
+            }
+            else {
+                CallableStatement call=connect.prepareCall("{call sp_insertPedidoEnca (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)}");
+
+                call.setString(1, "03");//C_Empresa
+                call.setString(2, p);//N_Orden_Pedido
+                call.setString(3, "");//N_Orden_Cotiza
+                call.setString(4, F_Orden);//F_Orden
+                call.setString(5, F_Recep_Espe);//F_Recep_Espe
+                call.setString(6, "");//F_Recep_Real
+                call.setString(7, c_tipo_tercero);//C_Tipo_Tercero
+                call.setString(8, c_cod_cliente);//C_Cod_Cliente
+                call.setString(9, direccion);//P_Direccion_Cliente
+                call.setString(10, ciudad);//P_C_Ciudad
+                call.setString(11, "PdV");//P_Cod_Postal
+                call.setString(12, tel1);//P_Tel1
+                call.setString(13, fax);//P_Fax
+                call.setString(14, direccion);//R_Direccion
+                call.setString(15, rciudad);//R_C_Ciudad
+                call.setString(16, "");//R_Cod_Postal
+                call.setString(17, tel1);//R_Tel1
+                call.setString(18, fax);//R_Fax
+                call.setString(19, "0");//V_Por_Anticipo
+                call.setString(20, "0");//V_Dias_Saldo
+                call.setString(21, F_Orden);//F_Pago_Anticipo_Prog
+                call.setString(22,F_Orden);//F_Pago_Saldo_Prog
+                call.setString(23, "Grabado aplicacion movil local");//N_Comentario
+                call.setString(24, objLectura.getC_funcionario());//C_Funcionario
+                call.setString(25, "1");//Estado_Orden
+                call.setString(26, "1");//Estado_Proceso
+                call.setString(27, "0");//V_Por_Descuento_Pie
+                call.setString(28, "0");//V_Fletes
+                call.setString(29, "0");//V_Manipulacion
+                call.setString(30, F_Grabacion);//F_Grabacion
+                call.setString(31, objLectura.getC_punto_venta());//C_Punto_Venta
+                call.setString(32, c_vendedor);//C_Vendedor
+                call.setString(33, c_director);//C_Director
+                call.setString(34, c_zona_fac);//C_Zona_Fac
+                call.setString(35, c_lista_precios);//C_Lista_Precios
+                call.setString(36, c_codicion_pago);//C_Condicion_Pago
+                call.setString(37, "GRV");//C_Tipo_Factura
+                call.setString(38,c_dcto_financiero);//C_Dcto_Financiero
+                call.setString(39, "G");//T_Con_RTF
+                call.setString(40, "312");//C_Con_RTF
+                call.setString(41, "C");//T_Con_ICA
+                call.setString(42, "999");//C_Con_ICA
+                call.setString(43, "1");//C_Campana
+                call.setString(44, c_lider);//C_Lider
+                call.setString(45, "C");//C_Tipo_Pago
+                call.setString(46, "S");//Estado_Impresion
+                call.setString(47, "999");//C_Fun_Pik
+                call.setString(48, "S");//Estado_Reserva
+                call.setString(49, "S");//Aprobado_Factu
+                call.setString(50, "1");//C_Cat_Pedido
+                call.setString(51, "N");//Estado_Factu
+                call.setString(52, "N");//tipo_ped
+                call.setString(53, "");//Dato_Ref1
+                call.setString(54, "E");//C_Tipo_Envio
+                call.setString(55, "10");//C_Cod_Medio_Trans
+                call.setString(56, "");//premio3
+                call.setString(57, "");//premio5
+                call.setString(58, "N");//Estado_Modifica
+
+
+
+
+                ResultSet rs=call.executeQuery();
+
+
+                if (rs.next()) {
+                    cod=(rs.getString(2));
+                    nomb=(rs.getString(3));
+                    if(((double)Math.round( Double.valueOf( rs.getString(8))*100d)/100)==0){
+                        unit= String.valueOf ((double)Math.round( Double.valueOf( rs.getString(12))*100d)/100);
+                    }else{
+                        unit= String.valueOf ((double)Math.round( Double.valueOf( rs.getString(8))*100d)/100);
+                    }
+
+                    cant1=(rs.getString(13));
+                    //cant=String.valueOf(ca);
+                    total=String.valueOf( (double)Math.round ((Double.valueOf(unit)*Double.valueOf(cant))*100d)/100) ;
+                }
+                else{
+                    cod="";
+                    nomb="";
+                    unit="";
+                    cant="";
+                    total="0.00";
+
+                }
+
+
+            }
+        }catch(Exception e){
+            Toast.makeText(getApplicationContext(),e.getMessage(), Toast.LENGTH_SHORT).show();
+
         }
     }
     public void consultaCliente(String c){
@@ -490,6 +600,7 @@ salir(e.getMessage());
                     c_lista_precios=(rs.getString(12));
                     c_codicion_pago=(rs.getString(13));
                     c_dcto_financiero=(rs.getString(14));
+                    rciudad=(rs.getString(15));
                 }
                 else
                 {
@@ -514,6 +625,7 @@ salir(e.getMessage());
 
         }
     }
+
     public void consultarproducto(String c, int ca){
         String ConnectionResult = "";
         claseGlobal objEscritura=(claseGlobal)getApplicationContext();
