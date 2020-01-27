@@ -4,10 +4,13 @@ import android.Manifest;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.KeyEvent;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -26,14 +29,71 @@ import com.example.sistemas.casalinda.adaptadores.AdaptadorRecyclerView;
 import com.google.zxing.integration.android.IntentIntegrator;
 import com.google.zxing.integration.android.IntentResult;
 
+import net.sourceforge.jtds.jdbc.DateTime;
+
 import java.sql.CallableStatement;
 import java.sql.Connection;
 import java.sql.ResultSet;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.GregorianCalendar;
+import java.util.Locale;
+import java.util.TimeZone;
+
+import javax.xml.parsers.SAXParser;
 
 import me.dm7.barcodescanner.zxing.ZXingScannerView;
 
 public class PedidoActivity extends AppCompatActivity {
     String  cod,nomb,cant,cant1,unit,total;
+    //clientes
+    String c_tipo_tercero,c_cod_cliente,cliente, direccion, ciudad,tel1,fax,c_vendedor,c_director,c_lider,c_zona_fac,c_lista_precios,c_codicion_pago,c_dcto_financiero;
+    //pedido
+    String C_Empresa,
+            N_Orden_Pedido,
+            N_Orden_Cotiza,
+            F_Orden,
+            F_Recep_Espe,
+            F_Recep_Real,
+            P_Cod_Postal,
+            R_Cod_Postal,
+            R_Tel1,
+            R_Fax,
+            V_Por_Anticipo,
+            V_Dias_Saldo,
+            F_Pago_Anticipo_Prog,
+            F_Pago_Saldo_Prog,
+            N_Comentario,
+            C_Funcionario,
+            Estado_Orden,
+            Estado_Proceso,
+            V_Por_Descuento_Pie,
+            V_Fletes,
+            V_Manipulacion,
+            F_Grabacion,
+            C_Punto_Venta,
+            C_Tipo_Factura,
+            T_Con_RTF,
+            C_Con_RTF,
+            T_Con_ICA,
+            C_Con_ICA,
+            C_Campana,
+            C_Tipo_Pago,
+            Estado_Impresion,
+            C_Fun_Pik,
+            Estado_Reserva,
+            Aprobado_Factu,
+            C_Cat_Pedido,
+            Estado_Factu,
+            tipo_ped,
+            Dato_Ref1,
+            C_Tipo_Envio,
+            C_Cod_Medio_Trans,
+            premio3,
+            premio5,
+            Estado_Modifica;
+
     int posicion;
 
     Connection connect;
@@ -81,7 +141,7 @@ public class PedidoActivity extends AppCompatActivity {
         final TextView textViewProforma=findViewById(R.id.txtProforma);
         final TextView textViewFactura=findViewById(R.id.txtFactura);
         final  TextView textViewPedido=findViewById(R.id.txtPedido);
-
+        final TextView textViewCliente=findViewById(R.id.txtCliente);
 
         ItemTouchHelper itemTouchHelper=new ItemTouchHelper(createHelperCallback());
         itemTouchHelper.attachToRecyclerView(recyclerViewPedidos);
@@ -96,6 +156,37 @@ public class PedidoActivity extends AppCompatActivity {
         recyclerViewPedidos.setAdapter(adaptadorRecyclerView);
         //adaptadorRecyverView.agregarPedido(new Pedido());
 
+        etCedula.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                try {
+                    consultaCliente(etCedula.getText().toString());
+                    if(etCant.toString().isEmpty())
+                    {
+                        textViewCliente.setText("");
+                    }
+                    if(cliente!=null) {
+                        textViewCliente.setText(cliente);
+                    }else
+                    {
+                        textViewCliente.setText("");
+                    }
+                }
+                catch (Exception e){
+                    salir(e.getMessage());
+                }
+            }
+        });
         btnAgregar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -138,7 +229,16 @@ public class PedidoActivity extends AppCompatActivity {
                                        a++;
                                }
                                if (d==1){
-                                   adaptadorRecyclerView.actualizarPedido(pa, new Pedido(cod, nomb, cant, unit, total));
+                                   if (Double.valueOf( cant)<=Double.valueOf( cant1)){
+
+                                       adaptadorRecyclerView.actualizarPedido(pa, new Pedido(cod, nomb, cant, unit, total));
+                                   }
+                                   else
+                                   {
+                                       Toast.makeText(getApplicationContext(),"No se puede facturar la cantidad digitada de "+cant+" Solo existen: "+cant1+" unidades.",Toast.LENGTH_LONG).show();
+                                       //zaadaptadorRecyclerView.actualizarPedido(pa, new Pedido(cod, nomb, cant1, unit, total));
+                                   }
+
                                    textViewProforma.setText(String.valueOf((double) Math.round(((adaptadorRecyclerView.tot)) * 100d) / 100));
                                    textViewFactura.setText(String.valueOf((double) Math.round((((adaptadorRecyclerView.tot)) * 1.12) * 100d) / 100));
                                    etCodigo.requestFocus();
@@ -196,16 +296,29 @@ public class PedidoActivity extends AppCompatActivity {
         btnGrabar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String Ced = etCedula.getText().toString();
-                if (Ced.isEmpty()) {
-                    Toast.makeText(PedidoActivity.this, "Digite cédula cliente", Toast.LENGTH_SHORT).show();
-                    return;
-                }else
-                {
-                    textViewPedido.setText("25800001");
-                    btnAgregar.setEnabled(false);
-                    btnEscaner.setEnabled(false );
+                try {
+                    claseGlobal objLectura=(claseGlobal)getApplicationContext();
+                    String Ced = etCedula.getText().toString();
+                    if (Ced.isEmpty()) {
+                        Toast.makeText(PedidoActivity.this, "Digite cédula cliente", Toast.LENGTH_SHORT).show();
+                        return;
+                    } else {
+                        consultaCliente(Ced);
+                        if (c_cod_cliente.isEmpty()) {
+                            //Toast.makeText(PedidoActivity.this, "Cliente no Existe", Toast.LENGTH_SHORT).show();
+                            salir("Cliente no Existe");
+                        } else {
+                            grabaPedido(objLectura.getCod_pedidos());
+                            textViewPedido.setText("25800001");
+                            btnAgregar.setEnabled(false);
+                            btnEscaner.setEnabled(false);
+                        }
+                    }
                 }
+
+            catch(Exception e){
+               salir(e.getMessage());
+            }
             }
         });
 
@@ -238,6 +351,168 @@ public class PedidoActivity extends AppCompatActivity {
         }catch (Exception e){
             //Toast.makeText(PedidoActivity.this,"ERROR ON RESUME:"+ e.getMessage(),Toast.LENGTH_LONG).show();
             }
+    }
+    public void obtenerNPedido(String c){
+        String ConnectionResult = "";
+        claseGlobal objEscritura=(claseGlobal)getApplicationContext();
+        claseGlobal objLectura=(claseGlobal)getApplicationContext();
+        TimeZone.setDefault(TimeZone.getTimeZone("America/Guayaquil"));
+        SimpleDateFormat fecha=new SimpleDateFormat("dd/MM/yyyy");
+        SimpleDateFormat fechaH=new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
+        Date today=new Date();
+        String Current=fechaH.format(today);
+        try {
+            ConnectionStr conStr=new ConnectionStr();
+            connect=conStr.connectionclasss();
+            if (connect == null)
+            {
+                ConnectionResult = "Revisar tu conexion a internet!";
+                Toast.makeText(getApplicationContext(),ConnectionResult,Toast.LENGTH_LONG).show();
+            }
+            else {
+                CallableStatement call=connect.prepareCall("{call sp_obtenerNPedido (?)}");
+                call.setString(1, c);
+
+                ResultSet rs=call.executeQuery();
+
+
+                if (rs.next()) {
+                    C_Empresa="3";
+                    N_Orden_Pedido=(rs.getString(1));
+                    F_Orden= fecha.format(new Date());
+                    F_Recep_Espe=fecha.format(new Date());
+                    F_Grabacion=Current;
+                }
+                else
+                {
+                    salir("No se genero ningun Numero de pedido");
+                    C_Empresa="";
+                    N_Orden_Pedido="";
+                    N_Orden_Cotiza="";
+                    F_Orden= fecha.format(new Date());
+                    F_Recep_Espe=fecha.format(new Date());
+                    F_Recep_Real="";
+                    P_Cod_Postal="";
+                    R_Cod_Postal="";
+                    R_Tel1="";
+                    R_Fax="";
+                    V_Por_Anticipo="";
+                    V_Dias_Saldo="";
+                    F_Pago_Anticipo_Prog="";
+                    F_Pago_Saldo_Prog="";
+                    N_Comentario="";
+                    C_Funcionario="";
+                    Estado_Orden="";
+                    Estado_Proceso="";
+                    V_Por_Descuento_Pie="";
+                    V_Fletes="";
+                    V_Manipulacion="";
+                    F_Grabacion="";
+                    C_Punto_Venta="";
+                    C_Tipo_Factura="";
+                    T_Con_RTF="";
+                    C_Con_RTF="";
+                    T_Con_ICA="";
+                    C_Con_ICA="";
+                    C_Campana="";
+                    C_Tipo_Pago="";
+                    Estado_Impresion="";
+                    C_Fun_Pik="";
+                    Estado_Reserva="";
+                    Aprobado_Factu="";
+                    C_Cat_Pedido="";
+                    Estado_Factu="";
+                    tipo_ped="";
+                    Dato_Ref1="";
+                    C_Tipo_Envio="";
+                    C_Cod_Medio_Trans="";
+                    premio3="";
+                    premio5="";
+                    Estado_Modifica="";
+
+                }
+            }
+        }catch(Exception e){
+            Toast.makeText(getApplicationContext(),e.getMessage(), Toast.LENGTH_SHORT).show();
+salir(e.getMessage());
+        }
+    }
+    public void grabaPedido(String c){
+        claseGlobal objLectura=(claseGlobal)getApplicationContext();
+        //GrabaEncaPedido
+        try{
+            obtenerNPedido(c);
+
+
+        }
+        catch (Exception e){
+            salir(e.getMessage());
+        }
+        //GrabaDetaPedido
+        try{
+
+        }
+        catch (Exception e){
+            salir(e.getMessage());
+        }
+    }
+    public void consultaCliente(String c){
+        String ConnectionResult = "";
+        claseGlobal objEscritura=(claseGlobal)getApplicationContext();
+        claseGlobal objLectura=(claseGlobal)getApplicationContext();
+        try {
+            ConnectionStr conStr=new ConnectionStr();
+            connect=conStr.connectionclasss();
+            if (connect == null)
+            {
+                ConnectionResult = "Revisar tu conexion a internet!";
+                Toast.makeText(getApplicationContext(),ConnectionResult,Toast.LENGTH_LONG).show();
+            }
+            else {
+                CallableStatement call=connect.prepareCall("{call sp_BuscaCliente (?)}");
+                call.setString(1, c);
+
+                ResultSet rs=call.executeQuery();
+
+
+                if (rs.next()) {
+                    c_tipo_tercero=(rs.getString(1));
+                    c_cod_cliente=(rs.getString(2));
+                    cliente=(rs.getString(3));
+                    direccion=(rs.getString(4));
+                    ciudad=(rs.getString(5));
+                    tel1=(rs.getString(6));
+                    fax=(rs.getString(7));
+                    c_vendedor=(rs.getString(8));
+                    c_director=(rs.getString(9));
+                    c_lider=(rs.getString(10));
+                    c_zona_fac=(rs.getString(11));
+                    c_lista_precios=(rs.getString(12));
+                    c_codicion_pago=(rs.getString(13));
+                    c_dcto_financiero=(rs.getString(14));
+                }
+                else
+                {
+                    c_tipo_tercero=("");
+                    c_cod_cliente=("");
+                    cliente=("");
+                    direccion=("");
+                    ciudad=("");
+                    tel1=("");
+                    fax=("");
+                    c_vendedor=("");
+                    c_director=("");
+                    c_lider=("");
+                    c_zona_fac=("");
+                    c_lista_precios=("");
+                    c_codicion_pago=("");
+                    c_dcto_financiero=("");
+                }
+            }
+        }catch(Exception e){
+            Toast.makeText(getApplicationContext(),e.getMessage(), Toast.LENGTH_SHORT).show();
+
+        }
     }
     public void consultarproducto(String c, int ca){
         String ConnectionResult = "";
@@ -289,6 +564,35 @@ public class PedidoActivity extends AppCompatActivity {
 
         }
     }
+    //Mensaje Cliente
+    public void salir(String e){
+        LinearLayout linear = findViewById(R.id.linear_layout);
+
+        AlertDialog.Builder alerta=new AlertDialog.Builder(this);
+        alerta.setMessage(e)
+                .setCancelable(false)
+                .setPositiveButton("Si", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.cancel();
+                        // finish();
+                        //super.finish();
+                    }
+                })
+                .setNegativeButton("No", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.cancel();
+                    }
+                });
+        AlertDialog titulo=alerta.create();
+        titulo.setTitle("Salida");
+        titulo.show();
+        //finish();
+        //super.onBackPressed();
+
+    }
+
     //Validar atras
     @Override
     public boolean onKeyDown(int keyCode, KeyEvent event) {

@@ -6,6 +6,16 @@ public class claseGlobal extends Application {
     private String c_punto_venta;
     private String c_funcionario;
     private String c_bodega;
+    private String cod_pedidos;
+
+
+    public String getCod_pedidos() {
+        return cod_pedidos;
+    }
+
+    public void setCod_pedidos(String cod_pedidos) {
+        this.cod_pedidos = cod_pedidos;
+    }
 
     private String funcionario;
     private String punto;

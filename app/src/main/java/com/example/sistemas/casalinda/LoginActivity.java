@@ -119,7 +119,7 @@ public class LoginActivity extends AppCompatActivity  {
                     {
                         // Change below query according to your own database.
                         String query = "select f.C_Funcionario,f.Funcionario,rtrim(f.C_Punto_Venta)c_punto_venta," +
-                                "rtrim(p.C_Punto_Venta)+'-'+rtrim(p.N_Punto_Venta)Punto, p.c_bodega from v_Gen_Funcionarios as f " +
+                                "rtrim(p.C_Punto_Venta)+'-'+rtrim(p.N_Punto_Venta)Punto, p.c_bodega, f.cod_pedidos from v_Gen_Funcionarios as f " +
                                 "left join Fac_Puntos_Venta as p on f.C_Punto_Venta=p.C_Punto_Venta where flag_activo=1 " +
                                 "and C_Funcionario='" + usernam + "' and Clave_Funcionario='"+ passwordd +"'  ";
                         Statement stmt = connect.createStatement();
@@ -137,6 +137,7 @@ public class LoginActivity extends AppCompatActivity  {
                             objEscritura.setC_punto_venta(rs.getString(3));
                             objEscritura.setPunto(rs.getString(4));
                             objEscritura.setC_bodega(rs.getString(5));
+                            objEscritura.setCod_pedidos(rs.getString(6));
                             isSuccess=true;
                             connect.close();
                         }
