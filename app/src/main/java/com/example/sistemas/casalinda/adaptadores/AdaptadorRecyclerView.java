@@ -30,7 +30,8 @@ public class AdaptadorRecyclerView  extends RecyclerView.Adapter<ViewHolderPedid
     public static final String UNI="Unitario";
     public static final String TOT="Total";
     public static final String PVP="Pvp";
-    public static final String CUV="cuv";
+    public static final String CUV="Cuv";
+    public static final String BOD="Bodega";
 
     private List<Pedido> pedidos;
     private InterfazClickRecyclerView interfazClickRecyclerView;
@@ -121,6 +122,7 @@ public class AdaptadorRecyclerView  extends RecyclerView.Adapter<ViewHolderPedid
                 intent.putExtra(TOT,pedido.getTotal());
                 intent.putExtra(PVP,pedido.getPvp());
                 intent.putExtra(CUV,pedido.getCuv());
+                intent.putExtra(BOD,pedido.getBod());
                 context.startActivity(intent);
 
             }catch (Exception e){
