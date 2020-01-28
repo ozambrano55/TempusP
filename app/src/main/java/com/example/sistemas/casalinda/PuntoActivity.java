@@ -74,7 +74,24 @@ public class PuntoActivity extends AppCompatActivity {
         }
     }
 
+    public void consultabodega(String p) {
+        try {
 
+            claseGlobal objEscritura=(claseGlobal)getApplicationContext();
+
+
+            ConnectionStr conStr = new ConnectionStr();
+            connect = conStr.connectionclasss();        // Connect to database
+           // '"+ passwordd +"'  ";
+            String query = "select  C_Bodega from Fac_Puntos_Venta where C_punto_venta='"+ p +"'  ";
+            Statement stmt = connect.createStatement();
+            ResultSet rs = stmt.executeQuery(query);
+            objEscritura.setC_bodega(rs.getString( "C_Bodega"));
+
+        } catch (Exception e) {
+            Toast.makeText(getApplicationContext(), e.getMessage(), Toast.LENGTH_SHORT).show();
+        }
+    }
     private void obtenerLista() {
         listaPuntos = new ArrayList<String>();
         //listaPuntos.add("Seleccione");
@@ -94,7 +111,7 @@ public class PuntoActivity extends AppCompatActivity {
 
         objEscritura.setPunto(seleccion);
        objEscritura.setC_punto_venta(seleccion.substring(0,3));
-
+        consultabodega(objLectura.getC_punto_venta());
         startActivity(goMainP);
         finish();
     }

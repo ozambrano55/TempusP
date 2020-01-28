@@ -39,7 +39,7 @@ import java.util.TimeZone;
 import me.dm7.barcodescanner.zxing.ZXingScannerView;
 
 public class PedidoActivity extends AppCompatActivity {
-    String  tip,cod,nomb,cant,cant1,unit,total,col,pvp,cuv,bod;
+    String  tip,cod,nomb,cant,cant1,unit,total,col,pvp,cuv,bod,pon;
     //region  variables clientes
     String c_tipo_tercero,c_cod_cliente,cliente, direccion,rciudad, ciudad,tel1,fax,c_vendedor,c_director,c_lider,c_zona_fac,c_lista_precios,c_codicion_pago,c_dcto_financiero;
    //endregion
@@ -225,7 +225,7 @@ public class PedidoActivity extends AppCompatActivity {
                                if (d==1){
                                    if (Double.valueOf( cant)<=Double.valueOf( cant1)){
 
-                                       adaptadorRecyclerView.actualizarPedido(pa, new Pedido(tip,col, cod, nomb, cant, unit, total,pvp,cuv,bod));
+                                       adaptadorRecyclerView.actualizarPedido(pa, new Pedido(tip,col, cod, nomb, cant, unit, total,pvp,cuv,bod,pon));
                                    }
                                    else
                                    {
@@ -237,7 +237,7 @@ public class PedidoActivity extends AppCompatActivity {
                                    textViewFactura.setText(String.valueOf((double) Math.round((((adaptadorRecyclerView.tot)) * 1.12) * 100d) / 100));
                                    etCodigo.requestFocus();
                                }else {
-                                   adaptadorRecyclerView.agregarPedido(new Pedido(tip,col, cod, nomb, cant, unit, total,pvp,cuv,bod));
+                                   adaptadorRecyclerView.agregarPedido(new Pedido(tip,col, cod, nomb, cant, unit, total,pvp,cuv,bod,pon));
                                    etCodigo.requestFocus();
                                     }
                                //cod=adaptadorRecyclerView.getPedidos().get(i ).getCodigo()
@@ -334,14 +334,17 @@ public class PedidoActivity extends AppCompatActivity {
                     cant = objLectura.getCantidad().toString();
                     unit = objLectura.getUnitario().toString();
                     total = objLectura.getTotal().toString();
-                    adaptadorRecyclerView.actualizarPedido(posicion, new Pedido(tip,col, cod, nomb, cant, unit, total,pvp,cuv,bod));
-                    textViewProforma.setText(String.valueOf((double) Math.round(((adaptadorRecyclerView.tot)) * 100d) / 100));
+                    adaptadorRecyclerView.actualizarPedido(posicion, new Pedido(tip,col, cod, nomb, cant, unit, total,pvp,cuv,bod,pon));
+                    textViewProforma.setText (adaptadorRecyclerView.tot.toString());
                     textViewFactura.setText(String.valueOf((double) Math.round((((adaptadorRecyclerView.tot)) * 1.12) * 100d) / 100));
                 }
         }catch (Exception e){
             //Toast.makeText(PedidoActivity.this,"ERROR ON RESUME:"+ e.getMessage(),Toast.LENGTH_LONG).show();
             }
     }
+
+
+
     public void obtenerNPedido(String c){
         String ConnectionResult = "";
         claseGlobal objEscritura=(claseGlobal)getApplicationContext();
@@ -435,6 +438,7 @@ salir(e.getMessage());
              grabaPedidoEnca(c);
              grabaPedidoDeta(N_Orden_Pedido);
 
+
         }
         catch (Exception e){
             salir(e.getMessage());
@@ -461,8 +465,8 @@ salir(e.getMessage());
                 Toast.makeText(getApplicationContext(),ConnectionResult,Toast.LENGTH_LONG).show();
             }
             else {
-                CallableStatement call=connect.prepareCall("{call sp_insertPedidoEnca (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)}");
-
+                //Guarda Pedido Enca
+                CallableStatement call=connect.prepareCall("{call sp_insertPedidoEnca (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)}");
                 call.setString(1, "03");//C_Empresa
                 call.setString(2, N_Orden_Pedido);//N_Orden_Pedido
                 call.setString(3, "");//N_Orden_Cotiza
@@ -521,9 +525,14 @@ salir(e.getMessage());
                 call.setString(56, "");//premio3
                 call.setString(57, "");//premio5
                 call.setString(58, "N");//Estado_Modifica
+                call.setString(59,objLectura.getC_bodega());
 
                 call.execute();
+
+
             }
+
+
         }catch(Exception e){
             Toast.makeText(getApplicationContext(),e.getMessage(), Toast.LENGTH_SHORT).show();
 
@@ -551,68 +560,67 @@ salir(e.getMessage());
                 for (int a=0;a<registros;a++)
                 {
 
-                    CallableStatement call = connect.prepareCall("{call sp_insertPedidoDeta (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)}");
+                    CallableStatement call = connect.prepareCall("{call sp_insertPedidoDeta (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)}");
                 call.setInt(1, 3);//C_Empresa
                 call.setString(2, N_Orden_Pedido);//N_Orden_Pedido
                 call.setString(3, adaptadorRecyclerView.getPedidos().get(a).getTipo());//T_Elemento
                 call.setString(4, adaptadorRecyclerView.getPedidos().get(a).getCodigo());//C_Item
                 call.setString(5, adaptadorRecyclerView.getPedidos().get(a).getColor());//C_Despieze2
-                call.setFloat(6,  Float.parseFloat( adaptadorRecyclerView.getPedidos().get(a).getCantidad()));//V_Cantidad_Orden
-                call.setFloat(7, Float.parseFloat( adaptadorRecyclerView.getPedidos().get(a).getUnitario()));//V_Valor_Und
-                call.setFloat(8, 0);//V_Por_Descuento
-                call.setFloat(9, 12);//V_Por_Impuesto
+                call.setDouble(6,  Float.parseFloat( adaptadorRecyclerView.getPedidos().get(a).getCantidad()));//V_Cantidad_Orden
+                call.setDouble(7, Float.parseFloat( adaptadorRecyclerView.getPedidos().get(a).getUnitario()));//V_Valor_Und
+                call.setDouble(8, 0);//V_Por_Descuento
+                call.setDouble(9, 12);//V_Por_Impuesto
                 call.setString(10, F_Orden);//F_Recep_Espe_Item
                 call.setString(11, F_Orden);//F_Recep_Real_Item
                 call.setFloat(12, 0);//V_Cant_Recepcion
                 call.setFloat(13,0);//V_Cant_Devolucion
                 call.setString(14,  adaptadorRecyclerView.getPedidos().get(a).getCuv()) ;//C_Und_Venta
-                call.setFloat(15, Float.parseFloat( adaptadorRecyclerView.getPedidos().get(a).getCantidad()));//Cant_Desp1
-                call.setFloat(16, 0);//Cant_Desp2
-                call.setFloat(17,0);//Cant_Desp3
-                call.setFloat(18, 0);//Cant_Desp4
-                call.setFloat(19, 0);//Cant_Desp5
-                call.setFloat(20,0);//Cant_Desp6
-                call.setFloat(21, 0);//Cant_Desp7
-                call.setFloat(22, 0);//Cant_Desp8
-                call.setFloat(23, 0);;//Cant_Desp9
-                call.setFloat(24, 0);//Cant_Desp10
-                call.setFloat(25, 0);;//Cant_Remis1
-                call.setFloat(26, 0);//Cant_Remis2
-                call.setFloat(27, 0);//Cant_Remis3
-                call.setFloat(28, 0);//Cant_Remis4
-                call.setFloat(29, 0);//Cant_Remis5
-                call.setFloat(30,0);//Cant_Remis6
-                call.setFloat(31, 0);//Cant_Remis7
-                call.setFloat(32, 0);//Cant_Remis8
-                call.setFloat(33, 0);//Cant_Remis9
-                call.setFloat(34,0);//Cant_Remis10
-                call.setFloat(35, 0);//Cant_Devol1
-                call.setFloat(36, 0);//Cant_Devol2
-                call.setFloat(37, 0);//Cant_Devol3
-                call.setFloat(38, 0);//Cant_Devol4
-                call.setFloat(39, 0);///Cant_Devol5
-                call.setFloat(40,0);///Cant_Devol6
-                call.setFloat(41,0);///Cant_Devol7
-                call.setFloat(42, 0);///Cant_Devol8
-                call.setFloat(43,0);///Cant_Devol9
-                call.setFloat(44, 0);///Cant_Devol10
-                call.setFloat(45, 0);///V_Por_Descuento_Pie
-                call.setFloat(46,  Float.parseFloat(adaptadorRecyclerView.getPedidos().get(a).getTotal()));//Vlr_Bruto
-                call.setFloat(47, 0);///Vlr_Dcto
-                call.setFloat(48,  Float.parseFloat(adaptadorRecyclerView.getPedidos().get(a).getTotal()));//Vlr_Neto
-                call.setFloat(49, 0);///Vlr_Dcto_Pie
-                call.setFloat(50,  Float.parseFloat(adaptadorRecyclerView.getPedidos().get(a).getTotal()));//Vlr_Neto_Final
-                call.setFloat(51, 0);///Vlr_Impto
-                call.setFloat(52, 0);///Vlr_Total
+                call.setDouble(15, Float.parseFloat( adaptadorRecyclerView.getPedidos().get(a).getCantidad()));//Cant_Desp1
+                call.setDouble(16, 0);//Cant_Desp2
+                call.setDouble(17,0);//Cant_Desp3
+                call.setDouble(18, 0);//Cant_Desp4
+                call.setDouble(19, 0);//Cant_Desp5
+                call.setDouble(20,0);//Cant_Desp6
+                call.setDouble(21, 0);//Cant_Desp7
+                call.setDouble(22, 0);//Cant_Desp8
+                call.setDouble(23, 0);//Cant_Desp9
+                call.setDouble(24, 0);//Cant_Desp10
+                call.setDouble(25, 0);//Cant_Remis1
+                call.setDouble(26, 0);//Cant_Remis2
+                call.setDouble(27, 0);//Cant_Remis3
+                call.setDouble(28, 0);//Cant_Remis4
+                call.setDouble(29, 0);//Cant_Remis5
+                call.setDouble(30,0);//Cant_Remis6
+                call.setDouble(31, 0);//Cant_Remis7
+                call.setDouble(32, 0);//Cant_Remis8
+                call.setDouble(33, 0);//Cant_Remis9
+                call.setDouble(34,0);//Cant_Remis10
+                call.setDouble(35, 0);//Cant_Devol1
+                call.setDouble(36, 0);//Cant_Devol2
+                call.setDouble(37, 0);//Cant_Devol3
+                call.setDouble(38, 0);//Cant_Devol4
+                call.setDouble(39, 0);///Cant_Devol5
+                call.setDouble(40,0);///Cant_Devol6
+                call.setDouble(41,0);///Cant_Devol7
+                call.setDouble(42, 0);///Cant_Devol8
+                call.setDouble(43,0);///Cant_Devol9
+                call.setDouble(44, 0);///Cant_Devol10
+                call.setDouble(45, 0);///V_Por_Descuento_Pie
+                call.setDouble(46,  Float.parseFloat(adaptadorRecyclerView.getPedidos().get(a).getTotal()));//Vlr_Bruto
+                call.setDouble(47, 0);///Vlr_Dcto
+                call.setDouble(48,  Float.parseFloat(adaptadorRecyclerView.getPedidos().get(a).getTotal()));//Vlr_Neto
+                call.setDouble(49, 0);///Vlr_Dcto_Pie
+                call.setDouble(50,  Float.parseFloat(adaptadorRecyclerView.getPedidos().get(a).getTotal()));//Vlr_Neto_Final
+                call.setDouble(51, 0);///Vlr_Impto
+                call.setDouble(52, 0);///Vlr_Total
                 call.setString(53, adaptadorRecyclerView.getPedidos().get(a).getBod());//C_Bodega
                 call.setString(54, "S");//Estado_Disponible
                 call.setString(55, "1");//C_Cat_Activo
                 call.setString(56, "1");//C_Cat_Item
-                call.setFloat(57,  Float.parseFloat(adaptadorRecyclerView.getPedidos().get(a).getPvp()));//V_Pvp
+                call.setDouble(57,  Float.parseFloat(adaptadorRecyclerView.getPedidos().get(a).getPvp()));//V_Pvp
+                call.setString (58,adaptadorRecyclerView.getPedidos().get(a).getPon());//costoPonderado
+                call.execute();
 
-                    call.execute();
-                  //ResultSet rs=  call.executeQuery();
-                    //a++;
                 }
 
             }
@@ -720,6 +728,7 @@ salir(e.getMessage());
                     col=(rs.getString(17));
                     pvp=(rs.getString(18));
                     cuv=(rs.getString(19));
+                    pon=(rs.getString(20));
 
                 }
                 else{
@@ -733,6 +742,7 @@ salir(e.getMessage());
                     col="";
                     pvp="";
                     cuv="";
+                    pon="";
 
                 }
 

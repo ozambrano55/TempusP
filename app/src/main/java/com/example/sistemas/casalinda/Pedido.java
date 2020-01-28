@@ -1,10 +1,14 @@
 package com.example.sistemas.casalinda;
 
 public class Pedido {
-    private String tipo, color, codigo, nombre, cantidad,unitario, total,pvp, cuv, bod;
+    private String tipo, color, codigo, nombre, cantidad,unitario, total,pvp, cuv, bod,pon;
 
 
-    public Pedido(String tipo, String color, String  codigo, String nombre, String cantidad, String unitario, String total, String pvp, String cuv, String bod){
+    public String getPon() {
+        return pon;
+    }
+
+    public Pedido(String tipo, String color, String  codigo, String nombre, String cantidad, String unitario, String total, String pvp, String cuv, String bod, String pon){
         this.tipo=tipo;
         this.color=color;
         this.codigo=codigo;
@@ -15,6 +19,7 @@ public class Pedido {
         this.pvp=pvp;
         this.cuv=cuv;
         this.bod=bod;
+        this.pon=pon;
     }
 
     public String getTipo() {
@@ -68,7 +73,8 @@ public class Pedido {
                 ", total=" + total + '\'' +
                 ", pvp=" + pvp + '\'' +
                 ", cuv=" + cuv + '\'' +
-                ", bod=" + bod +
+                ", cuv=" + bod + '\'' +
+                ", bod=" + pon +
                 '}';
     }
 }
