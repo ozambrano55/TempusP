@@ -86,8 +86,9 @@ public class PuntoActivity extends AppCompatActivity {
             String query = "select  C_Bodega from Fac_Puntos_Venta where C_punto_venta='"+ p +"'  ";
             Statement stmt = connect.createStatement();
             ResultSet rs = stmt.executeQuery(query);
-            objEscritura.setC_bodega(rs.getString( "C_Bodega"));
-
+            if (rs.next()) {
+                objEscritura.setC_bodega(rs.getString("C_Bodega"));
+            }
         } catch (Exception e) {
             Toast.makeText(getApplicationContext(), e.getMessage(), Toast.LENGTH_SHORT).show();
         }
