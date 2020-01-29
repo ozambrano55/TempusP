@@ -125,6 +125,7 @@ public class PedidoActivity extends AppCompatActivity {
         final Button btnAgregar=findViewById(R.id.btnAgregar);
         Button btnGrabar= findViewById(R.id.btnGuardar);
         final Button btnEscaner=findViewById(R.id.btnEscaner);
+        final Button btnNuevo=findViewById(R.id.btnNuevo);
         RecyclerView recyclerViewPedidos =findViewById(R.id.pRecycler);
 
         etCodigo=findViewById(R.id.edtCodigo);
@@ -138,7 +139,7 @@ public class PedidoActivity extends AppCompatActivity {
         final TextView textViewCliente=findViewById(R.id.txtCliente);
 
         ItemTouchHelper itemTouchHelper=new ItemTouchHelper(createHelperCallback());
-        itemTouchHelper.attachToRecyclerView(recyclerViewPedidos);
+       // itemTouchHelper.attachToRecyclerView(recyclerViewPedidos);
 
        //Configuramos cómo se va a organizar las vistas dentro del RecyclerView; simplemente con un LinearLayout para que
         //aparezcan una debajo de otra
@@ -179,6 +180,25 @@ public class PedidoActivity extends AppCompatActivity {
                 catch (Exception e){
                     salir(e.getMessage());
                 }
+            }
+        });
+        btnNuevo.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                try {
+                    etCodigo.setText("");
+                    etCant.setText("");
+                    etCedula.setText("");
+                    textViewCliente.setText("");
+                    textViewFactura.setText("");
+                    textViewPedido.setText("");
+                    textViewProforma.setText("");
+                    btnEscaner.setEnabled(true);
+                    btnAgregar.setEnabled(true);
+                    btnGrabar.setEnabled(true);
+
+                    adaptadorRecyclerView.eliminarTodo();
+                }catch (Exception e){salir(e.getMessage());}
             }
         });
         btnAgregar.setOnClickListener(new View.OnClickListener() {
@@ -306,6 +326,13 @@ public class PedidoActivity extends AppCompatActivity {
                             textViewPedido.setText(N_Orden_Pedido);
                             btnAgregar.setEnabled(false);
                             btnEscaner.setEnabled(false);
+                            btnGrabar.setEnabled(false);
+                            etCedula.setEnabled(false);
+                            etCodigo.setEnabled(false);
+                            etCant.setEnabled(false);
+                            btnNuevo.setEnabled(true);
+                            recyclerViewPedidos.setEnabled(false);
+                            //adaptadorRecyclerView.eliminarTodo();
                         }
                     }
                 }
@@ -328,15 +355,26 @@ public class PedidoActivity extends AppCompatActivity {
         claseGlobal objLectura = (claseGlobal) getApplicationContext();
         try {
                 if(objLectura.getPos()!=null) {
-                    posicion = objLectura.getPos();
-                    cod = objLectura.getCodigo();
-                    nomb = objLectura.getNombre();
-                    cant = objLectura.getCantidad().toString();
-                    unit = objLectura.getUnitario().toString();
-                    total = objLectura.getTotal().toString();
-                    adaptadorRecyclerView.actualizarPedido(posicion, new Pedido(tip,col, cod, nomb, cant, unit, total,pvp,cuv,bod,pon));
-                    textViewProforma.setText (adaptadorRecyclerView.tot.toString());
-                    textViewFactura.setText(String.valueOf((double) Math.round((((adaptadorRecyclerView.tot)) * 1.12) * 100d) / 100));
+                    switch (objLectura.getEstado()){
+                        case "A":
+                            posicion = objLectura.getPos();
+                            cod = objLectura.getCodigo();
+                            nomb = objLectura.getNombre();
+                            cant = objLectura.getCantidad().toString();
+                            unit = objLectura.getUnitario().toString();
+                            total = objLectura.getTotal().toString();
+                            adaptadorRecyclerView.actualizarPedido(posicion, new Pedido(tip,col, cod, nomb, cant, unit, total,pvp,cuv,bod,pon));
+                            textViewProforma.setText (adaptadorRecyclerView.tot.toString());
+                            textViewFactura.setText(String.valueOf((double) Math.round((((adaptadorRecyclerView.tot)) * 1.12) * 100d) / 100));
+                            break;
+                        case "E":
+                            posicion = objLectura.getPos();
+                            adaptadorRecyclerView.eliminar(posicion);
+                            textViewProforma.setText (adaptadorRecyclerView.tot.toString());
+                            textViewFactura.setText(String.valueOf((double) Math.round((((adaptadorRecyclerView.tot)) * 1.12) * 100d) / 100));
+                            break;
+                    }
+
                 }
         }catch (Exception e){
             //Toast.makeText(PedidoActivity.this,"ERROR ON RESUME:"+ e.getMessage(),Toast.LENGTH_LONG).show();
@@ -437,7 +475,7 @@ salir(e.getMessage());
              obtenerNPedido(c);
              grabaPedidoEnca(c);
              grabaPedidoDeta(N_Orden_Pedido);
-
+            salir("Pedido No.:"+N_Orden_Pedido+ "Grabado correctamente");
 
         }
         catch (Exception e){
@@ -864,23 +902,26 @@ public void escaner(){
 
                     @Override
                     public void onSwiped(@NonNull RecyclerView.ViewHolder viewHolder, int direction) {
+
                         final TextView textViewProforma=findViewById(R.id.txtProforma);
                         final TextView textViewFactura=findViewById(R.id.txtFactura);
-                       try {
-                           deleteItem(viewHolder.getAdapterPosition());
-                           if (adaptadorRecyclerView.tot==0){
-                               textViewProforma.setText("0.00");
-                               textViewFactura.setText("0.00");
+                        final TextView textViewPedido=findViewById(R.id.txtPedido);
 
-                           }
-                           else {
-                               textViewProforma.setText(String.valueOf((double) Math.round(((adaptadorRecyclerView.tot)) * 100d) / 100));
-                               textViewFactura.setText(String.valueOf((double) Math.round((((adaptadorRecyclerView.tot)) * 1.12) * 100d) / 100));
-                           }
-                       }catch(Exception e){
-                           Toast.makeText(getApplicationContext(),e.getMessage(), Toast.LENGTH_SHORT).show();
+                            try {
+                                deleteItem(viewHolder.getAdapterPosition());
+                                if (adaptadorRecyclerView.tot == 0) {
+                                    textViewProforma.setText("0.00");
+                                    textViewFactura.setText("0.00");
 
-                       }
+                                } else {
+                                    textViewProforma.setText(String.valueOf((double) Math.round(((adaptadorRecyclerView.tot)) * 100d) / 100));
+                                    textViewFactura.setText(String.valueOf((double) Math.round((((adaptadorRecyclerView.tot)) * 1.12) * 100d) / 100));
+                                }
+
+                            } catch (Exception e) {
+                                Toast.makeText(getApplicationContext(), e.getMessage(), Toast.LENGTH_SHORT).show();
+
+                            }
                     }
                 };
         return simpleCallback;

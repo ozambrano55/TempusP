@@ -85,9 +85,15 @@ public class AdaptadorRecyclerView  extends RecyclerView.Adapter<ViewHolderPedid
         totString=String.valueOf(tot);
 
     }
+
+    public void eliminarTodo(){
+        this.pedidos.clear();
+        this.notifyDataSetChanged();
+    }
     public void eliminar(int indice){
         if (indice <0 || indice >=this.getItemCount())return;
         this.pedidos.remove(indice);
+
         this.notifyItemRemoved(indice);
         tot=0.00;
         for (Pedido data:pedidos){

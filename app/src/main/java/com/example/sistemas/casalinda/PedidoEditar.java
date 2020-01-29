@@ -242,7 +242,7 @@ public class PedidoEditar extends AppCompatActivity {
                         if(unitario.equals("")){
                             unitario="0";
                         }
-                        if (Double.parseDouble( cantidadN) <= Double.parseDouble( cantidad)) {
+                        if (Double.parseDouble( cantidadN) <= Double.parseDouble( inventario)) {
                             total = String.valueOf((double) Math.round((Double.valueOf(cantidadN) * Double.valueOf(unitario)) * 100d) / 100);
                             tvTotal.setText(total);
                         }
@@ -271,6 +271,7 @@ public class PedidoEditar extends AppCompatActivity {
                     try{
                         // adaptadorRecyclerView.actualizarPedido(Integer.parseInt(posicion) ,new Pedido(codigo, nombre, cantidad, unitario, total));
                         claseGlobal objEscritura=(claseGlobal)getApplicationContext();
+                        objEscritura.setEstado("A");
                         objEscritura.setPos(Integer.parseInt( posicion));
                         objEscritura.setCodigo(codigo);
                         objEscritura.setNombre(nombre);
@@ -290,6 +291,17 @@ public class PedidoEditar extends AppCompatActivity {
                         catch(Exception e){salir("Error: "+ e.getMessage());}
 
 
+                    finish();
+                }
+            });
+            btEliminar.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    try {
+                        claseGlobal objEscritura = (claseGlobal) getApplicationContext();
+                        objEscritura.setEstado("E");
+                        objEscritura.setPos(Integer.parseInt(posicion));
+                    }catch (Exception e){salir(e.getMessage());}
                     finish();
                 }
             });

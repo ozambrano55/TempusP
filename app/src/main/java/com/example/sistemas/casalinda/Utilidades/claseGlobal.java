@@ -7,7 +7,15 @@ public class claseGlobal extends Application {
     private String c_funcionario;
     private String c_bodega;
     private String cod_pedidos;
+    private String estado;
 
+    public String getEstado() {
+        return estado;
+    }
+
+    public void setEstado(String estado) {
+        this.estado = estado;
+    }
 
     public String getCod_pedidos() {
         return cod_pedidos;
