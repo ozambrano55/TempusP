@@ -13,6 +13,10 @@
             android:icon="@drawable/car"
             android:title="Cartera" />
         <item
+            android:id="@+id/nav_cliente"
+            android:icon="@drawable/ic_cli"
+            android:title="Cliente" />
+        <item
             android:id="@+id/nav_Pedidos"
             android:icon="@drawable/ped"
             android:title="Pedidos" />

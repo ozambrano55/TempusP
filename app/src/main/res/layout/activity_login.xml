@@ -10,29 +10,35 @@
     android:paddingRight="16dp"
     android:paddingBottom="16dp">
 
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="USUARIO" />
 
-    <EditText
-        android:id="@+id/ET_Username"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:hint="Digite su usuario del siinf" />
 
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="10dp"
-        android:text="CONTRASEÑA" />
 
-    <EditText
-        android:id="@+id/ET_Password"
+    <com.google.android.material.textfield.TextInputLayout
+        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="Digite su clave persona"
-        android:inputType="textPassword" />
+        android:hint="Digite el Usuario del Siinf">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/ET_Username"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <com.google.android.material.textfield.TextInputLayout
+        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Digite contraseña del Siinf">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/ET_Password"
+            android:password="true"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+    </com.google.android.material.textfield.TextInputLayout>
+
+
 
     <Button
         android:id="@+id/btn_login"

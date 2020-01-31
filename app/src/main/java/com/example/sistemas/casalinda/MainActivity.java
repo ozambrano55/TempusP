@@ -125,6 +125,10 @@ public class MainActivity extends AppCompatActivity
             //fm.beginTransaction().replace(R.id.contenedor, new cartera()).commit();
             Intent intent= new Intent( MainActivity.this, CarteraActivity.class );
             startActivity(intent);
+        } else if (id == R.id.nav_cliente) {
+            //fm.beginTransaction().replace(R.id.contenedor, new cartera()).commit();
+            Intent intent= new Intent( MainActivity.this, ClienteActivity.class );
+            startActivity(intent);
         } else if (id == R.id.nav_Pedidos) {
             //fm.beginTransaction().replace(R.id.contenedor, new Pedido()).commit();
             Intent intent= new Intent( MainActivity.this, PedidoActivity.class );
