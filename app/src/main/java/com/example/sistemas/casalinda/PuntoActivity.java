@@ -34,11 +34,7 @@ public class PuntoActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_punto);
-
-
-        claseGlobal objEscritura=(claseGlobal)getApplicationContext();
         claseGlobal objLectura=(claseGlobal)getApplicationContext();
-
 
         twfuncioanrio = findViewById(R.id.txtFuncionario);
         twfuncioanrio.setText(objLectura.getFuncionario());

@@ -35,9 +35,10 @@
                 android:textSize="18sp" />
 
             <Spinner
-                android:id="@+id/spinner2"
+                android:id="@+id/spTipo"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content" />
+                android:layout_height="wrap_content"
+                android:entries="@array/tipo" />
 
         </TableRow>
 
@@ -48,8 +49,16 @@
             android:hint="Cedula/RUC/Pasaporte">
 
             <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/tiedtCedula"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content" />
+
+            <TextView
+                android:id="@+id/txtCedula"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:textColor="#D50000" />
         </com.google.android.material.textfield.TextInputLayout>
 
         <com.google.android.material.textfield.TextInputLayout
@@ -59,6 +68,7 @@
             android:hint="Nombre">
 
             <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/tiedtNombre"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content" />
         </com.google.android.material.textfield.TextInputLayout>
@@ -70,6 +80,7 @@
             android:hint="Apellido">
 
             <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/tiedtApellido"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content" />
         </com.google.android.material.textfield.TextInputLayout>
@@ -81,6 +92,7 @@
             android:hint="Telefono">
 
             <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/tiedtTelefono"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content" />
         </com.google.android.material.textfield.TextInputLayout>
@@ -92,6 +104,7 @@
             android:hint="Correo">
 
             <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/tiedtCorreo"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content" />
         </com.google.android.material.textfield.TextInputLayout>
@@ -103,6 +116,7 @@
             android:hint="Direccion">
 
             <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/tiedtDireccion"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content" />
         </com.google.android.material.textfield.TextInputLayout>
@@ -115,13 +129,13 @@
 
         <TextView
             android:id="@+id/textView45"
-            android:layout_width="wrap_content"
+            android:layout_width="120dp"
             android:layout_height="wrap_content"
             android:text="Pais"
             android:textSize="18sp" />
 
         <Spinner
-            android:id="@+id/spinner6"
+            android:id="@+id/spPais"
             android:layout_width="match_parent"
             android:layout_height="wrap_content" />
 
@@ -143,13 +157,13 @@
 
         <TextView
             android:id="@+id/textView46"
-            android:layout_width="wrap_content"
+            android:layout_width="120dp"
             android:layout_height="wrap_content"
             android:text="Provincia"
             android:textSize="18dp" />
 
         <Spinner
-            android:id="@+id/spinner8"
+            android:id="@+id/spProvincia"
             android:layout_width="match_parent"
             android:layout_height="wrap_content" />
     </TableRow>
@@ -170,13 +184,13 @@
 
         <TextView
             android:id="@+id/textView47"
-            android:layout_width="wrap_content"
+            android:layout_width="120dp"
             android:layout_height="wrap_content"
             android:text="Ciudad"
             android:textSize="18dp" />
 
         <Spinner
-            android:id="@+id/spinner9"
+            android:id="@+id/spCiudad"
             android:layout_width="match_parent"
             android:layout_height="wrap_content" />
     </TableRow>

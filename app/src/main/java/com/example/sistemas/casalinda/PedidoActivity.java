@@ -131,7 +131,7 @@ public class PedidoActivity extends AppCompatActivity {
         etCodigo=findViewById(R.id.edtCodigo);
         //etNomb=findViewById(R.id.edtNombre);
         etCant=findViewById(R.id.edtCant);
-        etCedula=findViewById(R.id.edtCedula);
+        etCedula=findViewById(R.id.tiedtCedula);
 
         final TextView textViewProforma=findViewById(R.id.txtProforma);
         final TextView textViewFactura=findViewById(R.id.txtFactura);
@@ -186,18 +186,23 @@ public class PedidoActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 try {
-                    etCodigo.setText("");
-                    etCant.setText("");
-                    etCedula.setText("");
-                    textViewCliente.setText("");
-                    textViewFactura.setText("");
-                    textViewPedido.setText("");
-                    textViewProforma.setText("");
-                    btnEscaner.setEnabled(true);
-                    btnAgregar.setEnabled(true);
-                    btnGrabar.setEnabled(true);
+                    if (textViewProforma.equals("")){
+                        nuevo("Pedido sin guardar desea Guardarlos");
+                    }
+                    else {
+                        etCodigo.setText("");
+                        etCant.setText("");
+                        etCedula.setText("");
+                        textViewCliente.setText("");
+                        textViewFactura.setText("");
+                        textViewPedido.setText("");
+                        textViewProforma.setText("");
+                        btnEscaner.setEnabled(true);
+                        btnAgregar.setEnabled(true);
+                        btnGrabar.setEnabled(true);
 
-                    adaptadorRecyclerView.eliminarTodo();
+                        adaptadorRecyclerView.eliminarTodo();
+                    }
                 }catch (Exception e){salir(e.getMessage());}
             }
         });
@@ -337,16 +342,15 @@ public class PedidoActivity extends AppCompatActivity {
                     }
                 }
 
-            catch(Exception e){
-               salir(e.getMessage());
-            }
+                catch(Exception e){
+                    salir(e.getMessage());
+                }
             }
         });
 
 
 
     }
-
 
     public void onResume() {
         super.onResume();
@@ -649,8 +653,8 @@ salir(e.getMessage());
                 call.setDouble(48,  Float.parseFloat(adaptadorRecyclerView.getPedidos().get(a).getTotal()));//Vlr_Neto
                 call.setDouble(49, 0);///Vlr_Dcto_Pie
                 call.setDouble(50,  Float.parseFloat(adaptadorRecyclerView.getPedidos().get(a).getTotal()));//Vlr_Neto_Final
-                call.setDouble(51, 0);///Vlr_Impto
-                call.setDouble(52, 0);///Vlr_Total
+                call.setDouble(51,  Float.parseFloat(adaptadorRecyclerView.getPedidos().get(a).getTotal())*0.12);///Vlr_Impto
+                call.setDouble(52,  Float.parseFloat(adaptadorRecyclerView.getPedidos().get(a).getTotal())+Float.parseFloat(adaptadorRecyclerView.getPedidos().get(a).getTotal())*0.12);///Vlr_Total
                 call.setString(53, adaptadorRecyclerView.getPedidos().get(a).getBod());//C_Bodega
                 call.setString(54, "S");//Estado_Disponible
                 call.setString(55, "1");//C_Cat_Activo
@@ -728,7 +732,6 @@ salir(e.getMessage());
 
         }
     }
-
     public void consultarproducto(String c, int ca){
         String ConnectionResult = "";
         claseGlobal objEscritura=(claseGlobal)getApplicationContext();
@@ -792,6 +795,34 @@ salir(e.getMessage());
         }
     }
     //Mensaje Cliente
+    public void nuevo(String e){
+        LinearLayout linear = findViewById(R.id.linear_layout);
+
+        AlertDialog.Builder alerta=new AlertDialog.Builder(this);
+        alerta.setMessage(e)
+                .setCancelable(false)
+
+                .setPositiveButton("Si", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.cancel();
+                        // finish();
+                        //super.finish();
+                    }
+                })
+                .setNegativeButton("No", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.cancel();
+                    }
+                });
+        AlertDialog titulo=alerta.create();
+        titulo.setTitle("Salida");
+        titulo.show();
+        //finish();
+        //super.onBackPressed();
+
+    }
     public void salir(String e){
         LinearLayout linear = findViewById(R.id.linear_layout);
 
@@ -819,6 +850,7 @@ salir(e.getMessage());
         //super.onBackPressed();
 
     }
+
 
     //Validar atras
     @Override

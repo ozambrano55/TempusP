@@ -1,13 +1,14 @@
 package com.example.sistemas.casalinda;
 
 import android.os.Bundle;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.Toolbar;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 
 import java.sql.Connection;
 import java.sql.ResultSet;
@@ -28,18 +29,18 @@ public class CarteraActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate( savedInstanceState );
         setContentView( R.layout.activity_cartera );
-        Cedula=(TextView)findViewById( R.id.txtCedula );
-        Nombre=(TextView)findViewById( R.id.txtNombre );
-        Saldo=(TextView)findViewById( R.id.txtSaldo );
-        ET_Cedula=(EditText)findViewById( R.id.edtCedula );
+        Cedula= findViewById( R.id.txtCedula );
+        Nombre= findViewById( R.id.txtNombre );
+        Saldo= findViewById( R.id.txtSaldo );
+        ET_Cedula= findViewById( R.id.tiedtCedula);
 
 
-        Toolbar toolbar = (Toolbar) findViewById( R.id.toolbar );
+        Toolbar toolbar = findViewById( R.id.toolbar );
         setSupportActionBar( toolbar );
 
 
 
-        btnConsultar=(Button) findViewById( R.id.btnConsultar );
+        btnConsultar= findViewById( R.id.btnConsultar );
         btnConsultar.setOnClickListener( new View.OnClickListener() {
             @Override
             public void onClick(View v) {

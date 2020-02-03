@@ -1,4 +1,14 @@
 <resources>
+    <string-array name="tipo">
+        <item>Seleccione</item>
+        <item>Cedula de ci</item>
+        <item>Java</item>
+        <item>.NET</item>
+        <item>Python</item>
+        <item>PHP</item>
+        <item>JavaScript</item>
+        <item>GO</item>
+    </string-array>
     <string name="app_name">CasaLinda</string>
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
