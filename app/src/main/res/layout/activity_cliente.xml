@@ -37,8 +37,7 @@
             <Spinner
                 android:id="@+id/spTipo"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:entries="@array/tipo" />
+                android:layout_height="wrap_content" />
 
         </TableRow>
 
@@ -89,7 +88,7 @@
             style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="Telefono">
+            android:hint="Teléfono">
 
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/tiedtTelefono"
