@@ -220,6 +220,15 @@
             android:text="Nuevo" />
 
         <Button
+            android:id="@+id/btnCancelar"
+            style="@android:style/Widget.Material.Light.Button.Borderless.Small"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:drawableTop="@drawable/ic_des50"
+            android:text="Cancelar" />
+
+        <Button
             android:id="@+id/btnGuardar"
             style="@android:style/Widget.Material.Light.Button.Borderless.Small"
             android:layout_width="wrap_content"

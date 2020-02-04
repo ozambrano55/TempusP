@@ -39,7 +39,7 @@ public class ClienteActivity extends AppCompatActivity {
     Connection connect;
     String country,city;
    // String cedula,nombre,apellido,telefono,correo,direccion;
-    Button nuevo,guarda, editar, salir;
+    Button nuevo,cancelar,guarda, editar, salir;
 
     private boolean isFirstTime=true;
     public String tp;
@@ -51,6 +51,7 @@ public class ClienteActivity extends AppCompatActivity {
 
         salir=findViewById(R.id.btnSalir);
         nuevo = findViewById(R.id.btnNuevo);
+        cancelar=findViewById(R.id.btnCancelar);
         guarda=findViewById(R.id.btnGuardar);
         editar=findViewById(R.id.btnEditar);
         final Spinner tipo = findViewById(R.id.spTipo);
@@ -100,8 +101,21 @@ public class ClienteActivity extends AppCompatActivity {
                 cargaTipo();
                 ArrayAdapter<CharSequence> adaptadorTipo = new ArrayAdapter(getApplicationContext(), android.R.layout.simple_spinner_dropdown_item, listaTipo);
                 tipo.setAdapter(adaptadorTipo);
-                nuevo.setEnabled(false);
+                //nuevo.setEnabled(false);
                 guarda.setEnabled(true);
+
+                cedula.setText("");
+                apellido.setText("");
+                telefono.setText("");
+                correo.setText("");
+                direccion.setText("");
+            }
+        });
+        cancelar.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                nuevo.setEnabled(true);
+                cancelar.setEnabled(false);
             }
         });
         guarda.setOnClickListener(new View.OnClickListener() {
@@ -120,15 +134,24 @@ public class ClienteActivity extends AppCompatActivity {
                       case "CI":
                           if (vcedula.getText().equals("Cédula Correcta")) {
                               grabaCliente(ce,no,ap,tp,di,city,te,co);
+                              desactivaTexto();
                           } else {
                               salirp("Documento Identidad", "Digite Cédula válida", 1, 1);
+
                           }
                           break;
                       case "CE":
-                          //grabaCliente();
+                          grabaCliente(ce,no,ap,tp,di,city,te,co);
+                          desactivaTexto();
                           break;
                       case "RUC":
-                          //grabaCliente();
+                          if (ce.length() == 13) {
+                              grabaCliente(ce, no, ap, tp, di, city, te, co);
+                              desactivaTexto();
+                          }else
+                          {
+                              salirp("Documento Identidad", "Digite RUC válido con 13 dígitos", 1, 1);
+                          }
                           break;
                   }
               }catch (Exception e){salir(e.getMessage());}
@@ -225,6 +248,7 @@ public class ClienteActivity extends AppCompatActivity {
         });
 
 
+
     }
 
     private void grabaCliente(String ce, String no, String ap, String t, String di, String c, String te, String co) {
@@ -254,10 +278,38 @@ public class ClienteActivity extends AppCompatActivity {
                 call.setString(10,objLectura.getC_funcionario());//C_Funcionario
                 call.execute();
 
+                salirp("Registro Cliente","Cliente "+no+" "+ap+" Guardado satisfactoriamente",1,1);
+
+
             }
         }catch (Exception e){salirp("Guarda Cliente",e.getMessage(),1,1);}
 
     }
+
+    private void desactivaTexto( ) {
+        EditText cedula=findViewById(R.id.tiedtCedula);
+        TextView vcedula=findViewById(R.id.txtCedula);
+        EditText nombre=findViewById(R.id.tiedtNombre);
+        EditText apellido =findViewById(R.id.tiedtApellido);
+        EditText telefono=findViewById(R.id.tiedtTelefono);
+        EditText correo =findViewById(R.id.tiedtCorreo);
+        EditText direccion=findViewById(R.id.tiedtDireccion);
+
+        Spinner pais=findViewById(R.id.spPais);
+        Spinner provincia=findViewById(R.id.spProvincia);
+        Spinner ciudad =findViewById(R.id.spCiudad);
+
+        cedula.setEnabled(false);
+        nombre.setEnabled(false);
+        apellido.setEnabled(false);
+        telefono.setEnabled(false);
+        correo.setEnabled(false);
+        direccion.setEnabled(false);
+        // pais.setEnabled(true);
+        provincia.setEnabled(false);
+        ciudad.setEnabled(false);
+    }
+
 
     //Validar atras
     @Override
