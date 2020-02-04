@@ -19,7 +19,6 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.sistemas.casalinda.Utilidades.claseGlobal;
-import com.google.android.material.textfield.TextInputEditText;
 
 import java.sql.CallableStatement;
 import java.sql.Connection;
@@ -80,42 +79,32 @@ public class ClienteActivity extends AppCompatActivity {
         ciudad.setEnabled(false);
         editar.setEnabled(false);
         guarda.setEnabled(false);
+        cancelar.setEnabled(false);
 
 
-/*
-            tipo.setEnabled(true);
-            cedula.setEnabled(false);
-            nombre.setEnabled(false);
-            apellido.setEnabled(false);
-            telefono.setEnabled(false);
-            correo.setEnabled(false);
-            direccion.setEnabled(false);
-            pais.setEnabled(false);
-            provincia.setEnabled(false);
-            ciudad.setEnabled(false);
-*/
         nuevo.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                tipo.setEnabled(true);
-                cargaTipo();
-                ArrayAdapter<CharSequence> adaptadorTipo = new ArrayAdapter(getApplicationContext(), android.R.layout.simple_spinner_dropdown_item, listaTipo);
-                tipo.setAdapter(adaptadorTipo);
-                //nuevo.setEnabled(false);
-                guarda.setEnabled(true);
-
-                cedula.setText("");
-                apellido.setText("");
-                telefono.setText("");
-                correo.setText("");
-                direccion.setText("");
+                try {
+                    cargaTipo();
+                    ArrayAdapter<CharSequence> adaptadorTipo = new ArrayAdapter(getApplicationContext(), android.R.layout.simple_spinner_dropdown_item, listaTipo);
+                    tipo.setAdapter(adaptadorTipo);
+                    tipo.setEnabled(true);
+                    nuevo.setEnabled(false);
+                    guarda.setEnabled(true);
+                    cancelar.setEnabled(true);
+                 activarCampos();
+                }catch (Exception e){salirp("Nuevo",e.getMessage(),1);}
             }
         });
         cancelar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                nuevo.setEnabled(true);
-                cancelar.setEnabled(false);
+               desactivaTexto();
+               nuevo.setEnabled(true);
+               cancelar.setEnabled(false );
+               guarda.setEnabled(false);
+
             }
         });
         guarda.setOnClickListener(new View.OnClickListener() {
@@ -130,38 +119,58 @@ public class ClienteActivity extends AppCompatActivity {
                 te=telefono.getText().toString();
                 co=correo.getText().toString();
               try {
-                  switch (tp) {
-                      case "CI":
-                          if (vcedula.getText().equals("Cédula Correcta")) {
-                              grabaCliente(ce,no,ap,tp,di,city,te,co);
-                              desactivaTexto();
-                          } else {
-                              salirp("Documento Identidad", "Digite Cédula válida", 1, 1);
-
-                          }
-                          break;
-                      case "CE":
-                          grabaCliente(ce,no,ap,tp,di,city,te,co);
-                          desactivaTexto();
-                          break;
-                      case "RUC":
-                          if (ce.length() == 13) {
-                              grabaCliente(ce, no, ap, tp, di, city, te, co);
-                              desactivaTexto();
+                  if(cedula.getText().toString().isEmpty())
+                  {
+                      salirp("Campo Cédula","Digite una Cedula",1);
+                  }else{
+                      if(nombre.getText().toString().isEmpty()){
+                          salirp("Campo Nombre","Digite un Nombre",1);
+                      }else{
+                          if(apellido.getText().toString().isEmpty()){
+                              salirp("Campo Apellido","Digite un Apellido",1);
                           }else
-                          {
-                              salirp("Documento Identidad", "Digite RUC válido con 13 dígitos", 1, 1);
-                          }
-                          break;
+                            if (direccion.getText().toString().isEmpty()){
+                                salirp("Campo Direccion","Digite una direccion",1);
+                            }else
+                            {
+
+                                switch (tp) {
+                                    case "CI":
+                                        if (vcedula.getText().equals("Cédula Correcta")) {
+                                            grabaCliente(ce,no,ap,tp,di,city,te,co);
+                                            desactivaTexto();
+                                        } else {
+                                            salirp("Documento Identidad", "Digite Cédula válida", 1);
+
+                                        }
+                                        break;
+                                    case "CE":
+                                        grabaCliente(ce,no,ap,tp,di,city,te,co);
+                                        desactivaTexto();
+                                        break;
+                                    case "RUC":
+                                        if (ce.length() == 13) {
+                                            grabaCliente(ce, no, ap, tp, di, city, te, co);
+                                            desactivaTexto();
+                                        }else
+                                        {
+                                            salirp("Documento Identidad", "Digite RUC válido con 13 dígitos", 1);
+                                        }
+                                        break;
+                                }
+                            }
+                      }
                   }
+
               }catch (Exception e){salir(e.getMessage());}
+
 
             }
         });
         salir.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                salirp("Ficha Cliente","Desea Salir",2,1);
+                salirp("Ficha Cliente","Desea Salir",2);
             }
         });
 
@@ -173,7 +182,7 @@ public class ClienteActivity extends AppCompatActivity {
                 else {
                     tp = tipoList.get(position).getC_tipo_identi();
                     activarCampos();
-                    tipo.setEnabled(false);
+                    //tipo.setEnabled(false);
                     cargaPais();
                     ArrayAdapter<CharSequence>adaptadorPais=new ArrayAdapter(getApplicationContext(),android.R.layout.simple_spinner_dropdown_item,paisList);
                     pais.setAdapter(adaptadorPais);
@@ -198,14 +207,16 @@ public class ClienteActivity extends AppCompatActivity {
 
                 @Override
                 public void afterTextChanged(Editable s) {
-                    String c;
-                    c = cedula.getText().toString();
-                    if (String.valueOf(verificarcedula(c)).equals("true")) {
+                   if (tp.equals("CI")) {
+                       String c;
+                       c = cedula.getText().toString();
+                       if (String.valueOf(verificarcedula(c)).equals("true")) {
 
-                        vcedula.setText("Cédula Correcta");
-                    } else {
-                        vcedula.setText("Cédula Incorrecta");
-                    }
+                           vcedula.setText("Cédula Correcta");
+                       } else {
+                           vcedula.setText("Cédula Incorrecta");
+                       }
+                   }
                 }
             });
 
@@ -278,11 +289,11 @@ public class ClienteActivity extends AppCompatActivity {
                 call.setString(10,objLectura.getC_funcionario());//C_Funcionario
                 call.execute();
 
-                salirp("Registro Cliente","Cliente "+no+" "+ap+" Guardado satisfactoriamente",1,1);
+                salirp("Registro Cliente","Cliente "+no+" "+ap+" Guardado satisfactoriamente",1);
 
 
             }
-        }catch (Exception e){salirp("Guarda Cliente",e.getMessage(),1,1);}
+        }catch (Exception e){salirp("Guarda Cliente",e.getMessage(),1);}
 
     }
 
@@ -298,7 +309,11 @@ public class ClienteActivity extends AppCompatActivity {
         Spinner pais=findViewById(R.id.spPais);
         Spinner provincia=findViewById(R.id.spProvincia);
         Spinner ciudad =findViewById(R.id.spCiudad);
+        Spinner tipo=findViewById(R.id.spTipo);
 
+        guarda.setEnabled(false);
+        nuevo.setEnabled(true);
+        tipo.setEnabled(false);
         cedula.setEnabled(false);
         nombre.setEnabled(false);
         apellido.setEnabled(false);
@@ -308,6 +323,16 @@ public class ClienteActivity extends AppCompatActivity {
         // pais.setEnabled(true);
         provincia.setEnabled(false);
         ciudad.setEnabled(false);
+
+        cedula.setText("");
+        vcedula.setText("");
+        nombre.setText("");
+        apellido.setText("");
+        telefono.setText("");
+        correo.setText("");
+        direccion.setText("");
+
+
     }
 
 
@@ -353,18 +378,20 @@ public class ClienteActivity extends AppCompatActivity {
 
 
     private void activarCampos(){
-    TextInputEditText cedula=findViewById(R.id.tiedtCedula);
+    EditText cedula=findViewById(R.id.tiedtCedula);
     TextView vcedula=findViewById(R.id.txtCedula);
-    TextInputEditText nombre=findViewById(R.id.tiedtNombre);
-    TextInputEditText apellido =findViewById(R.id.tiedtApellido);
-    TextInputEditText telefono=findViewById(R.id.tiedtTelefono);
-    TextInputEditText correo =findViewById(R.id.tiedtCorreo);
-    TextInputEditText direccion=findViewById(R.id.tiedtDireccion);
+    EditText nombre=findViewById(R.id.tiedtNombre);
+    EditText apellido =findViewById(R.id.tiedtApellido);
+    EditText telefono=findViewById(R.id.tiedtTelefono);
+    EditText correo =findViewById(R.id.tiedtCorreo);
+    EditText direccion=findViewById(R.id.tiedtDireccion);
 
+    Spinner tipo=findViewById(R.id.spTipo);
     Spinner pais=findViewById(R.id.spPais);
     Spinner provincia=findViewById(R.id.spProvincia);
     Spinner ciudad =findViewById(R.id.spCiudad);
 
+    tipo.setEnabled(true);
     cedula.setEnabled(true);
     nombre.setEnabled(true);
     apellido.setEnabled(true);
@@ -374,7 +401,7 @@ public class ClienteActivity extends AppCompatActivity {
    // pais.setEnabled(true);
     provincia.setEnabled(true);
     ciudad.setEnabled(true);
-}
+    }
 
 
     //CargaTipo
@@ -526,13 +553,13 @@ public class ClienteActivity extends AppCompatActivity {
         //super.onBackPressed();
 
     }
-    public void salirp(String t,String m,int a, int b){
+    public void salirp(String t,String m,int a){
         LinearLayout linear = findViewById(R.id.linear_layout);
 
         AlertDialog.Builder alerta=new AlertDialog.Builder(this);
         alerta.setMessage(m)
                 .setCancelable(false)
-                .setPositiveButton("Si", new DialogInterface.OnClickListener() {
+                .setPositiveButton("Aceptar", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                        switch (a) {
@@ -547,21 +574,7 @@ public class ClienteActivity extends AppCompatActivity {
                        }
                     }
                 })
-                .setNegativeButton("No", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        switch (b) {
-                            case 1:
-                                dialog.cancel();
-                                break;
-                            case 2:
-                                finish();
-                                break;
-
-
-                        }
-                    }
-                });
+             ;
         AlertDialog titulo=alerta.create();
         titulo.setTitle(t);
         titulo.show();

@@ -39,8 +39,7 @@ public class LoginActivity extends AppCompatActivity  {
         ET_Password = findViewById(R.id.ET_Password);
         progressBar = findViewById(R.id.progressBar);
 
-        claseGlobal objEscritura=(claseGlobal)getApplicationContext();
-        claseGlobal objLectura=(claseGlobal)getApplicationContext();
+
 
         // End Getting values from button, texts and progress bar
 
@@ -100,7 +99,7 @@ public class LoginActivity extends AppCompatActivity  {
             String usernam = UserNameStr;
             String passwordd =PasswordStr;
             claseGlobal objEscritura=(claseGlobal)getApplicationContext();
-            claseGlobal objLectura=(claseGlobal)getApplicationContext();
+            //claseGlobal objLectura=(claseGlobal)getApplicationContext();
 
             if(usernam.trim().equals("")|| passwordd.trim().equals(""))
                 ConnectionResult = "Ingresar Usuario y Contraseña";
