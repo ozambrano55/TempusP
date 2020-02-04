@@ -1,15 +1,18 @@
 package com.example.sistemas.casalinda;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.sistemas.casalinda.Utilidades.claseGlobal;
@@ -144,6 +147,7 @@ public class LoginActivity extends AppCompatActivity  {
                         {
                             ConnectionResult = "Contraseña no valida!";
                             isSuccess = false;
+                            //salirp("Inicio de sesión","Contraseña incorrecta",1);
                         }
                     }
                 }
@@ -151,6 +155,7 @@ public class LoginActivity extends AppCompatActivity  {
                 {
                     isSuccess = false;
                     ConnectionResult = ex.getMessage();
+                    //salirp("Inicio de sesión","Contraseña incorrecta",1);
                 }
             }
             return ConnectionResult;
@@ -188,7 +193,35 @@ public class LoginActivity extends AppCompatActivity  {
         }
 
     }
+    public void salirp(String t,String m,int a){
+        LinearLayout linear = findViewById(R.id.linear_layout);
 
+        AlertDialog.Builder alerta=new AlertDialog.Builder(this);
+        alerta.setMessage(m)
+                .setCancelable(false)
+                .setPositiveButton("Aceptar", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        switch (a) {
+                            case 1:
+                                dialog.cancel();
+                                break;
+                            case 2:
+                                finish();
+                                break;
+
+
+                        }
+                    }
+                })
+        ;
+        AlertDialog titulo=alerta.create();
+        titulo.setTitle(t);
+        titulo.show();
+        //finish();
+        //super.onBackPressed();
+
+    }
     public void salir (View view){
         finish();
     }

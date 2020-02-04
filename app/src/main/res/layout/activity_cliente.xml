@@ -32,12 +32,19 @@
                 android:layout_height="wrap_content"
                 android:gravity="center"
                 android:text="TIPO DE IDENTIFICACION"
-                android:textSize="18sp" />
+                android:textSize="16sp" />
 
             <Spinner
                 android:id="@+id/spTipo"
-                android:layout_width="match_parent"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content" />
+
+            <ImageButton
+                android:id="@+id/imbOk"
+                style="@android:style/Widget.Material.Light.Button.Borderless.Small"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:srcCompat="@drawable/ic_aceptar" />
 
         </TableRow>
 

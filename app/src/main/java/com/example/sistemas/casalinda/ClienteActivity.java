@@ -10,6 +10,7 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
@@ -57,6 +58,7 @@ public class ClienteActivity extends AppCompatActivity {
         final Spinner pais = findViewById(R.id.spPais);
         final Spinner provincia = findViewById(R.id.spProvincia);
         final Spinner ciudad = findViewById(R.id.spCiudad);
+        ImageButton ok=findViewById(R.id.imbOk);
 
 
         EditText cedula = findViewById(R.id.tiedtCedula);
@@ -80,8 +82,24 @@ public class ClienteActivity extends AppCompatActivity {
         editar.setEnabled(false);
         guarda.setEnabled(false);
         cancelar.setEnabled(false);
+        ok.setEnabled(false);
+        tipo.requestFocus();
+desactivaTexto();
 
+        ok.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
 
+                activarCampos();
+                //tipo.setEnabled(false);
+                cargaPais();
+                ArrayAdapter<CharSequence>adaptadorPais=new ArrayAdapter(getApplicationContext(),android.R.layout.simple_spinner_dropdown_item,paisList);
+                pais.setAdapter(adaptadorPais);
+                tipo.setEnabled(false);
+                ok.setEnabled(false);
+                cedula.requestFocus();
+            }
+        });
         nuevo.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -90,10 +108,12 @@ public class ClienteActivity extends AppCompatActivity {
                     ArrayAdapter<CharSequence> adaptadorTipo = new ArrayAdapter(getApplicationContext(), android.R.layout.simple_spinner_dropdown_item, listaTipo);
                     tipo.setAdapter(adaptadorTipo);
                     tipo.setEnabled(true);
+                    ok.setEnabled(true);
                     nuevo.setEnabled(false);
                     guarda.setEnabled(true);
                     cancelar.setEnabled(true);
-                 activarCampos();
+                    tipo.requestFocus();
+                 //activarCampos();
                 }catch (Exception e){salirp("Nuevo",e.getMessage(),1);}
             }
         });
@@ -104,6 +124,7 @@ public class ClienteActivity extends AppCompatActivity {
                nuevo.setEnabled(true);
                cancelar.setEnabled(false );
                guarda.setEnabled(false);
+               tipo.requestFocus();
 
             }
         });
@@ -170,30 +191,22 @@ public class ClienteActivity extends AppCompatActivity {
         salir.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                salirp("Ficha Cliente","Desea Salir",2);
+                salir("Desea Salir");
             }
         });
 
-        tipo.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                if (isFirstTime)
-                {isFirstTime=false;}
-                else {
-                    tp = tipoList.get(position).getC_tipo_identi();
-                    activarCampos();
-                    //tipo.setEnabled(false);
-                    cargaPais();
-                    ArrayAdapter<CharSequence>adaptadorPais=new ArrayAdapter(getApplicationContext(),android.R.layout.simple_spinner_dropdown_item,paisList);
-                    pais.setAdapter(adaptadorPais);
-                }
-            }
+tipo.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+    @Override
+    public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+        ok.setEnabled(true);
+        tp = tipoList.get(position).getC_tipo_identi();
+    }
 
-            @Override
-            public void onNothingSelected(AdapterView<?> parent) {
+    @Override
+    public void onNothingSelected(AdapterView<?> parent) {
 
-            }
-        });
+    }
+});
         cedula.addTextChangedListener(new TextWatcher() {
                 @Override
                 public void beforeTextChanged(CharSequence s, int start, int count, int after) {
@@ -535,8 +548,8 @@ public class ClienteActivity extends AppCompatActivity {
                 .setPositiveButton("Si", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                        dialog.cancel();
-                        // finish();
+                        //dialog.cancel();
+                         finish();
                         //super.finish();
                     }
                 })
