@@ -37,7 +37,7 @@ public class ClienteActivity extends AppCompatActivity {
     ArrayList<Ciudad>ciudadList;
     ArrayList<String>listaCiudad;
     Connection connect;
-    String country,city;
+    String d0, d1,city;
    // String cedula,nombre,apellido,telefono,correo,direccion;
     Button nuevo,cancelar,guarda, editar, salir;
 
@@ -48,6 +48,8 @@ public class ClienteActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
 
         setContentView(R.layout.activity_cliente);
+
+
 
         salir=findViewById(R.id.btnSalir);
         nuevo = findViewById(R.id.btnNuevo);
@@ -69,22 +71,41 @@ public class ClienteActivity extends AppCompatActivity {
         EditText correo = findViewById(R.id.tiedtCorreo);
         EditText direccion = findViewById(R.id.tiedtDireccion);
 
-        tipo.setEnabled(false);
-        cedula.setEnabled(false);
-        nombre.setEnabled(false);
-        apellido.setEnabled(false);
-        telefono.setEnabled(false);
-        correo.setEnabled(false);
-        direccion.setEnabled(false);
-        pais.setEnabled(false);
-        provincia.setEnabled(false);
-        ciudad.setEnabled(false);
-        editar.setEnabled(false);
-        guarda.setEnabled(false);
-        cancelar.setEnabled(false);
-        ok.setEnabled(false);
-        tipo.requestFocus();
-desactivaTexto();
+
+        recibirdatos();
+        switch (d0){
+            case "0":
+                tipo.setEnabled(false);
+                cedula.setEnabled(false);
+                nombre.setEnabled(false);
+                apellido.setEnabled(false);
+                telefono.setEnabled(false);
+                correo.setEnabled(false);
+                direccion.setEnabled(false);
+                pais.setEnabled(false);
+                provincia.setEnabled(false);
+                ciudad.setEnabled(false);
+                editar.setEnabled(false);
+                guarda.setEnabled(false);
+                cancelar.setEnabled(false);
+                ok.setEnabled(false);
+                tipo.requestFocus();
+                desactivaTexto();
+                break;
+            case "1":
+
+
+                cedula.setText(d1);
+                tipo.setEnabled(false);
+                ok.setEnabled(false);
+                pais.setEnabled(false);
+
+
+                break;
+        }
+
+
+
 
         ok.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -108,12 +129,12 @@ desactivaTexto();
                     ArrayAdapter<CharSequence> adaptadorTipo = new ArrayAdapter(getApplicationContext(), android.R.layout.simple_spinner_dropdown_item, listaTipo);
                     tipo.setAdapter(adaptadorTipo);
                     tipo.setEnabled(true);
-                    ok.setEnabled(true);
+                    //ok.setEnabled(true);
                     nuevo.setEnabled(false);
                     guarda.setEnabled(true);
                     cancelar.setEnabled(true);
                     tipo.requestFocus();
-                 //activarCampos();
+                 activarCampos();
                 }catch (Exception e){salirp("Nuevo",e.getMessage(),1);}
             }
         });
@@ -139,50 +160,49 @@ desactivaTexto();
                 di=direccion.getText().toString();
                 te=telefono.getText().toString();
                 co=correo.getText().toString();
-              try {
-                  if(cedula.getText().toString().isEmpty())
-                  {
-                      salirp("Campo Cédula","Digite una Cedula",1);
-                  }else{
-                      if(nombre.getText().toString().isEmpty()){
-                          salirp("Campo Nombre","Digite un Nombre",1);
-                      }else{
-                          if(apellido.getText().toString().isEmpty()){
-                              salirp("Campo Apellido","Digite un Apellido",1);
-                          }else
-                            if (direccion.getText().toString().isEmpty()){
-                                salirp("Campo Direccion","Digite una direccion",1);
-                            }else
-                            {
+              try { if (tp.isEmpty())
+                        {
+                            salirp("Tipo Identificacion","Escoja tipo de identificación",1);
+                        }else {
+                  if (cedula.getText().toString().isEmpty()) {
+                      salirp("Campo Cédula", "Digite una Cedula", 1);
+                  } else {
+                      if (nombre.getText().toString().isEmpty()) {
+                          salirp("Campo Nombre", "Digite un Nombre", 1);
+                      } else {
+                          if (apellido.getText().toString().isEmpty()) {
+                              salirp("Campo Apellido", "Digite un Apellido", 1);
+                          } else if (direccion.getText().toString().isEmpty()) {
+                              salirp("Campo Direccion", "Digite una direccion", 1);
+                          } else {
 
-                                switch (tp) {
-                                    case "CI":
-                                        if (vcedula.getText().equals("Cédula Correcta")) {
-                                            grabaCliente(ce,no,ap,tp,di,city,te,co);
-                                            desactivaTexto();
-                                        } else {
-                                            salirp("Documento Identidad", "Digite Cédula válida", 1);
+                              switch (tp) {
+                                  case "CI":
+                                      if (verificarcedula(cedula.getText().toString())) {
+                                          grabaCliente(ce, no, ap, tp, di, city, te, co);
+                                          desactivaTexto();
+                                      } else {
+                                          salirp("Documento Identidad", "Digite Cédula válida", 1);
 
-                                        }
-                                        break;
-                                    case "CE":
-                                        grabaCliente(ce,no,ap,tp,di,city,te,co);
-                                        desactivaTexto();
-                                        break;
-                                    case "RUC":
-                                        if (ce.length() == 13) {
-                                            grabaCliente(ce, no, ap, tp, di, city, te, co);
-                                            desactivaTexto();
-                                        }else
-                                        {
-                                            salirp("Documento Identidad", "Digite RUC válido con 13 dígitos", 1);
-                                        }
-                                        break;
-                                }
-                            }
+                                      }
+                                      break;
+                                  case "CE":
+                                      grabaCliente(ce, no, ap, tp, di, city, te, co);
+                                      desactivaTexto();
+                                      break;
+                                  case "RUC":
+                                      if (ce.length() == 13) {
+                                          grabaCliente(ce, no, ap, tp, di, city, te, co);
+                                          desactivaTexto();
+                                      } else {
+                                          salirp("Documento Identidad", "Digite RUC válido con 13 dígitos", 1);
+                                      }
+                                      break;
+                              }
+                          }
                       }
                   }
-
+              }
               }catch (Exception e){salir(e.getMessage());}
 
 
@@ -275,6 +295,13 @@ tipo.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
 
     }
 
+    //Recibir datos
+    public void recibirdatos(){
+        Bundle extras=getIntent().getExtras();
+        d0=extras.getString("d0");
+       d1=extras.getString("d1");
+    }
+
     private void grabaCliente(String ce, String no, String ap, String t, String di, String c, String te, String co) {
         String ConnectionResult = "";
         claseGlobal objEscritura=(claseGlobal)getApplicationContext();
@@ -348,7 +375,6 @@ tipo.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
 
     }
 
-
     //Validar atras
     @Override
     public boolean onKeyDown(int keyCode, KeyEvent event) {
@@ -388,6 +414,8 @@ tipo.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
 
         return super.onKeyDown(keyCode, event);
     }
+
+
 
 
     private void activarCampos(){

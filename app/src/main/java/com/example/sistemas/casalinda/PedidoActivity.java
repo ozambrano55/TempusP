@@ -186,7 +186,7 @@ public class PedidoActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 try {
-                    if (textViewProforma.equals("")){
+                    if (adaptadorRecyclerView.getItemCount()>0&& textViewPedido.getText().toString()==""){
                         nuevo("Pedido sin guardar desea Guardarlos");
                     }
                     else {
@@ -325,7 +325,7 @@ public class PedidoActivity extends AppCompatActivity {
                         consultaCliente(Ced);
                         if (c_cod_cliente.isEmpty()) {
                             //Toast.makeText(PedidoActivity.this, "Cliente no Existe", Toast.LENGTH_SHORT).show();
-                            salir("Cliente no Existe");
+                            salirc("Cliente no Existe, Desea crearlo");
                         } else {
                             grabaPedido(objLectura.getCod_pedidos());
                             textViewPedido.setText(N_Orden_Pedido);
@@ -802,7 +802,7 @@ salir(e.getMessage());
         alerta.setMessage(e)
                 .setCancelable(false)
 
-                .setPositiveButton("Si", new DialogInterface.OnClickListener() {
+                .setPositiveButton("Aceptar", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         dialog.cancel();
@@ -810,12 +810,12 @@ salir(e.getMessage());
                         //super.finish();
                     }
                 })
-                .setNegativeButton("No", new DialogInterface.OnClickListener() {
+               /* .setNegativeButton("No", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         dialog.cancel();
                     }
-                });
+                })*/;
         AlertDialog titulo=alerta.create();
         titulo.setTitle("Salida");
         titulo.show();
@@ -850,7 +850,36 @@ salir(e.getMessage());
         //super.onBackPressed();
 
     }
+    public void salirc(String e){
+        LinearLayout linear = findViewById(R.id.linear_layout);
 
+        AlertDialog.Builder alerta=new AlertDialog.Builder(this);
+        alerta.setMessage(e)
+                .setCancelable(false)
+                .setPositiveButton("Si", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        Intent intent= new Intent( PedidoActivity.this, ClienteActivity.class );
+                        intent.putExtra("d0","1");
+                        intent.putExtra("d1",etCedula.getText().toString() );
+                        startActivity(intent);
+                        // finish();
+                        //super.finish();
+                    }
+                })
+                .setNegativeButton("No", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.cancel();
+                    }
+                });
+        AlertDialog titulo=alerta.create();
+        titulo.setTitle("Salida");
+        titulo.show();
+        //finish();
+        //super.onBackPressed();
+
+    }
 
     //Validar atras
     @Override

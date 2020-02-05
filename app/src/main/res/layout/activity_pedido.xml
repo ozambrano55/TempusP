@@ -13,13 +13,25 @@
         android:layout_height="wrap_content"
         android:orientation="vertical">
 
-        <EditText
-            android:id="@+id/tiedtCedula"
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:ems="10"
-            android:hint="Digite Cedula Cliente"
-            android:inputType="textPersonName" />
+            android:layout_height="match_parent"
+            android:orientation="horizontal">
+
+            <Button
+                android:id="@+id/btnBuscarC"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:background="@android:drawable/ic_menu_search" />
+
+            <EditText
+                android:id="@+id/tiedtCedula"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:ems="10"
+                android:hint="Digite Cedula Cliente"
+                android:inputType="textPersonName" />
+        </LinearLayout>
 
         <TextView
             android:id="@+id/txtCliente"
@@ -27,10 +39,15 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="5dp"
             android:layout_marginLeft="5dp"
-            android:text="Cliente"
-            android:textSize="18sp" />
+            android:textColor="@color/common_google_signin_btn_text_dark_focused" />
 
     </LinearLayout>
+
+    <View
+        android:id="@+id/divider3"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="?android:attr/listDivider" />
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -53,6 +70,12 @@
                 android:layout_height="40dp"
                 android:layout_marginLeft="5dp"
                 android:background="@drawable/qr" />
+
+            <Button
+                android:id="@+id/btnBuscarp"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:background="@android:drawable/ic_menu_search" />
 
             <EditText
                 android:id="@+id/edtCodigo"
