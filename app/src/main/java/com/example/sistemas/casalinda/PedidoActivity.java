@@ -215,7 +215,8 @@ public class PedidoActivity extends AppCompatActivity {
                     String dato="";
 
                    if (codigo.isEmpty()|ca.isEmpty()) {
-                       Toast.makeText(PedidoActivity.this, "Rellena los campos", Toast.LENGTH_SHORT).show();
+                       //Toast.makeText(PedidoActivity.this, "Rellena los campos", Toast.LENGTH_SHORT).show();
+                       salirp("Producto","Rellene los campos",1);
                        return;
                    }else {
                        consultarproducto(codigo,Integer.parseInt(ca) );
@@ -319,13 +320,14 @@ public class PedidoActivity extends AppCompatActivity {
                     claseGlobal objLectura=(claseGlobal)getApplicationContext();
                     String Ced = etCedula.getText().toString();
                     if (Ced.isEmpty()) {
-                        Toast.makeText(PedidoActivity.this, "Digite cédula cliente", Toast.LENGTH_SHORT).show();
+                        //Toast.makeText(PedidoActivity.this, "Digite cédula cliente", Toast.LENGTH_SHORT).show();
+                        salirp("Documento de identidad","Digite Cedula de cliente",1);
                         return;
                     } else {
                         consultaCliente(Ced);
                         if (c_cod_cliente.isEmpty()) {
                             //Toast.makeText(PedidoActivity.this, "Cliente no Existe", Toast.LENGTH_SHORT).show();
-                            salirc("Cliente no Existe, Desea crearlo");
+                            salirc("Cliente no Existe, Desea crearlo?");
                         } else {
                             grabaPedido(objLectura.getCod_pedidos());
                             textViewPedido.setText(N_Orden_Pedido);
@@ -386,7 +388,35 @@ public class PedidoActivity extends AppCompatActivity {
     }
 
 
+    public void salirp(String t,String m,int a){
+        LinearLayout linear = findViewById(R.id.linear_layout);
 
+        AlertDialog.Builder alerta=new AlertDialog.Builder(this);
+        alerta.setMessage(m)
+                .setCancelable(false)
+                .setPositiveButton("Aceptar", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        switch (a) {
+                            case 1:
+                                dialog.cancel();
+                                break;
+                            case 2:
+                                finish();
+                                break;
+
+
+                        }
+                    }
+                })
+        ;
+        AlertDialog titulo=alerta.create();
+        titulo.setTitle(t);
+        titulo.show();
+        //finish();
+        //super.onBackPressed();
+
+    }
     public void obtenerNPedido(String c){
         String ConnectionResult = "";
         claseGlobal objEscritura=(claseGlobal)getApplicationContext();
