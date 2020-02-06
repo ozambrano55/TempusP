@@ -220,6 +220,7 @@ tipo.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
     public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
         ok.setEnabled(true);
         tp = tipoList.get(position).getC_tipo_identi();
+        desactivaTextot();
     }
 
     @Override
@@ -354,6 +355,43 @@ tipo.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
         guarda.setEnabled(false);
         nuevo.setEnabled(true);
         tipo.setEnabled(false);
+        cedula.setEnabled(false);
+        nombre.setEnabled(false);
+        apellido.setEnabled(false);
+        telefono.setEnabled(false);
+        correo.setEnabled(false);
+        direccion.setEnabled(false);
+        // pais.setEnabled(true);
+        provincia.setEnabled(false);
+        ciudad.setEnabled(false);
+
+        cedula.setText("");
+        vcedula.setText("");
+        nombre.setText("");
+        apellido.setText("");
+        telefono.setText("");
+        correo.setText("");
+        direccion.setText("");
+
+
+    }
+    private void desactivaTextot( ) {
+        EditText cedula=findViewById(R.id.tiedtCedula);
+        TextView vcedula=findViewById(R.id.txtCedula);
+        EditText nombre=findViewById(R.id.tiedtNombre);
+        EditText apellido =findViewById(R.id.tiedtApellido);
+        EditText telefono=findViewById(R.id.tiedtTelefono);
+        EditText correo =findViewById(R.id.tiedtCorreo);
+        EditText direccion=findViewById(R.id.tiedtDireccion);
+
+        Spinner pais=findViewById(R.id.spPais);
+        Spinner provincia=findViewById(R.id.spProvincia);
+        Spinner ciudad =findViewById(R.id.spCiudad);
+        Spinner tipo=findViewById(R.id.spTipo);
+
+        guarda.setEnabled(false);
+        nuevo.setEnabled(true);
+        //tipo.setEnabled(false);
         cedula.setEnabled(false);
         nombre.setEnabled(false);
         apellido.setEnabled(false);
