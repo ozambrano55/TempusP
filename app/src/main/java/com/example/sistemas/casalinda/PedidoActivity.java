@@ -89,7 +89,7 @@ public class PedidoActivity extends AppCompatActivity {
             Estado_Modifica;
 //endregion variables pedido
     int posicion;
-
+    int REQUEST_CODE;
     Connection connect;
 
 
@@ -97,8 +97,6 @@ public class PedidoActivity extends AppCompatActivity {
     int SOLICITO_UTILIZAR_CAMARA;
     private ZXingScannerView vistaescaner;
     EditText etCodigo,etNomb, etCant,etCedula;
-
-
     final AdaptadorRecyclerView adaptadorRecyclerView=new AdaptadorRecyclerView(new InterfazClickRecyclerView() {
         @Override
         public void onClick(View v, Pedido p) {
@@ -112,9 +110,8 @@ public class PedidoActivity extends AppCompatActivity {
         }
 
     });
-
-
     @Override
+
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_pedido);
@@ -123,9 +120,11 @@ public class PedidoActivity extends AppCompatActivity {
         ActivityCompat.requestPermissions(this,new String[]{Manifest.permission.CAMERA},SOLICITO_UTILIZAR_CAMARA);
 
         final Button btnAgregar=findViewById(R.id.btnAgregar);
-        Button btnGrabar= findViewById(R.id.btnGuardar);
+        final Button btnGrabar= findViewById(R.id.btnGuardar);
         final Button btnEscaner=findViewById(R.id.btnEscaner);
         final Button btnNuevo=findViewById(R.id.btnNuevo);
+        final Button btnBuscarC=findViewById(R.id.btnBuscarC);
+        final Button btnBuscarP=findViewById(R.id.btnBuscarp);
         RecyclerView recyclerViewPedidos =findViewById(R.id.pRecycler);
 
         etCodigo=findViewById(R.id.edtCodigo);
@@ -180,6 +179,22 @@ public class PedidoActivity extends AppCompatActivity {
                 catch (Exception e){
                     salir(e.getMessage());
                 }
+            }
+        });
+        btnBuscarC.setOnClickListener(new View.OnClickListener(){
+
+            @Override
+            public void onClick(View v) {
+                REQUEST_CODE=1;
+                startActivityForResult(new Intent(getApplicationContext(),BuscaNombreActivity.class),REQUEST_CODE);
+            }
+        });
+        btnBuscarP.setOnClickListener(new View.OnClickListener(){
+
+            @Override
+            public void onClick(View v) {
+                REQUEST_CODE=2;
+                startActivityForResult(new Intent(getApplicationContext(),BuscaNombreActivity.class),REQUEST_CODE);
             }
         });
         btnNuevo.setOnClickListener(new View.OnClickListener() {
@@ -302,7 +317,6 @@ public class PedidoActivity extends AppCompatActivity {
                 }
 
         });
-
         btnEscaner.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -354,6 +368,7 @@ public class PedidoActivity extends AppCompatActivity {
 
     }
 
+
     public void onResume() {
         super.onResume();
         final TextView textViewProforma=findViewById(R.id.txtProforma);
@@ -386,8 +401,6 @@ public class PedidoActivity extends AppCompatActivity {
             //Toast.makeText(PedidoActivity.this,"ERROR ON RESUME:"+ e.getMessage(),Toast.LENGTH_LONG).show();
             }
     }
-
-
     public void salirp(String t,String m,int a){
         LinearLayout linear = findViewById(R.id.linear_layout);
 
@@ -910,7 +923,6 @@ salir(e.getMessage());
         //super.onBackPressed();
 
     }
-
     //Validar atras
     @Override
     public boolean onKeyDown(int keyCode, KeyEvent event) {
@@ -949,10 +961,8 @@ salir(e.getMessage());
 
         return super.onKeyDown(keyCode, event);
     }
-
-
    //METODO PARA ESCANEAR
-public void escaner(){
+    public void escaner(){
         IntentIntegrator intent =new IntentIntegrator(this);
         intent.setDesiredBarcodeFormats(IntentIntegrator.ALL_CODE_TYPES);
 
@@ -964,7 +974,6 @@ public void escaner(){
                 .setBarcodeImageEnabled(false)
                 .initiateScan();
     }
-
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         etCodigo=findViewById(R.id.edtCodigo);
@@ -1021,4 +1030,5 @@ public void escaner(){
         adaptadorRecyclerView.eliminar(position);
 
     }
+
 }
