@@ -1,4 +1,4 @@
-package com.example.sistemas.casalinda;
+package com.example.sistemas.casalinda.entidades;
 
 public class Pedido {
     private String tipo, color, codigo, nombre, cantidad,unitario, total,pvp, cuv, bod,pon;

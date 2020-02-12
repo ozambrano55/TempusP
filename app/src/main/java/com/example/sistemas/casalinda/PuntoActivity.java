@@ -11,6 +11,7 @@ import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.sistemas.casalinda.Utilidades.claseGlobal;
+import com.example.sistemas.casalinda.entidades.Punto;
 
 import java.sql.Connection;
 import java.sql.ResultSet;

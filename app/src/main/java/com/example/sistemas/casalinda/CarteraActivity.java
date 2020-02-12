@@ -32,7 +32,7 @@ public class CarteraActivity extends AppCompatActivity {
         Cedula= findViewById( R.id.txtCedula );
         Nombre= findViewById( R.id.txtNombre );
         Saldo= findViewById( R.id.txtSaldo );
-        ET_Cedula= findViewById( R.id.tiedtCedula);
+        ET_Cedula= findViewById( R.id.edtCedula);
 
 
         Toolbar toolbar = findViewById( R.id.toolbar );

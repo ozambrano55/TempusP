@@ -23,6 +23,11 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.sistemas.casalinda.Utilidades.claseGlobal;
 import com.example.sistemas.casalinda.adaptadores.AdaptadorRecyclerView;
 import com.example.sistemas.casalinda.adaptadores.AdaptadorRecyclerViewE;
+import com.example.sistemas.casalinda.entidades.Existencia;
+import com.example.sistemas.casalinda.entidades.Pedido;
+import com.example.sistemas.casalinda.entidades.Precio;
+import com.example.sistemas.casalinda.interfaz.InterfazClickRecyclerView;
+import com.example.sistemas.casalinda.interfaz.InterfazClickRecyclerViewE;
 
 import java.sql.CallableStatement;
 import java.sql.Connection;
@@ -275,6 +280,7 @@ public class PedidoEditar extends AppCompatActivity {
                         objEscritura.setPos(Integer.parseInt( posicion));
                         objEscritura.setCodigo(codigo);
                         objEscritura.setNombre(nombre);
+                        objEscritura.setCol(color);
                         objEscritura.setCantidad(Double.parseDouble(cantidad) );
                         objEscritura.setUnitario(Double.parseDouble(unitario));
                         objEscritura.setTotal(Double.parseDouble(total));

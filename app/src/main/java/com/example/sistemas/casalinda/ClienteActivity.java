@@ -20,6 +20,9 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.sistemas.casalinda.Utilidades.claseGlobal;
+import com.example.sistemas.casalinda.entidades.Ciudad;
+import com.example.sistemas.casalinda.entidades.Provincia;
+import com.example.sistemas.casalinda.entidades.TipoId;
 
 import java.sql.CallableStatement;
 import java.sql.Connection;
@@ -63,7 +66,7 @@ public class ClienteActivity extends AppCompatActivity {
         ImageButton ok=findViewById(R.id.imbOk);
 
 
-        EditText cedula = findViewById(R.id.tiedtCedula);
+        EditText cedula = findViewById(R.id.edtCedula);
         TextView vcedula = findViewById(R.id.txtCedula);
         EditText nombre = findViewById(R.id.tiedtNombre);
         EditText apellido = findViewById(R.id.tiedtApellido);
@@ -339,7 +342,7 @@ tipo.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
     }
 
     private void desactivaTexto( ) {
-        EditText cedula=findViewById(R.id.tiedtCedula);
+        EditText cedula=findViewById(R.id.edtCedula);
         TextView vcedula=findViewById(R.id.txtCedula);
         EditText nombre=findViewById(R.id.tiedtNombre);
         EditText apellido =findViewById(R.id.tiedtApellido);
@@ -376,7 +379,7 @@ tipo.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
 
     }
     private void desactivaTextot( ) {
-        EditText cedula=findViewById(R.id.tiedtCedula);
+        EditText cedula=findViewById(R.id.edtCedula);
         TextView vcedula=findViewById(R.id.txtCedula);
         EditText nombre=findViewById(R.id.tiedtNombre);
         EditText apellido =findViewById(R.id.tiedtApellido);
@@ -457,7 +460,7 @@ tipo.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
 
 
     private void activarCampos(){
-    EditText cedula=findViewById(R.id.tiedtCedula);
+    EditText cedula=findViewById(R.id.edtCedula);
     TextView vcedula=findViewById(R.id.txtCedula);
     EditText nombre=findViewById(R.id.tiedtNombre);
     EditText apellido =findViewById(R.id.tiedtApellido);

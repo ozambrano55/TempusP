@@ -1,4 +1,4 @@
-package com.example.sistemas.casalinda;
+package com.example.sistemas.casalinda.entidades;
 
 public class Provincia {
     private String c_region,n_region;

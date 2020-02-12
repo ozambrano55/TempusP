@@ -1,10 +1,12 @@
-package com.example.sistemas.casalinda;
+package com.example.sistemas.casalinda.holder;
 
 import android.view.View;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
+
+import com.example.sistemas.casalinda.R;
 
 public class ViewHolderExistencia extends RecyclerView.ViewHolder {
     private TextView tvBodega, tvNombreB,tvExistencia,tvUbicacion;

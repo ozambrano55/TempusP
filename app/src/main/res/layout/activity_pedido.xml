@@ -22,10 +22,11 @@
                 android:id="@+id/btnBuscarC"
                 android:layout_width="40dp"
                 android:layout_height="40dp"
-                android:background="@android:drawable/ic_menu_search" />
+                android:background="@android:drawable/ic_menu_search"
+                android:onClick="rellenarNombre"/>
 
             <EditText
-                android:id="@+id/tiedtCedula"
+                android:id="@+id/edtCedula"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:ems="10"
@@ -75,7 +76,8 @@
                 android:id="@+id/btnBuscarp"
                 android:layout_width="40dp"
                 android:layout_height="40dp"
-                android:background="@android:drawable/ic_menu_search" />
+                android:background="@android:drawable/ic_menu_search"
+                android:onClick="rellenarProducto"/>
 
             <EditText
                 android:id="@+id/edtCodigo"
