@@ -410,7 +410,6 @@ public class PedidoEditar extends AppCompatActivity {
 
         }
     }
-
     public void consultarprecio(String c) {
         try {
             Precio precio = null;
@@ -437,8 +436,6 @@ public class PedidoEditar extends AppCompatActivity {
             Toast.makeText(getApplicationContext(), e.getMessage(), Toast.LENGTH_SHORT).show();
         }
     }
-
-
     private void obtenerLista() {
         listaPrecios = new ArrayList<String>();
         //listaPuntos.add("Seleccione");

@@ -93,9 +93,9 @@ public class PedidoActivity extends AppCompatActivity {
     int posicion;
     int REQUEST_CODE;
     Connection connect;
-
-    private final static int NOMBRE=0;
-    private final static int PRODUCTO=1;
+    public static final String  t="Parametro";
+    private final static int NOMBRE=1;
+    private final static int PRODUCTO=2;
 
     int SOLICITO_UTILIZAR_CAMARA;
     private ZXingScannerView vistaescaner;
@@ -184,22 +184,7 @@ public class PedidoActivity extends AppCompatActivity {
                 }
             }
         });
-        btnBuscarC.setOnClickListener(new View.OnClickListener(){
 
-            @Override
-            public void onClick(View v) {
-                REQUEST_CODE=1;
-                startActivityForResult(new Intent(getApplicationContext(),BuscaNombreActivity.class),REQUEST_CODE);
-            }
-        });
-        btnBuscarP.setOnClickListener(new View.OnClickListener(){
-
-            @Override
-            public void onClick(View v) {
-                REQUEST_CODE=2;
-                startActivityForResult(new Intent(getApplicationContext(),BuscaNombreActivity.class),REQUEST_CODE);
-            }
-        });
         btnNuevo.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -246,6 +231,7 @@ public class PedidoActivity extends AppCompatActivity {
                            etCodigo.setHint("Codigo No existe");
                            etCant.setText("");
                            etCant.setHint("Cant.");
+                           salirp("Producto no Existe","en punto de venta actual",1);
 
                        } else {
                            if (Double.valueOf(cant1) >=Double.valueOf(cant)) {
@@ -298,7 +284,8 @@ public class PedidoActivity extends AppCompatActivity {
                            }
                            else {
                                if (Double.valueOf(cant1) > 0) {
-                                   Toast.makeText(PedidoActivity.this, "Ingrese una cantidad Menor o igual a " + cant1, Toast.LENGTH_LONG).show();
+                                   //Toast.makeText(PedidoActivity.this, "Ingrese una cantidad Menor o igual a " + cant1, Toast.LENGTH_LONG).show();
+                                   salirp("Ingrese una cantidad menor o igual a "+cant1,"para registrar dicho codigo",1);
                                    cant="";
                                    etCant.setText("");
                                    etCant.setHint("Cant.");
@@ -306,7 +293,8 @@ public class PedidoActivity extends AppCompatActivity {
                                }
                                else
                                {
-                                   Toast.makeText(PedidoActivity.this, "No hay existencia, digite otro producto" , Toast.LENGTH_LONG).show();
+                                   //Toast.makeText(PedidoActivity.this, "No hay existencia, digite otro producto" , Toast.LENGTH_LONG).show();
+                                   salirp("Sin Existencias","Digite otro producto",1);
                                    etCodigo.setText("");
                                    etCodigo.setHint("Codigo No existe");
                                    etCant.setText("");
@@ -1064,6 +1052,7 @@ salir(e.getMessage());
         Intent i = new Intent(this, BuscaNombreActivity.class);
         // Iniciamos la segunda actividad, y le indicamos que la iniciamos
         // para rellenar el nombre:
+        i.putExtra(t,"1");
         startActivityForResult(i, NOMBRE);
     }
     // Método que se ejecuta al pulsar el botón btApellido
@@ -1071,6 +1060,7 @@ salir(e.getMessage());
         Intent i = new Intent(this, BuscaNombreActivity.class);
         // Iniciamos la segunda actividad, y le indicamos que la iniciamos
         // para rellenar el apellido:
+        i.putExtra(t,"2");
         startActivityForResult(i, PRODUCTO);
     }
 }

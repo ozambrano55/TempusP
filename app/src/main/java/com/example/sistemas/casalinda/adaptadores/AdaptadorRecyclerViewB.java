@@ -1,6 +1,5 @@
 package com.example.sistemas.casalinda.adaptadores;
 
-import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -9,22 +8,33 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.sistemas.casalinda.R;
-import com.example.sistemas.casalinda.Utilidades.claseGlobal;
 import com.example.sistemas.casalinda.entidades.Busca;
 import com.example.sistemas.casalinda.holder.ViewHolderBusca;
 import com.example.sistemas.casalinda.interfaz.InterfazClickRecyclerViewB;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class AdaptadorRecyclerViewB extends  RecyclerView.Adapter<ViewHolderBusca> {
     private List <Busca>buscar;
     private InterfazClickRecyclerViewB interfazClickRecyclerViewB;
-    public  List <Busca>getBusca(){return buscar;}
+public String A,B;
 
+    public AdaptadorRecyclerViewB(InterfazClickRecyclerViewB interfazClickRecyclerViewB) {
+        this.interfazClickRecyclerViewB=interfazClickRecyclerViewB;
+        this.buscar=new ArrayList<>();
+    }
+
+    public  List <Busca>getBusca(){return buscar;}
+    public void eliminarTodo(){
+        this.buscar.clear();
+        this.notifyDataSetChanged();
+    }
     public void agregarBusca(Busca busca){
         this.buscar.add(busca);
         this.notifyItemInserted(this.buscar.size());
     }
+
 
     @NonNull
     @Override
@@ -36,13 +46,15 @@ public class AdaptadorRecyclerViewB extends  RecyclerView.Adapter<ViewHolderBusc
         vista.setOnClickListener(v ->  {
 
                 interfazClickRecyclerViewB.onClick(v,buscar.get(viewHolder.getAdapterPosition()));
-                Context context=v.getContext();
+
                 int position=viewHolder.getAdapterPosition();
                 Busca busca=buscar.get(position);
 
                 try{
-                    claseGlobal objEscritura=new claseGlobal();
-                    objEscritura.setCodigo(busca.getCodigo());
+
+                   A=busca.getCodigo();
+                   B=busca.getNombre();
+
 
             }catch (Exception e){}
         });
@@ -55,7 +67,12 @@ public class AdaptadorRecyclerViewB extends  RecyclerView.Adapter<ViewHolderBusc
         holder.getCodigo().setText(String.valueOf(busca.getCodigo()));
         holder.getNombre().setText(String.valueOf(busca.getNombre()));
     }
-
+    @Override
+    public int getItemViewType(int position){
+            int viewType=1;
+            if(position==0)viewType=0;
+            return viewType;
+    }
     @Override
     public int getItemCount() {
         return this.buscar.size();
