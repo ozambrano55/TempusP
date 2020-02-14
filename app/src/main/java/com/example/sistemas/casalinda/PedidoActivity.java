@@ -100,6 +100,9 @@ public class PedidoActivity extends AppCompatActivity {
     int SOLICITO_UTILIZAR_CAMARA;
     private ZXingScannerView vistaescaner;
     EditText etCodigo,etNomb, etCant,etCedula;
+    Button btnAgregar, btnGrabar, btnEscaner, btnNuevo;
+    TextView textViewProforma, textViewFactura, textViewPedido,textViewCliente;
+    RecyclerView recyclerViewPedidos;
     final AdaptadorRecyclerView adaptadorRecyclerView=new AdaptadorRecyclerView(new InterfazClickRecyclerView() {
         @Override
         public void onClick(View v, Pedido p) {
@@ -122,23 +125,21 @@ public class PedidoActivity extends AppCompatActivity {
         //Permiso por el usuario
         ActivityCompat.requestPermissions(this,new String[]{Manifest.permission.CAMERA},SOLICITO_UTILIZAR_CAMARA);
 
-        final Button btnAgregar=findViewById(R.id.btnAgregar);
-        final Button btnGrabar= findViewById(R.id.btnGuardar);
-        final Button btnEscaner=findViewById(R.id.btnEscaner);
-        final Button btnNuevo=findViewById(R.id.btnNuevo);
-        final Button btnBuscarC=findViewById(R.id.btnBuscarC);
-        final Button btnBuscarP=findViewById(R.id.btnBuscarp);
-        RecyclerView recyclerViewPedidos =findViewById(R.id.pRecycler);
+        btnAgregar=findViewById(R.id.btnAgregar);
+        btnGrabar= findViewById(R.id.btnGuardar);
+        btnEscaner=findViewById(R.id.btnEscaner);
+        btnNuevo=findViewById(R.id.btnNuevo);
+        recyclerViewPedidos =findViewById(R.id.pRecycler);
 
         etCodigo=findViewById(R.id.edtCodigo);
         //etNomb=findViewById(R.id.edtNombre);
         etCant=findViewById(R.id.edtCant);
         etCedula=findViewById(R.id.edtCedula);
 
-        final TextView textViewProforma=findViewById(R.id.txtProforma);
-        final TextView textViewFactura=findViewById(R.id.txtFactura);
-        final  TextView textViewPedido=findViewById(R.id.txtPedido);
-        final TextView textViewCliente=findViewById(R.id.txtCliente);
+        textViewProforma=findViewById(R.id.txtProforma);
+        textViewFactura=findViewById(R.id.txtFactura);
+        textViewPedido=findViewById(R.id.txtPedido);
+        textViewCliente=findViewById(R.id.txtCliente);
 
         ItemTouchHelper itemTouchHelper=new ItemTouchHelper(createHelperCallback());
        // itemTouchHelper.attachToRecyclerView(recyclerViewPedidos);
@@ -193,21 +194,7 @@ public class PedidoActivity extends AppCompatActivity {
                         nuevo("Pedido sin guardar desea Guardarlos");
                     }
                     else {
-                        etCodigo.setText("");
-                        etCant.setText("");
-                        etCedula.setText("");
-                        etCedula.setEnabled(true);
-                        etCodigo.setEnabled(true);
-                        etCant.setEnabled(true);
-                        textViewCliente.setText("");
-                        textViewFactura.setText("");
-                        textViewPedido.setText("");
-                        textViewProforma.setText("");
-                        btnEscaner.setEnabled(true);
-                        btnAgregar.setEnabled(true);
-                        btnGrabar.setEnabled(true);
-
-                        adaptadorRecyclerView.eliminarTodo();
+                        nuevop();
                     }
                 }catch (Exception e){salir(e.getMessage());}
             }
@@ -324,40 +311,7 @@ public class PedidoActivity extends AppCompatActivity {
         btnGrabar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                try {
-                    claseGlobal objLectura=(claseGlobal)getApplicationContext();
-                    String Ced = etCedula.getText().toString();
-                    if (Ced.isEmpty()) {
-                        //Toast.makeText(PedidoActivity.this, "Digite cédula cliente", Toast.LENGTH_SHORT).show();
-                        salirp("Documento de identidad","Digite Cedula de cliente",1);
-                        return;
-                    } else {
-                        consultaCliente(Ced);
-                        if (c_cod_cliente.isEmpty()) {
-                            //Toast.makeText(PedidoActivity.this, "Cliente no Existe", Toast.LENGTH_SHORT).show();
-                            salirc("Cliente no Existe, Desea crearlo?");
-                        } if(adaptadorRecyclerView.getItemCount()== 0){
-                            salirp("Registro","No existen productos ingresados para generar un pedido, favor ingrese productos",1);
-                            }
-                                else {
-                                grabaPedido(objLectura.getCod_pedidos());
-                                textViewPedido.setText(N_Orden_Pedido);
-                                btnAgregar.setEnabled(false);
-                                btnEscaner.setEnabled(false);
-                                btnGrabar.setEnabled(false);
-                                etCedula.setEnabled(false);
-                                etCodigo.setEnabled(false);
-                                etCant.setEnabled(false);
-                                btnNuevo.setEnabled(true);
-                                recyclerViewPedidos.setEnabled(false);
-                                //adaptadorRecyclerView.eliminarTodo();
-                            }
-                    }
-                }
-
-                catch(Exception e){
-                    salir(e.getMessage());
-                }
+               grabar();
             }
         });
 
@@ -398,6 +352,61 @@ public class PedidoActivity extends AppCompatActivity {
         }catch (Exception e){
             //Toast.makeText(PedidoActivity.this,"ERROR ON RESUME:"+ e.getMessage(),Toast.LENGTH_LONG).show();
             }
+    }
+    public void nuevop(){
+        etCodigo.setText("");
+        etCant.setText("");
+        etCedula.setText("");
+        etCedula.setEnabled(true);
+        etCodigo.setEnabled(true);
+        etCant.setEnabled(true);
+        textViewCliente.setText("");
+        textViewFactura.setText("");
+        textViewPedido.setText("");
+        textViewProforma.setText("");
+        btnEscaner.setEnabled(true);
+        btnAgregar.setEnabled(true);
+        btnGrabar.setEnabled(true);
+
+        adaptadorRecyclerView.eliminarTodo();
+    }
+    public void grabar(){
+
+
+        try {
+            claseGlobal objLectura=(claseGlobal)getApplicationContext();
+            String Ced = etCedula.getText().toString();
+            if (Ced.isEmpty()) {
+                //Toast.makeText(PedidoActivity.this, "Digite cédula cliente", Toast.LENGTH_SHORT).show();
+                salirp("Documento de identidad","Digite Cedula de cliente",1);
+                return;
+            } else {
+                consultaCliente(Ced);
+                if (c_cod_cliente.isEmpty()) {
+                    //Toast.makeText(PedidoActivity.this, "Cliente no Existe", Toast.LENGTH_SHORT).show();
+                    salirc("Cliente no Existe, Desea crearlo?");
+                } if(adaptadorRecyclerView.getItemCount()== 0){
+                    salirp("Registro","No existen productos ingresados para generar un pedido, favor ingrese productos",1);
+                }
+                else {
+                    grabaPedido(objLectura.getCod_pedidos());
+                    textViewPedido.setText(N_Orden_Pedido);
+                    btnAgregar.setEnabled(false);
+                    btnEscaner.setEnabled(false);
+                    btnGrabar.setEnabled(false);
+                    etCedula.setEnabled(false);
+                    etCodigo.setEnabled(false);
+                    etCant.setEnabled(false);
+                    btnNuevo.setEnabled(true);
+                    recyclerViewPedidos.setEnabled(false);
+                    //adaptadorRecyclerView.eliminarTodo();
+                }
+            }
+        }
+
+        catch(Exception e){
+            salir(e.getMessage());
+        }
     }
     public void salirp(String t,String m,int a){
         LinearLayout linear = findViewById(R.id.linear_layout);
@@ -843,20 +852,22 @@ salir(e.getMessage());
         alerta.setMessage(e)
                 .setCancelable(false)
 
-                .setPositiveButton("Aceptar", new DialogInterface.OnClickListener() {
+                .setPositiveButton("Si", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                        dialog.cancel();
+                        grabar();
+                        nuevop();
+                        //dialog.cancel();
                         // finish();
                         //super.finish();
                     }
                 })
-               /* .setNegativeButton("No", new DialogInterface.OnClickListener() {
+               .setNegativeButton("No", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                        dialog.cancel();
+                        nuevop();
                     }
-                })*/;
+                });
         AlertDialog titulo=alerta.create();
         titulo.setTitle("Salida");
         titulo.show();
