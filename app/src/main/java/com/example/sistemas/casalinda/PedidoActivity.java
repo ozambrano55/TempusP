@@ -385,7 +385,7 @@ public class PedidoActivity extends AppCompatActivity {
                 if (c_cod_cliente.isEmpty()) {
                     //Toast.makeText(PedidoActivity.this, "Cliente no Existe", Toast.LENGTH_SHORT).show();
                     salirc("Cliente no Existe, Desea crearlo?");
-                } if(adaptadorRecyclerView.getItemCount()== 0){
+                } else if(adaptadorRecyclerView.getItemCount()== 0){
                     salirp("Registro","No existen productos ingresados para generar un pedido, favor ingrese productos",1);
                 }
                 else {

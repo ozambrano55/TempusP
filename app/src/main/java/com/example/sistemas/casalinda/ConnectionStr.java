@@ -18,7 +18,7 @@ String ip,db,DBUserNameStr,DBPasswordStr;
     public Connection connectionclasss()
     {
         ip = "190.110.214.14";
-        db = "siinf_casalinda_ec";
+        db = "siinf_casalinda_Ec";
         DBUserNameStr = "Android";
         DBPasswordStr = "p!65or@lna#ds0";
 

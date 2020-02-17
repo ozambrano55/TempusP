@@ -43,7 +43,7 @@ public class ClienteActivity extends AppCompatActivity {
     String d0, d1,city;
    // String cedula,nombre,apellido,telefono,correo,direccion;
     Button nuevo,cancelar,guarda, editar, salir;
-
+    EditText cedula,nombre,apellido,telefono,correo,direccion;
     private boolean isFirstTime=true;
     public String tp;
     @Override
@@ -66,13 +66,13 @@ public class ClienteActivity extends AppCompatActivity {
         ImageButton ok=findViewById(R.id.imbOk);
 
 
-        EditText cedula = findViewById(R.id.edtCedula);
+         cedula = findViewById(R.id.edtCedula);
         TextView vcedula = findViewById(R.id.txtCedula);
-        EditText nombre = findViewById(R.id.tiedtNombre);
-        EditText apellido = findViewById(R.id.tiedtApellido);
-        EditText telefono = findViewById(R.id.tiedtTelefono);
-        EditText correo = findViewById(R.id.tiedtCorreo);
-        EditText direccion = findViewById(R.id.tiedtDireccion);
+         nombre = findViewById(R.id.tiedtNombre);
+         apellido = findViewById(R.id.tiedtApellido);
+         telefono = findViewById(R.id.tiedtTelefono);
+         correo = findViewById(R.id.tiedtCorreo);
+         direccion = findViewById(R.id.tiedtDireccion);
 
 
         recibirdatos();
@@ -102,7 +102,7 @@ public class ClienteActivity extends AppCompatActivity {
                 tipo.setEnabled(false);
                 ok.setEnabled(false);
                 pais.setEnabled(false);
-
+                desactivaTextot();
 
                 break;
         }
@@ -181,7 +181,7 @@ public class ClienteActivity extends AppCompatActivity {
 
                               switch (tp) {
                                   case "CI":
-                                      if (verificarcedula(cedula.getText().toString())) {
+                                      if (ValidarCedula(cedula.getText().toString())) {
                                           grabaCliente(ce, no, ap, tp, di, city, te, co);
                                           desactivaTexto();
                                       } else {
@@ -244,14 +244,23 @@ tipo.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
 
                 @Override
                 public void afterTextChanged(Editable s) {
+
                    if (tp.equals("CI")) {
+                       try{
                        String c;
                        c = cedula.getText().toString();
-                       if (String.valueOf(verificarcedula(c)).equals("true")) {
+                        if (c.length()==10) {
+                            if (String.valueOf(ValidarCedula(c)).equals("true")) {
 
-                           vcedula.setText("Cédula Correcta");
-                       } else {
-                           vcedula.setText("Cédula Incorrecta");
+                                vcedula.setText("Cédula Correcta");
+                            } else {
+                                vcedula.setText("Cédula Incorrecta");
+                            }
+                        }else {
+                            vcedula.setText("");
+                        }
+                        }catch (Exception e){
+                           //salir(e.getMessage());
                        }
                    }
                 }
@@ -303,7 +312,7 @@ tipo.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
     public void recibirdatos(){
         Bundle extras=getIntent().getExtras();
         d0=extras.getString("d0");
-       d1=extras.getString("d1");
+        d1=extras.getString("d1");
     }
 
     private void grabaCliente(String ce, String no, String ap, String t, String di, String c, String te, String co) {
@@ -405,13 +414,24 @@ tipo.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
         provincia.setEnabled(false);
         ciudad.setEnabled(false);
 
-        cedula.setText("");
-        vcedula.setText("");
-        nombre.setText("");
-        apellido.setText("");
-        telefono.setText("");
-        correo.setText("");
-        direccion.setText("");
+        if (d0=="0"){
+            cedula.setText("");
+            vcedula.setText("");
+            nombre.setText("");
+            apellido.setText("");
+            telefono.setText("");
+            correo.setText("");
+            direccion.setText("");
+        }else if(d0=="1"){
+           // cedula.setText("");
+            vcedula.setText("");
+            nombre.setText("");
+            apellido.setText("");
+            telefono.setText("");
+            correo.setText("");
+            direccion.setText("");
+        }
+
 
 
     }
@@ -460,13 +480,7 @@ tipo.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
 
 
     private void activarCampos(){
-    EditText cedula=findViewById(R.id.edtCedula);
-    TextView vcedula=findViewById(R.id.txtCedula);
-    EditText nombre=findViewById(R.id.tiedtNombre);
-    EditText apellido =findViewById(R.id.tiedtApellido);
-    EditText telefono=findViewById(R.id.tiedtTelefono);
-    EditText correo =findViewById(R.id.tiedtCorreo);
-    EditText direccion=findViewById(R.id.tiedtDireccion);
+
 
     Spinner tipo=findViewById(R.id.spTipo);
     Spinner pais=findViewById(R.id.spPais);
@@ -483,6 +497,7 @@ tipo.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
    // pais.setEnabled(true);
     provincia.setEnabled(true);
     ciudad.setEnabled(true);
+    guarda.setEnabled(true);
     }
 
 
@@ -664,7 +679,7 @@ tipo.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
         //super.onBackPressed();
 
     }
-    //valida cedula
+ /*   //valida cedula
     public boolean verificarcedula (String cedula){
         int total=0;
         int tamonoLonguitudCedula=10;
@@ -694,4 +709,92 @@ tipo.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
         }
         return false;
     }
+    //Función booleana para validar cédula
+    */
+  /*  public boolean ValidaCedula(String cedula) {
+
+        //Declaración de variables a usar
+        boolean valida=false;
+        byte primeros2, tercerD, Dverificador, multiplicar, suma=0, aux;
+        byte []digitos=new byte[9];
+
+        //Primer try comprueba la longitud de cadena que no sea diferente de 10
+        try {
+            if(cedula.length()!=10) {
+                //DatosIncorrectos("La c\u00e9dula debe contener 10 d\u00edgitos sin espacios<--\n");}
+
+                //Segundo try comprueba que todos los dígitos sean numéricos
+                try {
+
+                    //Transformación de cada carácter a un byte
+                    Dverificador = Byte.parseByte("" + cedula.charAt(9));
+                    primeros2 = Byte.parseByte(cedula.substring(0, 2));
+                    tercerD = Byte.parseByte("" + cedula.charAt(2));
+                    for (byte i = 0; i < 9; i++) {
+                        digitos[i] = Byte.parseByte("" + cedula.charAt(i));
+                    }
+                    //Verificar segundo dígito
+                    if (primeros2 >= 1 & primeros2 <= 24) {
+                        if (tercerD <= 6) {
+                            //Módulo 10 multiplicar digitos impares por 2
+                            for (byte i = 0; i < 9; i = (byte) (i + 2)) {
+                                multiplicar = (byte) (digitos[i] * 2);
+                                if (multiplicar > 9) {
+                                    multiplicar = (byte) (multiplicar - 9);
+                                }
+                                suma = (byte) (suma + multiplicar);
+                            }
+                            //Módulo 10 multiplicar digitos pares por 1
+                            for (byte i = 1; i < 9; i = (byte) (i + 2)) {
+                                multiplicar = (byte) (digitos[i] * 1);
+                                suma = (byte) (suma + multiplicar);
+                            }
+                            //Obtener la decena superior de la suma
+                            aux = suma;
+                            while (aux % 10 != 0) {
+                                aux = (byte) (aux + 1);
+                            }
+                            suma = (byte) (aux - suma);
+                            //Comprobar la suma con dígito verificador (Último Dígito)
+                            if (suma != Dverificador) {
+                                // throw new DatosIncorrectos("Revise nuevamente los d\u00edgitos de su c\u00e9dula<--\n");
+                            }
+                            valida = true;
+                        }
+                    }
+                } catch (Exception e) {
+                    System.out.println("La c\u00e9dula debe contener solo d\u00edgitos num\u00e9ricos<--\n");
+                }
+            }
+        }catch(Exception e) {
+            System.out.println(e.getMessage());
+        }
+        return valida;
+    }
+*/
+    public boolean ValidarCedula(String cedula){
+        int c, suma=0, acum, resta=0;
+
+        for (int i = 0; i < cedula.length()-1; i++) {
+            c=Integer.parseInt(cedula.charAt(i)+"");
+            if(i%2==0){
+                c=c*2;
+                if(c>9){
+                    c=c-9;
+                }
+            }
+
+            suma=suma+c;
+        }
+
+        if (suma%10 !=0) {
+            acum=((suma/10)+1)*10;
+            resta=acum-suma;
+        }
+
+        int ultimo=Integer.parseInt(cedula.charAt(9)+"");
+
+        return ultimo == resta;
+    }
+
 }
