@@ -653,65 +653,65 @@ salir(e.getMessage());
                 {
 
                     CallableStatement call = connect.prepareCall("{call sp_insertPedidoDeta (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)}");
-                call.setInt(1, 3);//C_Empresa
-                call.setString(2, N_Orden_Pedido);//N_Orden_Pedido
-                call.setString(3, adaptadorRecyclerView.getPedidos().get(a).getTipo());//T_Elemento
-                call.setString(4, adaptadorRecyclerView.getPedidos().get(a).getCodigo());//C_Item
-                call.setString(5, adaptadorRecyclerView.getPedidos().get(a).getColor());//C_Despieze2
-                call.setDouble(6,  Float.parseFloat( adaptadorRecyclerView.getPedidos().get(a).getCantidad()));//V_Cantidad_Orden
-                call.setDouble(7, Float.parseFloat( String.valueOf((double)Math.round(Double.parseDouble( adaptadorRecyclerView.getPedidos().get(a).getUnitario())*100d)/100)));//V_Valor_Und
-                call.setDouble(8, 0);//V_Por_Descuento
-                call.setDouble(9, 12);//V_Por_Impuesto
-                call.setString(10, F_Orden);//F_Recep_Espe_Item
-                call.setString(11, F_Orden);//F_Recep_Real_Item
-                call.setFloat(12, 0);//V_Cant_Recepcion
-                call.setFloat(13,0);//V_Cant_Devolucion
-                call.setString(14,  adaptadorRecyclerView.getPedidos().get(a).getCuv()) ;//C_Und_Venta
-                call.setDouble(15, Float.parseFloat( adaptadorRecyclerView.getPedidos().get(a).getCantidad()));//Cant_Desp1
-                call.setDouble(16, 0);//Cant_Desp2
-                call.setDouble(17,0);//Cant_Desp3
-                call.setDouble(18, 0);//Cant_Desp4
-                call.setDouble(19, 0);//Cant_Desp5
-                call.setDouble(20,0);//Cant_Desp6
-                call.setDouble(21, 0);//Cant_Desp7
-                call.setDouble(22, 0);//Cant_Desp8
-                call.setDouble(23, 0);//Cant_Desp9
-                call.setDouble(24, 0);//Cant_Desp10
-                call.setDouble(25, 0);//Cant_Remis1
-                call.setDouble(26, 0);//Cant_Remis2
-                call.setDouble(27, 0);//Cant_Remis3
-                call.setDouble(28, 0);//Cant_Remis4
-                call.setDouble(29, 0);//Cant_Remis5
-                call.setDouble(30,0);//Cant_Remis6
-                call.setDouble(31, 0);//Cant_Remis7
-                call.setDouble(32, 0);//Cant_Remis8
-                call.setDouble(33, 0);//Cant_Remis9
-                call.setDouble(34,0);//Cant_Remis10
-                call.setDouble(35, 0);//Cant_Devol1
-                call.setDouble(36, 0);//Cant_Devol2
-                call.setDouble(37, 0);//Cant_Devol3
-                call.setDouble(38, 0);//Cant_Devol4
-                call.setDouble(39, 0);///Cant_Devol5
-                call.setDouble(40,0);///Cant_Devol6
-                call.setDouble(41,0);///Cant_Devol7
-                call.setDouble(42, 0);///Cant_Devol8
-                call.setDouble(43,0);///Cant_Devol9
-                call.setDouble(44, 0);///Cant_Devol10
-                call.setDouble(45, 0);///V_Por_Descuento_Pie
-                call.setDouble(46,  Float.parseFloat( String.valueOf((double)Math.round(Double.parseDouble( adaptadorRecyclerView.getPedidos().get(a).getTotal())*100d)/100)));//Vlr_Bruto
-                call.setDouble(47, 0);///Vlr_Dcto
-                call.setDouble(48,  Float.parseFloat( String.valueOf((double)Math.round(Double.parseDouble( adaptadorRecyclerView.getPedidos().get(a).getTotal())*100d)/100)));//Vlr_Neto
-                call.setDouble(49, 0);///Vlr_Dcto_Pie
-                call.setDouble(50,  Float.parseFloat( String.valueOf((double)Math.round(Double.parseDouble( adaptadorRecyclerView.getPedidos().get(a).getTotal())*100d)/100)));//Vlr_Neto_Final
-                call.setDouble(51,  Float.parseFloat( String.valueOf((double)Math.round((Double.parseDouble( adaptadorRecyclerView.getPedidos().get(a).getTotal())*0.12)*100d)/100)));///Vlr_Impto
-                call.setDouble(52,  Float.parseFloat( String.valueOf((double)Math.round((Double.parseDouble( adaptadorRecyclerView.getPedidos().get(a).getTotal())*1.12)*100d)/100)));///Vlr_Total
-                call.setString(53, adaptadorRecyclerView.getPedidos().get(a).getBod());//C_Bodega
-                call.setString(54, "S");//Estado_Disponible
-                call.setString(55, "1");//C_Cat_Activo
-                call.setString(56, "1");//C_Cat_Item
-                call.setDouble(57,  Float.parseFloat(String.valueOf((double)Math.round((Double.parseDouble( adaptadorRecyclerView.getPedidos().get(a).getPvp())*100d)/100))));//V_Pvp
-                call.setString (58,adaptadorRecyclerView.getPedidos().get(a).getPon());//costoPonderado
-                call.execute();
+                    call.setInt(1, 3);//C_Empresa
+                    call.setString(2, N_Orden_Pedido);//N_Orden_Pedido
+                    call.setString(3, adaptadorRecyclerView.getPedidos().get(a).getTipo());//T_Elemento
+                    call.setString(4, adaptadorRecyclerView.getPedidos().get(a).getCodigo());//C_Item
+                    call.setString(5, adaptadorRecyclerView.getPedidos().get(a).getColor());//C_Despieze2
+                    call.setDouble(6,  Float.parseFloat( adaptadorRecyclerView.getPedidos().get(a).getCantidad()));//V_Cantidad_Orden
+                    call.setDouble(7, Float.parseFloat( String.valueOf((double)Math.round(Double.parseDouble( adaptadorRecyclerView.getPedidos().get(a).getUnitario())*100d)/100)));//V_Valor_Und
+                    call.setDouble(8, 0);//V_Por_Descuento
+                    call.setDouble(9, 12);//V_Por_Impuesto
+                    call.setString(10, F_Orden);//F_Recep_Espe_Item
+                    call.setString(11, F_Orden);//F_Recep_Real_Item
+                    call.setFloat(12, 0);//V_Cant_Recepcion
+                    call.setFloat(13,0);//V_Cant_Devolucion
+                    call.setString(14,  adaptadorRecyclerView.getPedidos().get(a).getCuv()) ;//C_Und_Venta
+                    call.setDouble(15, Float.parseFloat( adaptadorRecyclerView.getPedidos().get(a).getCantidad()));//Cant_Desp1
+                    call.setDouble(16, 0);//Cant_Desp2
+                    call.setDouble(17,0);//Cant_Desp3
+                    call.setDouble(18, 0);//Cant_Desp4
+                    call.setDouble(19, 0);//Cant_Desp5
+                    call.setDouble(20,0);//Cant_Desp6
+                    call.setDouble(21, 0);//Cant_Desp7
+                    call.setDouble(22, 0);//Cant_Desp8
+                    call.setDouble(23, 0);//Cant_Desp9
+                    call.setDouble(24, 0);//Cant_Desp10
+                    call.setDouble(25, 0);//Cant_Remis1
+                    call.setDouble(26, 0);//Cant_Remis2
+                    call.setDouble(27, 0);//Cant_Remis3
+                    call.setDouble(28, 0);//Cant_Remis4
+                    call.setDouble(29, 0);//Cant_Remis5
+                    call.setDouble(30,0);//Cant_Remis6
+                    call.setDouble(31, 0);//Cant_Remis7
+                    call.setDouble(32, 0);//Cant_Remis8
+                    call.setDouble(33, 0);//Cant_Remis9
+                    call.setDouble(34,0);//Cant_Remis10
+                    call.setDouble(35, 0);//Cant_Devol1
+                    call.setDouble(36, 0);//Cant_Devol2
+                    call.setDouble(37, 0);//Cant_Devol3
+                    call.setDouble(38, 0);//Cant_Devol4
+                    call.setDouble(39, 0);///Cant_Devol5
+                    call.setDouble(40,0);///Cant_Devol6
+                    call.setDouble(41,0);///Cant_Devol7
+                    call.setDouble(42, 0);///Cant_Devol8
+                    call.setDouble(43,0);///Cant_Devol9
+                    call.setDouble(44, 0);///Cant_Devol10
+                    call.setDouble(45, 0);///V_Por_Descuento_Pie
+                    call.setDouble(46,  Float.parseFloat( String.valueOf((double)Math.round(Double.parseDouble( adaptadorRecyclerView.getPedidos().get(a).getTotal())*100d)/100)));//Vlr_Bruto
+                    call.setDouble(47, 0);///Vlr_Dcto
+                    call.setDouble(48,  Float.parseFloat( String.valueOf((double)Math.round(Double.parseDouble( adaptadorRecyclerView.getPedidos().get(a).getTotal())*100d)/100)));//Vlr_Neto
+                    call.setDouble(49, 0);///Vlr_Dcto_Pie
+                    call.setDouble(50,  Float.parseFloat( String.valueOf((double)Math.round(Double.parseDouble( adaptadorRecyclerView.getPedidos().get(a).getTotal())*100d)/100)));//Vlr_Neto_Final
+                    call.setDouble(51,  Float.parseFloat( String.valueOf((double)Math.round((Double.parseDouble( adaptadorRecyclerView.getPedidos().get(a).getTotal())*0.12)*100d)/100)));///Vlr_Impto
+                    call.setDouble(52,  Float.parseFloat( String.valueOf((double)Math.round((Double.parseDouble( adaptadorRecyclerView.getPedidos().get(a).getTotal())*1.12)*100d)/100)));///Vlr_Total
+                    call.setString(53, adaptadorRecyclerView.getPedidos().get(a).getBod());//C_Bodega
+                    call.setString(54, "S");//Estado_Disponible
+                    call.setString(55, "1");//C_Cat_Activo
+                    call.setString(56, "1");//C_Cat_Item
+                    call.setDouble(57,  Float.parseFloat(String.valueOf((double)Math.round((Double.parseDouble( adaptadorRecyclerView.getPedidos().get(a).getPvp())*100d)/100))));//V_Pvp
+                    call.setString (58,adaptadorRecyclerView.getPedidos().get(a).getPon());//costoPonderado
+                    call.execute();
 
                 }
 
