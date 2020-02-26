@@ -129,7 +129,7 @@ public class LoginActivity extends AppCompatActivity  {
                         if(rs.next())
                         {
                             //ConnectionResult = "Bienvenido " + rs.getString(2);
-                           // c_funcionario=rs.getString(1);
+                            // c_funcionario=rs.getString(1);
                             //funcionario=rs.getString(2);
                             c_punto_venta=rs.getString(3);
                             //punto=rs.getString(4);

@@ -247,11 +247,11 @@ public class PedidoActivity extends AppCompatActivity {
 
                                        adaptadorRecyclerView.actualizarPedido(pa, new Pedido(tip,col, cod, nomb, cant, unit, total,pvp,cuv,bod,pon));
                                    }
-                                   else
-                                   {
-                                       Toast.makeText(getApplicationContext(),"No se puede facturar la cantidad digitada de "+cant+" Solo existen: "+cant1+" unidades.",Toast.LENGTH_LONG).show();
-                                       //zaadaptadorRecyclerView.actualizarPedido(pa, new Pedido(cod, nomb, cant1, unit, total));
-                                   }
+                                       else
+                                       {
+                                           Toast.makeText(getApplicationContext(),"No se puede facturar la cantidad digitada de "+cant+" Solo existen: "+cant1+" unidades.",Toast.LENGTH_LONG).show();
+                                           //zaadaptadorRecyclerView.actualizarPedido(pa, new Pedido(cod, nomb, cant1, unit, total));
+                                       }
 
                                    textViewProforma.setText(String.valueOf((double) Math.round(((adaptadorRecyclerView.tot)) * 100d) / 100));
                                    textViewFactura.setText(String.valueOf((double) Math.round((((adaptadorRecyclerView.tot)) * 1.12) * 100d) / 100));
@@ -387,20 +387,20 @@ public class PedidoActivity extends AppCompatActivity {
                     salirc("Cliente no Existe, Desea crearlo?");
                 } else if(adaptadorRecyclerView.getItemCount()== 0){
                     salirp("Registro","No existen productos ingresados para generar un pedido, favor ingrese productos",1);
-                }
-                else {
-                    grabaPedido(objLectura.getCod_pedidos());
-                    textViewPedido.setText(N_Orden_Pedido);
-                    btnAgregar.setEnabled(false);
-                    btnEscaner.setEnabled(false);
-                    btnGrabar.setEnabled(false);
-                    etCedula.setEnabled(false);
-                    etCodigo.setEnabled(false);
-                    etCant.setEnabled(false);
-                    btnNuevo.setEnabled(true);
-                    recyclerViewPedidos.setEnabled(false);
-                    //adaptadorRecyclerView.eliminarTodo();
-                }
+                        }
+                        else {
+                            grabaPedido(objLectura.getCod_pedidos());
+                            textViewPedido.setText(N_Orden_Pedido);
+                            btnAgregar.setEnabled(false);
+                            btnEscaner.setEnabled(false);
+                            btnGrabar.setEnabled(false);
+                            etCedula.setEnabled(false);
+                            etCodigo.setEnabled(false);
+                            etCant.setEnabled(false);
+                            btnNuevo.setEnabled(true);
+                            recyclerViewPedidos.setEnabled(false);
+                            //adaptadorRecyclerView.eliminarTodo();
+                        }
             }
         }
 
