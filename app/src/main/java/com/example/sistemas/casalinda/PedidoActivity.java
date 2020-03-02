@@ -41,7 +41,7 @@ import java.util.TimeZone;
 import me.dm7.barcodescanner.zxing.ZXingScannerView;
 
 public class PedidoActivity extends AppCompatActivity {
-    String  tip,cod,nomb,cant,cant1,unit,total,col,pvp,cuv,bod,pon;
+    String  tip,cod,nomb,cant,cant1,unit,total,col,pvp,cuv,bod,pon,c;
     //region  variables clientes
     String c_tipo_tercero,c_cod_cliente,cliente, direccion,rciudad, ciudad,tel1,fax,c_vendedor,c_director,c_lider,c_zona_fac,c_lista_precios,c_codicion_pago,c_dcto_financiero;
    //endregion
@@ -185,7 +185,30 @@ public class PedidoActivity extends AppCompatActivity {
                 }
             }
         });
+        etCant.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
 
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                c=etCant.getText().toString();
+
+                if  (c.equals("")|| Double.parseDouble(c)<=0){
+                    btnAgregar.setEnabled(false);
+                    salirp("Ingrese una cantidad","Mayor a 0",0);
+                }
+                else{
+                    btnAgregar.setEnabled(true);
+                }
+            }
+        });
         btnNuevo.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

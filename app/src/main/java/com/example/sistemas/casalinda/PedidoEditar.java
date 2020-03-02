@@ -39,6 +39,7 @@ import static com.example.sistemas.casalinda.adaptadores.AdaptadorRecyclerView.C
 import static com.example.sistemas.casalinda.adaptadores.AdaptadorRecyclerView.COL;
 import static com.example.sistemas.casalinda.adaptadores.AdaptadorRecyclerView.CUV;
 import static com.example.sistemas.casalinda.adaptadores.AdaptadorRecyclerView.NOM;
+import static com.example.sistemas.casalinda.adaptadores.AdaptadorRecyclerView.PON;
 import static com.example.sistemas.casalinda.adaptadores.AdaptadorRecyclerView.POS;
 import static com.example.sistemas.casalinda.adaptadores.AdaptadorRecyclerView.PVP;
 import static com.example.sistemas.casalinda.adaptadores.AdaptadorRecyclerView.TIP;
@@ -55,10 +56,12 @@ public class PedidoEditar extends AppCompatActivity {
     private String cantidad;
     private String cantidadN;
     private String unitario;
+    private String pon;
     private String total;
     private String inventario;
     private String pvp;
     private String cuv;
+    private Double c,u,p;
 
     String bodega, nbodega, unidades,ubicacion;
     /*final AdaptadorRecyclerViewE adaptadorRecyclerViewE=new AdaptadorRecyclerViewE(new InterfazClickRecyclerViewE() {
@@ -98,6 +101,8 @@ public class PedidoEditar extends AppCompatActivity {
     ArrayList<Precio>preciosList;
     Connection connect;
 
+    private boolean initializedView = false;
+
 
 
     @Override
@@ -115,7 +120,7 @@ public class PedidoEditar extends AppCompatActivity {
         total=String.valueOf( (double)Math.round ((Double.valueOf(getIntent().getStringExtra(TOT)))*100d)/100) ;
         pvp=getIntent().getStringExtra(PVP);
         cuv=getIntent().getStringExtra(CUV);
-
+        pon=getIntent().getStringExtra(PON);
         tvCodigo= findViewById(R.id.tvCod);
         tvCodigo.setText(codigo);
 
@@ -160,21 +165,22 @@ public class PedidoEditar extends AppCompatActivity {
             ArrayAdapter<String> adaptador;
             adaptador=new ArrayAdapter<String>(this,android.R.layout.simple_dropdown_item_1line,listaPrecios);
             spUni.setAdapter(adaptador);
-
-          //  int seleccion=spUni.getSelectedItemPosition();
-            // ca=adaptador.getItem(seleccion).toString();
-
             spUni.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
                 @Override
                 public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                    unitario=(String) spUni.getItemAtPosition(position);
-                    unitario=getNumeros(unitario);
-                    edUnit.setText(unitario);
-                    cantidad=edCant.getText().toString();
-                    unitario=edUnit.getText().toString();
+                    if (initializedView == false) { initializedView = true; }
+                    else {
 
-                    total=String.valueOf(Double.valueOf(cantidad)* Double.valueOf(unitario));
-                    tvTotal.setText( total);
+
+                        unitario = (String) spUni.getItemAtPosition(position);
+                        unitario = getNumeros(unitario);
+                        edUnit.setText(unitario);
+                        cantidad = edCant.getText().toString();
+                        unitario = edUnit.getText().toString();
+
+                        total = String.valueOf(Double.valueOf(cantidad) * Double.valueOf(unitario));
+                        tvTotal.setText(total);
+                    }
                 }
 
                 @Override
@@ -197,23 +203,26 @@ public class PedidoEditar extends AppCompatActivity {
                 @Override
                 public void afterTextChanged(Editable s) {
                     try{
-                        cantidad=edCant.getText().toString();
-                        if(cantidad.equals("")){
-                            cantidad="0";
-                        }
+
                         unitario=edUnit.getText().toString();
-                        if(unitario.equals("")){
-                            unitario="0";
+                        if(unitario.equals("")||Double.parseDouble(unitario)<Double.parseDouble(pon)){
+                            Toast.makeText(getApplicationContext(), "Ingrese un valor unitario Mayor a o igual a " +pon, Toast.LENGTH_LONG).show();
+                            btAceptar.setEnabled(false);
+                            btEliminar.setEnabled(false);
+                            tvTotal.setText("0");
                         }
-                        total=String.valueOf((double)Math.round ((Double.valueOf(cantidad)* Double.valueOf(unitario))*100d)/100);
-                        tvTotal.setText( total);
+                        else {
+                            btAceptar.setEnabled(true);
+                            btEliminar.setEnabled(true);
+                            total = String.valueOf((double) Math.round((Double.valueOf(cantidad) * Double.valueOf(unitario)) * 100d) / 100);
+                            tvTotal.setText(total);
+                        }
                     }
                     catch (Exception e){
                         salir(e.getMessage());
                     }
                 }
             });
-
             edCant.addTextChangedListener(new TextWatcher() {
                 @Override
                 public void beforeTextChanged(CharSequence s, int start, int count, int after) {
@@ -238,24 +247,37 @@ public class PedidoEditar extends AppCompatActivity {
 
                 @Override
                 public void afterTextChanged(Editable s) {
-                    try{
-                        cantidadN=edCant.getText().toString();
-                        if(cantidadN.equals("")){
-                            cantidadN="0";
-                        }
-                        unitario=edUnit.getText().toString();
-                        if(unitario.equals("")){
-                            unitario="0";
-                        }
-                        if (Double.parseDouble( cantidadN) <= Double.parseDouble( inventario)) {
-                            total = String.valueOf((double) Math.round((Double.valueOf(cantidadN) * Double.valueOf(unitario)) * 100d) / 100);
-                            tvTotal.setText(total);
-                        }
-                        else{
-                            Toast.makeText(getApplicationContext(),"Se Asigna la cantidad maxima disponible" + inventario+" no se puede facturar la cantidad digitada de "+cantidadN,Toast.LENGTH_LONG).show();
-                            edCant.setText(inventario);
-                            total = String.valueOf((double) Math.round((Double.valueOf(cantidadN) * Double.valueOf(unitario)) * 100d) / 100);
-                            tvTotal.setText(total);
+                    try {
+                        cantidadN = edCant.getText().toString();
+                        if (cantidadN.equals("") || Double.parseDouble(cantidadN) <= 0) {
+                            cantidadN = "0";
+                            Toast.makeText(getApplicationContext(), "Ingrese Cantidad Mayor a 0", Toast.LENGTH_LONG).show();
+                            btAceptar.setEnabled(false);
+                            btEliminar.setEnabled(false);
+                            tvTotal.setText("0");
+                            //edCant.setText("");
+                        } else {
+                            btAceptar.setEnabled(true);
+                            btEliminar.setEnabled(true);
+                            unitario = edUnit.getText().toString();
+                            c = Double.parseDouble(cantidadN);
+                            u = Double.parseDouble(unitario);
+                            p = Double.parseDouble(pon);
+                            if ((unitario.equals("")) || (u <= p)) {
+                                Toast.makeText(getApplicationContext(), "Se Costo Ponderado " + p + " no se puede facturar por debajo del costo ", Toast.LENGTH_LONG).show();
+                                unitario = pon;
+                                edUnit.setText(unitario);
+                            } else {
+                                if (Double.parseDouble(cantidadN) <= Double.parseDouble(inventario)) {
+                                    total = String.valueOf((double) Math.round((Double.valueOf(cantidadN) * Double.valueOf(unitario)) * 100d) / 100);
+                                    tvTotal.setText(total);
+                                } else {
+                                    Toast.makeText(getApplicationContext(), "Se Asigna la cantidad maxima disponible" + inventario + " no se puede facturar la cantidad digitada de " + cantidadN, Toast.LENGTH_LONG).show();
+                                    edCant.setText(inventario);
+                                    total = String.valueOf((double) Math.round((Double.valueOf(cantidadN) * Double.valueOf(unitario)) * 100d) / 100);
+                                    tvTotal.setText(total);
+                                }
+                            }
                         }
                     }
                     catch (Exception e){
