@@ -10,11 +10,11 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.sistemas.casalinda.InterfazClickRecyclerView;
-import com.example.sistemas.casalinda.Pedido;
+import com.example.sistemas.casalinda.interfaz.InterfazClickRecyclerView;
+import com.example.sistemas.casalinda.entidades.Pedido;
 import com.example.sistemas.casalinda.PedidoEditar;
 import com.example.sistemas.casalinda.R;
-import com.example.sistemas.casalinda.ViewHolderPedido;
+import com.example.sistemas.casalinda.holder.ViewHolderPedido;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -40,7 +40,7 @@ public class AdaptadorRecyclerView  extends RecyclerView.Adapter<ViewHolderPedid
     //public String cod,nomb;
     public String totString="0";
     //EditText can,to;
-   // private com.example.sistemas.casalinda.ViewHolderPedido holder;
+   // private com.example.sistemas.casalinda.holder.ViewHolderPedido holder;
     //private int position;
 
     public AdaptadorRecyclerView(){
@@ -126,6 +126,7 @@ public class AdaptadorRecyclerView  extends RecyclerView.Adapter<ViewHolderPedid
                 intent.putExtra(COD,pedido.getCodigo());
                 intent.putExtra(NOM,pedido.getNombre());
                 intent.putExtra(CAN,pedido.getCantidad());
+                intent.putExtra(UNI,pedido.getUnitario());
                 intent.putExtra(TOT,pedido.getTotal());
                 intent.putExtra(PVP,pedido.getPvp());
                 intent.putExtra(CUV,pedido.getCuv());

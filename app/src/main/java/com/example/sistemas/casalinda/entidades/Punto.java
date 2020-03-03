@@ -1,4 +1,4 @@
-package com.example.sistemas.casalinda;
+package com.example.sistemas.casalinda.entidades;
 
 public class Punto {
     private String c_punto;

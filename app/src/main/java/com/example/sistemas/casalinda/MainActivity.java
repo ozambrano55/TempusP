@@ -128,6 +128,8 @@ public class MainActivity extends AppCompatActivity
         } else if (id == R.id.nav_cliente) {
             //fm.beginTransaction().replace(R.id.contenedor, new cartera()).commit();
             Intent intent= new Intent( MainActivity.this, ClienteActivity.class );
+            intent.putExtra("d0","0");
+            intent.putExtra("d1","" );
             startActivity(intent);
         } else if (id == R.id.nav_Pedidos) {
             //fm.beginTransaction().replace(R.id.contenedor, new Pedido()).commit();

@@ -1,6 +1,4 @@
-package com.example.sistemas.casalinda;
-
-import android.media.MediaRouter;
+package com.example.sistemas.casalinda.entidades;
 
 public class Existencia {
     private String c_bodega;

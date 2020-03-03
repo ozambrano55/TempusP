@@ -30,14 +30,23 @@
                 android:id="@+id/textView41"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_gravity="center"
                 android:gravity="center"
                 android:text="TIPO DE IDENTIFICACION"
-                android:textSize="18sp" />
+                android:textSize="16sp" />
 
             <Spinner
                 android:id="@+id/spTipo"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content" />
+                android:layout_width="180dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center" />
+
+            <ImageButton
+                android:id="@+id/imbOk"
+                style="@android:style/Widget.Material.Light.Button.Borderless.Small"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:srcCompat="@drawable/ic_aceptar" />
 
         </TableRow>
 
@@ -48,7 +57,7 @@
             android:hint="Cedula/RUC/Pasaporte">
 
             <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/tiedtCedula"
+                android:id="@+id/edtCedula"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content" />
 
@@ -211,7 +220,7 @@
         android:orientation="horizontal">
 
         <Button
-            android:id="@+id/button9"
+            android:id="@+id/btnNuevo"
             style="@android:style/Widget.Material.Light.Button.Borderless.Small"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -220,7 +229,25 @@
             android:text="Nuevo" />
 
         <Button
-            android:id="@+id/button6"
+            android:id="@+id/btnCancelar"
+            style="@android:style/Widget.Material.Light.Button.Borderless.Small"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:drawableTop="@drawable/ic_des50"
+            android:text="Cancelar" />
+
+        <Button
+            android:id="@+id/btnGuardar"
+            style="@android:style/Widget.Material.Light.Button.Borderless.Small"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:drawableTop="@drawable/ic_guarda50"
+            android:text="Guardar" />
+
+        <Button
+            android:id="@+id/btnEditar"
             style="@android:style/Widget.Material.Light.Button.Borderless.Small"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -228,7 +255,7 @@
             android:text="Editar" />
 
         <Button
-            android:id="@+id/button7"
+            android:id="@+id/btnSalir"
             style="@android:style/Widget.Material.Light.Button.Borderless.Small"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"

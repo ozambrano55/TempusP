@@ -1,4 +1,4 @@
-package com.example.sistemas.casalinda;
+package com.example.sistemas.casalinda.entidades;
 
 public class Ciudad {
     String  c_ciudad,n_ciudad;

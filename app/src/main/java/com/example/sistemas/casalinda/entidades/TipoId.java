@@ -1,4 +1,4 @@
-package com.example.sistemas.casalinda;
+package com.example.sistemas.casalinda.entidades;
 
 public class TipoId {
     String c_tipo_identi, d_tipo_identi;
