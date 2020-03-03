@@ -185,30 +185,7 @@ public class PedidoActivity extends AppCompatActivity {
                 }
             }
         });
-        etCant.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
 
-            }
-
-            @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
-
-            }
-
-            @Override
-            public void afterTextChanged(Editable s) {
-                c=etCant.getText().toString();
-
-                if  (c.equals("")|| Double.parseDouble(c)<=0){
-                    btnAgregar.setEnabled(false);
-                    salirp("Ingrese una cantidad","Mayor a 0",0);
-                }
-                else{
-                    btnAgregar.setEnabled(true);
-                }
-            }
-        });
         btnNuevo.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -235,84 +212,90 @@ public class PedidoActivity extends AppCompatActivity {
                        salirp("Producto","Rellene los campos",1);
                        return;
                    }else {
-                       consultarproducto(codigo,Integer.parseInt(ca) );
-                       if (cod.isEmpty() | cant.isEmpty()) {
-                           etCodigo.setText("");
-                           etCodigo.setHint("Codigo No existe");
-                           etCant.setText("");
-                           etCant.setHint("Cant.");
-                           salirp("Producto no Existe","en punto de venta actual",1);
+                            if (Double.parseDouble(ca) <=0.00)
+                            {
+                                salirp("Ponga una cantidad","mayor a 0",1);
+                            }
+                            else{
+                                   consultarproducto(codigo,Integer.parseInt(ca) );
+                                   if (cod.isEmpty() | cant.isEmpty()) {
+                                       etCodigo.setText("");
+                                       etCodigo.setHint("Codigo No existe");
+                                       etCant.setText("");
+                                       etCant.setHint("Cant.");
+                                       salirp("Producto no Existe","en punto de venta actual",1);
 
-                       } else {
-                           if (Double.valueOf(cant1) >=Double.valueOf(cant)) {
-                               int registros =adaptadorRecyclerView.getItemCount();
-                                int a=0;
-                                int d=0;
-                                int pa=0;
-                                Double c=0.00;
-                                Double u=0.00;
-                               while ( a<registros)
-                               {
-                                   dato=adaptadorRecyclerView.getPedidos().get(a).getCodigo();
-                                   c=Double.parseDouble( adaptadorRecyclerView.getPedidos().get(a).getCantidad());
-                                   u=Double.parseDouble(adaptadorRecyclerView.getPedidos().get(a).getUnitario());
-                                   //dato=adaptadorRecyclerView;
-                                    if(cod.equals( dato)){
-                                        d=d+1;
-                                        pa=a;
-                                        cant=String.valueOf(c+Integer.parseInt(cant)) ;
-                                        total=String.valueOf( (double)Math.round ((u*Double.valueOf(cant))*100d)/100) ;
-                                    }
-                                       a++;
-                               }
-                               if (d==1){
-                                   if (Double.valueOf( cant)<=Double.valueOf( cant1)){
+                                   } else {
+                                       if (Double.valueOf(cant1) >=Double.valueOf(cant)) {
+                                           int registros =adaptadorRecyclerView.getItemCount();
+                                            int a=0;
+                                            int d=0;
+                                            int pa=0;
+                                            Double c=0.00;
+                                            Double u=0.00;
+                                           while ( a<registros)
+                                           {
+                                               dato=adaptadorRecyclerView.getPedidos().get(a).getCodigo();
+                                               c=Double.parseDouble( adaptadorRecyclerView.getPedidos().get(a).getCantidad());
+                                               u=Double.parseDouble(adaptadorRecyclerView.getPedidos().get(a).getUnitario());
+                                               //dato=adaptadorRecyclerView;
+                                                if(cod.equals( dato)){
+                                                    d=d+1;
+                                                    pa=a;
+                                                    cant=String.valueOf(c+Integer.parseInt(cant)) ;
+                                                    total=String.valueOf( (double)Math.round ((u*Double.valueOf(cant))*100d)/100) ;
+                                                }
+                                                   a++;
+                                           }
+                                           if (d==1){
+                                               if (Double.valueOf( cant)<=Double.valueOf( cant1)){
 
-                                       adaptadorRecyclerView.actualizarPedido(pa, new Pedido(tip,col, cod, nomb, cant, unit, total,pvp,cuv,bod,pon));
-                                   }
-                                       else
-                                       {
-                                           Toast.makeText(getApplicationContext(),"No se puede facturar la cantidad digitada de "+cant+" Solo existen: "+cant1+" unidades.",Toast.LENGTH_LONG).show();
-                                           //zaadaptadorRecyclerView.actualizarPedido(pa, new Pedido(cod, nomb, cant1, unit, total));
+                                                   adaptadorRecyclerView.actualizarPedido(pa, new Pedido(tip,col, cod, nomb, cant, unit, total,pvp,cuv,bod,pon));
+                                               }
+                                                   else
+                                                   {
+                                                       Toast.makeText(getApplicationContext(),"No se puede facturar la cantidad digitada de "+cant+" Solo existen: "+cant1+" unidades.",Toast.LENGTH_LONG).show();
+                                                       //zaadaptadorRecyclerView.actualizarPedido(pa, new Pedido(cod, nomb, cant1, unit, total));
+                                                   }
+
+                                               textViewProforma.setText(String.valueOf((double) Math.round(((adaptadorRecyclerView.tot)) * 100d) / 100));
+                                               textViewFactura.setText(String.valueOf((double) Math.round((((adaptadorRecyclerView.tot)) * 1.12) * 100d) / 100));
+                                               etCodigo.requestFocus();
+                                           }else {
+                                               adaptadorRecyclerView.agregarPedido(new Pedido(tip,col, cod, nomb, cant, unit, total,pvp,cuv,bod,pon));
+                                               etCodigo.requestFocus();
+                                                }
+                                           //cod=adaptadorRecyclerView.getPedidos().get(i ).getCodigo()
+
+                                           etCodigo.setText("");
+                                           etCodigo.setHint("Código de Producto");
+                                           etCant.setText("");
+                                           etCant.setHint("Cant.");
+                                           textViewProforma.setText(String.valueOf((double) Math.round(((adaptadorRecyclerView.tot)) * 100d) / 100));
+                                           textViewFactura.setText(String.valueOf((double) Math.round((((adaptadorRecyclerView.tot)) * 1.12) * 100d) / 100));
                                        }
-
-                                   textViewProforma.setText(String.valueOf((double) Math.round(((adaptadorRecyclerView.tot)) * 100d) / 100));
-                                   textViewFactura.setText(String.valueOf((double) Math.round((((adaptadorRecyclerView.tot)) * 1.12) * 100d) / 100));
-                                   etCodigo.requestFocus();
-                               }else {
-                                   adaptadorRecyclerView.agregarPedido(new Pedido(tip,col, cod, nomb, cant, unit, total,pvp,cuv,bod,pon));
-                                   etCodigo.requestFocus();
-                                    }
-                               //cod=adaptadorRecyclerView.getPedidos().get(i ).getCodigo()
-
-                               etCodigo.setText("");
-                               etCodigo.setHint("Código de Producto");
-                               etCant.setText("");
-                               etCant.setHint("Cant.");
-                               textViewProforma.setText(String.valueOf((double) Math.round(((adaptadorRecyclerView.tot)) * 100d) / 100));
-                               textViewFactura.setText(String.valueOf((double) Math.round((((adaptadorRecyclerView.tot)) * 1.12) * 100d) / 100));
-                           }
-                           else {
-                               if (Double.valueOf(cant1) > 0) {
-                                   //Toast.makeText(PedidoActivity.this, "Ingrese una cantidad Menor o igual a " + cant1, Toast.LENGTH_LONG).show();
-                                   salirp("Ingrese una cantidad menor o igual a "+cant1,"para registrar dicho codigo",1);
-                                   cant="";
-                                   etCant.setText("");
-                                   etCant.setHint("Cant.");
-                                   etCant.requestFocus();
-                               }
-                               else
-                               {
-                                   //Toast.makeText(PedidoActivity.this, "No hay existencia, digite otro producto" , Toast.LENGTH_LONG).show();
-                                   salirp("Sin Existencias","Digite otro producto",1);
-                                   etCodigo.setText("");
-                                   etCodigo.setHint("Codigo No existe");
-                                   etCant.setText("");
-                                   etCant.setHint("Cant.");
-                                   etCodigo.requestFocus();
-                               }
-                           }
-                       }
+                                       else {
+                                           if (Double.valueOf(cant1) > 0) {
+                                               //Toast.makeText(PedidoActivity.this, "Ingrese una cantidad Menor o igual a " + cant1, Toast.LENGTH_LONG).show();
+                                               salirp("Ingrese una cantidad menor o igual a "+cant1,"para registrar dicho codigo",1);
+                                               cant="";
+                                               etCant.setText("");
+                                               etCant.setHint("Cant.");
+                                               etCant.requestFocus();
+                                           }
+                                           else
+                                           {
+                                               //Toast.makeText(PedidoActivity.this, "No hay existencia, digite otro producto" , Toast.LENGTH_LONG).show();
+                                               salirp("Sin Existencias","Digite otro producto",1);
+                                               etCodigo.setText("");
+                                               etCodigo.setHint("Codigo No existe");
+                                               etCant.setText("");
+                                               etCant.setHint("Cant.");
+                                               etCodigo.requestFocus();
+                                           }
+                                       }
+                                   }
+                   }
                    }
                } catch (Exception e){
                    Toast.makeText(PedidoActivity.this,"Error ONCREATE: "+e.getMessage() ,Toast.LENGTH_LONG).show();
