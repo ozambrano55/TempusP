@@ -20,7 +20,7 @@ String ip,db,DBUserNameStr,DBPasswordStr;
         ip = "190.110.214.14";
         db = "siinf_casalinda_Ec";
         DBUserNameStr = "Android";
-        DBPasswordStr = "p!65or@lna#ds0";
+        DBPasswordStr = "p!65or@lna#dso";
 
         StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
         StrictMode.setThreadPolicy(policy);

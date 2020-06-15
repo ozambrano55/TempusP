@@ -74,12 +74,7 @@ public class PedidoEditar extends AppCompatActivity {
 
     });
 */
-    final AdaptadorRecyclerView adaptadorRecyclerView=new AdaptadorRecyclerView(new InterfazClickRecyclerView() {
-        @Override
-        public void onClick(View v, Pedido p) {
 
-        }
-    });
    final AdaptadorRecyclerViewE adaptadorRecyclerViewE=new AdaptadorRecyclerViewE(new InterfazClickRecyclerViewE() {
         @Override
         public void onClick(View vw, Existencia e) {
@@ -110,7 +105,9 @@ public class PedidoEditar extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
+
+        try{
+            super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_pedido_editar);
 
         posicion=getIntent().getStringExtra(POS);
@@ -145,7 +142,7 @@ public class PedidoEditar extends AppCompatActivity {
         btAceptar=findViewById(R.id.btAceptar);
         btEliminar=findViewById(R.id.btEliminar);
 
-        try{
+
             consultarExistencias(codigo);
             consultarprecio(codigo);
             consultarproducto(codigo);

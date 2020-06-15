@@ -105,16 +105,10 @@ public class PedidoActivity extends AppCompatActivity {
     RecyclerView recyclerViewPedidos;
     final AdaptadorRecyclerView adaptadorRecyclerView=new AdaptadorRecyclerView(new InterfazClickRecyclerView() {
         @Override
+
         public void onClick(View v, Pedido p) {
-            //Toast.makeText(PedidoActivity.this, "Daniel es "+p.toString(),Toast.LENGTH_LONG).show();
-            try{
-                //adaptadorRecyclerView.actualizarPedido( Integer.valueOf(posicion),new Pedido(cod, nomb, cant, unit, total));
-            }catch (Exception e){
-               // Toast.makeText(PedidoActivity.this,"Error: "+e.getMessage(),Toast.LENGTH_LONG ).show();
-            }
-
+           // Toast.makeText(PedidoActivity.this, "Daniel es "+p.toString(),Toast.LENGTH_LONG).show();
         }
-
     });
     @Override
 

@@ -10,12 +10,14 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.sistemas.casalinda.ConnectionStr;
 import com.example.sistemas.casalinda.interfaz.InterfazClickRecyclerView;
 import com.example.sistemas.casalinda.entidades.Pedido;
 import com.example.sistemas.casalinda.PedidoEditar;
 import com.example.sistemas.casalinda.R;
 import com.example.sistemas.casalinda.holder.ViewHolderPedido;
 
+import java.sql.Connection;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -106,41 +108,51 @@ public class AdaptadorRecyclerView  extends RecyclerView.Adapter<ViewHolderPedid
     @Override
 
     public ViewHolderPedido onCreateViewHolder(@NonNull ViewGroup parent, int viewType){
-        //Esta es la vista del layout que muestra los detalles del peddio (layout_recycler.xml)
-
-        View vista= LayoutInflater.from(parent.getContext()).inflate(R.layout.layout_recycler,parent,false);
-        //Crear el viewholder a partir de esta visa. Mira la calse ViewHolderPedido si quieres
-        final ViewHolderPedido viewHolder=new ViewHolderPedido(vista);
-        //En el clic de la vista (el pedido en general) invocamos a nuestra interfaz personalizada pasandole la vista y el pedido
-
-        vista.setOnClickListener(v -> {
-
-            interfazClickRecyclerView.onClick(v,pedidos.get(viewHolder.getAdapterPosition()));
-            Context context =v.getContext();
-            int position=viewHolder.getAdapterPosition();
-            Pedido pedido=pedidos.get(position);
-            try{Intent intent =new Intent(v.getContext(), PedidoEditar.class);
-                intent.putExtra(POS,String.valueOf(position) );
-                intent.putExtra(TIP,pedido.getTipo());
-                intent.putExtra(COL,pedido.getColor());
-                intent.putExtra(COD,pedido.getCodigo());
-                intent.putExtra(NOM,pedido.getNombre());
-                intent.putExtra(CAN,pedido.getCantidad());
-                intent.putExtra(UNI,pedido.getUnitario());
-                intent.putExtra(TOT,pedido.getTotal());
-                intent.putExtra(PVP,pedido.getPvp());
-                intent.putExtra(CUV,pedido.getCuv());
-                intent.putExtra(BOD,pedido.getBod());
-                intent.putExtra(PON,pedido.getPon());
-                context.startActivity(intent);
-
-            }catch (Exception e){
-                Toast.makeText( v.getContext(), e.getMessage(), Toast.LENGTH_SHORT).show();
-            }
-
-        });
 
 
+            //Esta es la vista del layout que muestra los detalles del peddio (layout_recycler.xml)
+
+            View vista = LayoutInflater.from(parent.getContext()).inflate(R.layout.layout_recycler, parent, false);
+            //Crear el viewholder a partir de esta visa. Mira la calse ViewHolderPedido si quieres
+            final ViewHolderPedido viewHolder = new ViewHolderPedido(vista);
+            //En el clic de la vista (el pedido en general) invocamos a nuestra interfaz personalizada pasandole la vista y el pedido
+        try {
+            vista.setOnClickListener(v -> {
+
+                interfazClickRecyclerView.onClick(v, pedidos.get(viewHolder.getAdapterPosition()));
+                Context context = v.getContext();
+                int position = viewHolder.getAdapterPosition();
+                Pedido pedido = pedidos.get(position);
+                try {
+                    Intent intent = new Intent(v.getContext(), PedidoEditar.class);
+                    intent.putExtra(POS, String.valueOf(position));
+                    intent.putExtra(TIP, pedido.getTipo());
+                    intent.putExtra(COL, pedido.getColor());
+                    intent.putExtra(COD, pedido.getCodigo());
+                    intent.putExtra(NOM, pedido.getNombre());
+                    intent.putExtra(CAN, pedido.getCantidad());
+                    intent.putExtra(UNI, pedido.getUnitario());
+                    intent.putExtra(TOT, pedido.getTotal());
+                    intent.putExtra(PVP, pedido.getPvp());
+                    intent.putExtra(CUV, pedido.getCuv());
+                    intent.putExtra(BOD, pedido.getBod());
+                    intent.putExtra(PON, pedido.getPon());
+                    context.startActivity(intent);
+
+                } catch (Exception e) {
+                    Toast.makeText(v.getContext(), e.getMessage(), Toast.LENGTH_SHORT).show();
+                }
+
+            });
+
+
+
+        }
+
+        catch (Exception e)
+        {
+            //Toast.makeText(vie, e.getMessage(), Toast.LENGTH_SHORT).show();
+        }
         return viewHolder;
     }
 
