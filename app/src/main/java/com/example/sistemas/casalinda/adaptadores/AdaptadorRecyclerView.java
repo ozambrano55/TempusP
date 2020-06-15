@@ -35,7 +35,8 @@ public class AdaptadorRecyclerView  extends RecyclerView.Adapter<ViewHolderPedid
     public static final String CUV="Cuv";
     public static final String BOD="Bodega";
     public static final String PON="Pon";
-
+    String ConnectionResult = "";
+    Connection connect;
     private List<Pedido> pedidos;
     private InterfazClickRecyclerView interfazClickRecyclerView;
     public Double tot,un;
@@ -124,34 +125,38 @@ public class AdaptadorRecyclerView  extends RecyclerView.Adapter<ViewHolderPedid
                 int position = viewHolder.getAdapterPosition();
                 Pedido pedido = pedidos.get(position);
                 try {
-                    Intent intent = new Intent(v.getContext(), PedidoEditar.class);
-                    intent.putExtra(POS, String.valueOf(position));
-                    intent.putExtra(TIP, pedido.getTipo());
-                    intent.putExtra(COL, pedido.getColor());
-                    intent.putExtra(COD, pedido.getCodigo());
-                    intent.putExtra(NOM, pedido.getNombre());
-                    intent.putExtra(CAN, pedido.getCantidad());
-                    intent.putExtra(UNI, pedido.getUnitario());
-                    intent.putExtra(TOT, pedido.getTotal());
-                    intent.putExtra(PVP, pedido.getPvp());
-                    intent.putExtra(CUV, pedido.getCuv());
-                    intent.putExtra(BOD, pedido.getBod());
-                    intent.putExtra(PON, pedido.getPon());
-                    context.startActivity(intent);
-
+                    ConnectionStr conStr=new ConnectionStr();
+                    connect=conStr.connectionclasss();
+                    if (connect == null)
+                    {
+                        ConnectionResult = "Revisar tu conexion a internet!";
+                        Toast.makeText(vista.getContext(),ConnectionResult,Toast.LENGTH_LONG).show();
+                    }
+                    else {
+                        Intent intent = new Intent(v.getContext(), PedidoEditar.class);
+                        intent.putExtra(POS, String.valueOf(position));
+                        intent.putExtra(TIP, pedido.getTipo());
+                        intent.putExtra(COL, pedido.getColor());
+                        intent.putExtra(COD, pedido.getCodigo());
+                        intent.putExtra(NOM, pedido.getNombre());
+                        intent.putExtra(CAN, pedido.getCantidad());
+                        intent.putExtra(UNI, pedido.getUnitario());
+                        intent.putExtra(TOT, pedido.getTotal());
+                        intent.putExtra(PVP, pedido.getPvp());
+                        intent.putExtra(CUV, pedido.getCuv());
+                        intent.putExtra(BOD, pedido.getBod());
+                        intent.putExtra(PON, pedido.getPon());
+                        context.startActivity(intent);
+                    }
                 } catch (Exception e) {
                     Toast.makeText(v.getContext(), e.getMessage(), Toast.LENGTH_SHORT).show();
                 }
-
             });
-
-
-
-        }
+            }
 
         catch (Exception e)
         {
-            //Toast.makeText(vie, e.getMessage(), Toast.LENGTH_SHORT).show();
+            Toast.makeText(vista.getContext(), e.getMessage(), Toast.LENGTH_SHORT).show();
         }
         return viewHolder;
     }

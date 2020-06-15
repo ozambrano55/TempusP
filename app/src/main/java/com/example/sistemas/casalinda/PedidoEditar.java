@@ -89,7 +89,7 @@ public class PedidoEditar extends AppCompatActivity {
     TextView tvTotal;
     Button btAceptar;
     Button btEliminar;
-
+    String ConnectionResult = "";
 
 
     //ArrayList<Existencia> existenciaList;
@@ -106,251 +106,250 @@ public class PedidoEditar extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
-        try{
-            super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_pedido_editar);
+        try {
+            ConnectionStr conStr = new ConnectionStr();
+            connect = conStr.connectionclasss();
+            if (connect == null) {
+                ConnectionResult = "Revisar tu conexion a internet!";
+                Toast.makeText(getApplicationContext(), ConnectionResult, Toast.LENGTH_LONG).show();
+            } else {
+                super.onCreate(savedInstanceState);
+                setContentView(R.layout.activity_pedido_editar);
+                posicion = getIntent().getStringExtra(POS);
+                tipo = getIntent().getStringExtra(TIP);
+                color = getIntent().getStringExtra(COL);
+                codigo = getIntent().getStringExtra(COD);
+                nombre = getIntent().getStringExtra(NOM);
+                cantidad = getIntent().getStringExtra(CAN);
+                unitario = getIntent().getStringExtra(UNI);
+                total = String.valueOf((double) Math.round((Double.valueOf(getIntent().getStringExtra(TOT))) * 100d) / 100);
+                pvp = getIntent().getStringExtra(PVP);
+                cuv = getIntent().getStringExtra(CUV);
+                pon = getIntent().getStringExtra(PON);
+                b = getIntent().getStringExtra(BOD);
+                tvCodigo = findViewById(R.id.tvCod);
+                tvCodigo.setText(codigo);
 
-        posicion=getIntent().getStringExtra(POS);
-        tipo=getIntent().getStringExtra(TIP);
-        color=getIntent().getStringExtra(COL);
-        codigo=getIntent().getStringExtra(COD);
-        nombre=getIntent().getStringExtra(NOM);
-        cantidad=getIntent().getStringExtra(CAN);
-        unitario=getIntent().getStringExtra(UNI);
-        total=String.valueOf( (double)Math.round ((Double.valueOf(getIntent().getStringExtra(TOT)))*100d)/100) ;
-        pvp=getIntent().getStringExtra(PVP);
-        cuv=getIntent().getStringExtra(CUV);
-        pon=getIntent().getStringExtra(PON);
-        b=getIntent().getStringExtra(BOD);
-        tvCodigo= findViewById(R.id.tvCod);
-        tvCodigo.setText(codigo);
+                tvNombre = findViewById(R.id.tvNom);
+                tvNombre.setText(nombre);
 
-        tvNombre= findViewById(R.id.tvNom);
-        tvNombre.setText(nombre);
+                edCant = findViewById(R.id.edtCan);
+                edCant.setText(cantidad);
 
-        edCant= findViewById(R.id.edtCan);
-        edCant.setText(cantidad);
+                edUnit = findViewById(R.id.edtUni);
+                edUnit.setText(unitario);
 
-        edUnit=findViewById(R.id.edtUni);
-        edUnit.setText(unitario);
+                tvTotal = findViewById(R.id.tvTot);
+                tvTotal.setText(total);
 
-        tvTotal= findViewById(R.id.tvTot);
-        tvTotal.setText(total);
+                RecyclerView recyclerViewExistencias = findViewById(R.id.eRecycler);
 
-        RecyclerView recyclerViewExistencias=findViewById(R.id.eRecycler);
-
-        btAceptar=findViewById(R.id.btAceptar);
-        btEliminar=findViewById(R.id.btEliminar);
-
-
-            consultarExistencias(codigo);
-            consultarprecio(codigo);
-            consultarproducto(codigo);
-
-
-            //ItemTouchHelper itemTouchHelper=new ItemTouchHelper(createHelperCallback());
-           // itemTouchHelper.attachToRecyclerView(recyclerViewExistencias);
-            //Configuramos cómo se va a organizar las vistas dentro del RecyclerView; simplemente con un LinearLayout para que
-            //aparezcan una debajo de otra
-            LinearLayoutManager linearLayoutManager=new LinearLayoutManager(PedidoEditar.this  );
-            recyclerViewExistencias.setLayoutManager(linearLayoutManager);
-            //La línea que divide los elementos
-            recyclerViewExistencias.addItemDecoration(new DividerItemDecoration(PedidoEditar.this ,LinearLayoutManager.VERTICAL));
-            //El adaptador que se encarga de toda la lógica
-            recyclerViewExistencias.setAdapter(adaptadorRecyclerViewE);
-            //adaptadorRecyverView.agregarPedido(new Pedido());
+                btAceptar = findViewById(R.id.btAceptar);
+                btEliminar = findViewById(R.id.btEliminar);
 
 
-
-            spUni= findViewById(R.id.spnUni);
-            ArrayAdapter<String> adaptador;
-            adaptador=new ArrayAdapter<String>(this,android.R.layout.simple_dropdown_item_1line,listaPrecios);
-            spUni.setAdapter(adaptador);
-            spUni.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-                @Override
-                public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                    if (initializedView == false) { initializedView = true; }
-                    else {
+                consultarExistencias(codigo);
+                consultarprecio(codigo);
+                consultarproducto(codigo);
 
 
-                        unitario = (String) spUni.getItemAtPosition(position);
-                        unitario = getNumeros(unitario);
-                        edUnit.setText(unitario);
-                        cantidad = edCant.getText().toString();
-                        unitario = edUnit.getText().toString();
+                //ItemTouchHelper itemTouchHelper=new ItemTouchHelper(createHelperCallback());
+                // itemTouchHelper.attachToRecyclerView(recyclerViewExistencias);
+                //Configuramos cómo se va a organizar las vistas dentro del RecyclerView; simplemente con un LinearLayout para que
+                //aparezcan una debajo de otra
+                LinearLayoutManager linearLayoutManager = new LinearLayoutManager(PedidoEditar.this);
+                recyclerViewExistencias.setLayoutManager(linearLayoutManager);
+                //La línea que divide los elementos
+                recyclerViewExistencias.addItemDecoration(new DividerItemDecoration(PedidoEditar.this, LinearLayoutManager.VERTICAL));
+                //El adaptador que se encarga de toda la lógica
+                recyclerViewExistencias.setAdapter(adaptadorRecyclerViewE);
+                //adaptadorRecyverView.agregarPedido(new Pedido());
 
-                        total = String.valueOf(Double.valueOf(cantidad) * Double.valueOf(unitario));
-                        tvTotal.setText(total);
-                    }
-                }
 
-                @Override
-                public void onNothingSelected(AdapterView<?> parent) {
+                spUni = findViewById(R.id.spnUni);
+                ArrayAdapter<String> adaptador;
+                adaptador = new ArrayAdapter<String>(this, android.R.layout.simple_dropdown_item_1line, listaPrecios);
+                spUni.setAdapter(adaptador);
+                spUni.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+                    @Override
+                    public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                        if (initializedView == false) {
+                            initializedView = true;
+                        } else {
 
-                }
-            });
 
-            edUnit.addTextChangedListener(new TextWatcher() {
-                @Override
-                public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+                            unitario = (String) spUni.getItemAtPosition(position);
+                            unitario = getNumeros(unitario);
+                            edUnit.setText(unitario);
+                            cantidad = edCant.getText().toString();
+                            unitario = edUnit.getText().toString();
 
-                }
-
-                @Override
-                public void onTextChanged(CharSequence s, int start, int before, int count) {
-
-                }
-
-                @Override
-                public void afterTextChanged(Editable s) {
-                    try{
-
-                        unitario=edUnit.getText().toString();
-                        if(unitario.equals("")||Double.parseDouble(unitario)<Double.parseDouble(pon)){
-                            unitario="0";
-                            //mensaje("Ingrese un Valor unitario", "Mayor o igual " +pon,0);
-                            //Toast.makeText(getApplicationContext(), "Ingrese un valor unitario Mayor a o igual a " +pon, Toast.LENGTH_LONG).show();
-                            //btAceptar.setEnabled(false);
-                            //btEliminar.setEnabled(false);
-                            tvTotal.setText("0");
-                        }
-                        else {
-                           // btAceptar.setEnabled(true);
-                            //btEliminar.setEnabled(true);
-                            total = String.valueOf((double) Math.round((Double.valueOf(cantidad) * Double.valueOf(unitario)) * 100d) / 100);
+                            total = String.valueOf(Double.valueOf(cantidad) * Double.valueOf(unitario));
                             tvTotal.setText(total);
                         }
                     }
-                    catch (Exception e){
-                        salir(e.getMessage());
+
+                    @Override
+                    public void onNothingSelected(AdapterView<?> parent) {
+
                     }
-                }
-            });
-            edCant.addTextChangedListener(new TextWatcher() {
-                @Override
-                public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+                });
 
-                }
+                edUnit.addTextChangedListener(new TextWatcher() {
+                    @Override
+                    public void beforeTextChanged(CharSequence s, int start, int count, int after) {
 
-                @Override
-                public void onTextChanged(CharSequence s, int start, int before, int count) {
+                    }
 
-                }
+                    @Override
+                    public void onTextChanged(CharSequence s, int start, int before, int count) {
 
-                @Override
-                public void afterTextChanged(Editable s) {
-                    try {
-                        cantidadN = edCant.getText().toString();
-                        if (cantidadN.equals("") || Double.parseDouble(cantidadN) <= 0) {
-                            cantidadN = "0";
-                            //Toast.makeText(getApplicationContext(), "Ingrese Cantidad Mayor a 0 ó menor o igual a "+ca, Toast.LENGTH_LONG).show();
-                            mensaje("Ingrese una cantidad mayor a 0","ó menor o igual a "+ca,0);
-                            btAceptar.setEnabled(false);
-                            btEliminar.setEnabled(false);
-                            tvTotal.setText("0");
-                            //edCant.setText("");
-                        } else {
-                            btAceptar.setEnabled(true);
-                            btEliminar.setEnabled(true);
+                    }
+
+                    @Override
+                    public void afterTextChanged(Editable s) {
+                        try {
+
                             unitario = edUnit.getText().toString();
-                            cn = Double.parseDouble(cantidadN);
-                            u = Double.parseDouble(unitario);
-                            p = Double.parseDouble(pon);
-                            if ((unitario.equals("")) || (u <= p)) {
-                                //Toast.makeText(getApplicationContext(), "Se Costo Ponderado " + p + " no se puede facturar por debajo del costo ", Toast.LENGTH_LONG).show();
-                                unitario = pon;
-                                edUnit.setText(unitario);
+                            if (unitario.equals("") || Double.parseDouble(unitario) < Double.parseDouble(pon)) {
+                                unitario = "0";
+                                //mensaje("Ingrese un Valor unitario", "Mayor o igual " +pon,0);
+                                //Toast.makeText(getApplicationContext(), "Ingrese un valor unitario Mayor a o igual a " +pon, Toast.LENGTH_LONG).show();
+                                //btAceptar.setEnabled(false);
+                                //btEliminar.setEnabled(false);
+                                tvTotal.setText("0");
                             } else {
-                                if (cn<= Double.parseDouble(inventario)) {
-                                    total = String.valueOf((double) Math.round((Double.valueOf(cantidadN) * Double.valueOf(unitario)) * 100d) / 100);
-                                    tvTotal.setText(total);
+                                // btAceptar.setEnabled(true);
+                                //btEliminar.setEnabled(true);
+                                total = String.valueOf((double) Math.round((Double.valueOf(cantidad) * Double.valueOf(unitario)) * 100d) / 100);
+                                tvTotal.setText(total);
+                            }
+                        } catch (Exception e) {
+                            salir(e.getMessage());
+                        }
+                    }
+                });
+                edCant.addTextChangedListener(new TextWatcher() {
+                    @Override
+                    public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+                    }
+
+                    @Override
+                    public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+                    }
+
+                    @Override
+                    public void afterTextChanged(Editable s) {
+                        try {
+                            cantidadN = edCant.getText().toString();
+                            if (cantidadN.equals("") || Double.parseDouble(cantidadN) <= 0) {
+                                cantidadN = "0";
+                                //Toast.makeText(getApplicationContext(), "Ingrese Cantidad Mayor a 0 ó menor o igual a "+ca, Toast.LENGTH_LONG).show();
+                                mensaje("Ingrese una cantidad mayor a 0", "ó menor o igual a " + ca, 0);
+                                btAceptar.setEnabled(false);
+                                btEliminar.setEnabled(false);
+                                tvTotal.setText("0");
+                                //edCant.setText("");
+                            } else {
+                                btAceptar.setEnabled(true);
+                                btEliminar.setEnabled(true);
+                                unitario = edUnit.getText().toString();
+                                cn = Double.parseDouble(cantidadN);
+                                u = Double.parseDouble(unitario);
+                                p = Double.parseDouble(pon);
+                                if ((unitario.equals("")) || (u <= p)) {
+                                    //Toast.makeText(getApplicationContext(), "Se Costo Ponderado " + p + " no se puede facturar por debajo del costo ", Toast.LENGTH_LONG).show();
+                                    unitario = pon;
+                                    edUnit.setText(unitario);
                                 } else {
-                                    mensaje("Se Asigna la cantidad máxima disponible"+inventario,"no se puede facturar la cantidad "+cantidadN,0);
-                                    //Toast.makeText(getApplicationContext(), "Se Asigna la cantidad maxima disponible" + inventario + " no se puede facturar la cantidad digitada de " + cantidadN, Toast.LENGTH_LONG).show();
-                                    edCant.setText(inventario);
-                                    total = String.valueOf((double) Math.round((Double.valueOf(cantidadN) * Double.valueOf(unitario)) * 100d) / 100);
-                                    tvTotal.setText(total);
+                                    if (cn <= Double.parseDouble(inventario)) {
+                                        total = String.valueOf((double) Math.round((Double.valueOf(cantidadN) * Double.valueOf(unitario)) * 100d) / 100);
+                                        tvTotal.setText(total);
+                                    } else {
+                                        mensaje("Se Asigna la cantidad máxima disponible" + inventario, "no se puede facturar la cantidad " + cantidadN, 0);
+                                        //Toast.makeText(getApplicationContext(), "Se Asigna la cantidad maxima disponible" + inventario + " no se puede facturar la cantidad digitada de " + cantidadN, Toast.LENGTH_LONG).show();
+                                        edCant.setText(inventario);
+                                        total = String.valueOf((double) Math.round((Double.valueOf(cantidadN) * Double.valueOf(unitario)) * 100d) / 100);
+                                        tvTotal.setText(total);
+                                    }
                                 }
                             }
+                        } catch (Exception e) {
+                            salir(e.getMessage());
                         }
                     }
-                    catch (Exception e){
-                        salir(e.getMessage());
-                    }
-                }
-            });
+                });
 
-            btAceptar.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    codigo=tvCodigo.getText().toString();
-                    nombre=tvNombre.getText().toString();
-                    cantidad=edCant.getText().toString();
-                    unitario=edUnit.getText().toString();
-                    total=tvTotal.getText().toString();
+                btAceptar.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        codigo = tvCodigo.getText().toString();
+                        nombre = tvNombre.getText().toString();
+                        cantidad = edCant.getText().toString();
+                        unitario = edUnit.getText().toString();
+                        total = tvTotal.getText().toString();
 
-                   if(unitario.equals(""))
-                   {
-                       unitario="0";
-                   }
-                    try{
-                        if (Double.parseDouble( cantidad)>0 && Double.parseDouble( cantidad)<=ca)
-                        {
+                        if (unitario.equals("")) {
+                            unitario = "0";
+                        }
+                        try {
+                            if (Double.parseDouble(cantidad) > 0 && Double.parseDouble(cantidad) <= ca) {
 
-                            if(Double.parseDouble(unitario)>=Double.parseDouble(pon) )
-                            {
-                                // adaptadorRecyclerView.actualizarPedido(Integer.parseInt(posicion) ,new Pedido(codigo, nombre, cantidad, unitario, total));
-                                claseGlobal objEscritura=(claseGlobal)getApplicationContext();
-                                objEscritura.setEstado("A");
-                                objEscritura.setPos(Integer.parseInt( posicion));
-                                objEscritura.setCodigo(codigo);
-                                objEscritura.setNombre(nombre);
-                                objEscritura.setCol(color);
-                                objEscritura.setCantidad(Double.parseDouble(cantidad) );
-                                objEscritura.setUnitario(Double.parseDouble(unitario));
-                                objEscritura.setTotal(Double.parseDouble(total));
-                                finish();
-                            }
-                            else {
-                                if ((unitario.equals(""))) {
-                                    mensaje("Ingrese un Valor unitario", "Mayor o igual al Costo de " + pon, 0);
-                                    edUnit.setText("0");
+                                if (Double.parseDouble(unitario) >= Double.parseDouble(pon)) {
+                                    // adaptadorRecyclerView.actualizarPedido(Integer.parseInt(posicion) ,new Pedido(codigo, nombre, cantidad, unitario, total));
+                                    claseGlobal objEscritura = (claseGlobal) getApplicationContext();
+                                    objEscritura.setEstado("A");
+                                    objEscritura.setPos(Integer.parseInt(posicion));
+                                    objEscritura.setCodigo(codigo);
+                                    objEscritura.setNombre(nombre);
+                                    objEscritura.setCol(color);
+                                    objEscritura.setCantidad(Double.parseDouble(cantidad));
+                                    objEscritura.setUnitario(Double.parseDouble(unitario));
+                                    objEscritura.setTotal(Double.parseDouble(total));
+                                    finish();
                                 } else {
-                                        if (Double.parseDouble(unitario) < Double.parseDouble(pon))
-                                            {
-                                                mensaje("Ingrese un Valor unitario", "Mayor o igual al Costo de " + pon, 0);
-                                            }
+                                    if ((unitario.equals(""))) {
+                                        mensaje("Ingrese un Valor unitario", "Mayor o igual al Costo de " + pon, 0);
+                                        edUnit.setText("0");
+                                    } else {
+                                        if (Double.parseDouble(unitario) < Double.parseDouble(pon)) {
+                                            mensaje("Ingrese un Valor unitario", "Mayor o igual al Costo de " + pon, 0);
+                                        }
+                                    }
                                 }
+                            } else {
+                                mensaje("Ingrese una cantidad", "Mayor a 0 y Menor o igual a  " + ca, 0);
                             }
-                        }
-                        else{
-                                mensaje("Ingrese una cantidad","Mayor a 0 y Menor o igual a  "+ca,0);
+
+
+                        } catch (Exception e) {
+                            mensaje("Error: ", e.getMessage(), 0);
                         }
 
 
                     }
-                        catch(Exception e){mensaje("Error: ", e.getMessage(),0);}
+                });
+                btEliminar.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        try {
+                            claseGlobal objEscritura = (claseGlobal) getApplicationContext();
+                            objEscritura.setEstado("E");
+                            objEscritura.setPos(Integer.parseInt(posicion));
+                        } catch (Exception e) {
+                            salir(e.getMessage());
+                        }
+                        finish();
+                    }
+                });
 
-
-
-                }
-            });
-            btEliminar.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    try {
-                        claseGlobal objEscritura = (claseGlobal) getApplicationContext();
-                        objEscritura.setEstado("E");
-                        objEscritura.setPos(Integer.parseInt(posicion));
-                    }catch (Exception e){salir(e.getMessage());}
-                    finish();
-                }
-            });
-
+            }
         }
         catch (Exception e){
             //Toast.makeText(this,e.getMessage(),Toast.LENGTH_LONG).show();
-            salir(e.getMessage());
+            salirf(e.getMessage());
         }
 
     }
@@ -459,6 +458,33 @@ public class PedidoEditar extends AppCompatActivity {
             titulo.show();
             //finish();
             //super.onBackPressed();
+
+    }
+    public void salirf(String e){
+        LinearLayout linear = findViewById(R.id.linear_layout);
+
+        AlertDialog.Builder alerta=new AlertDialog.Builder(this);
+        alerta.setMessage(e)
+                .setCancelable(false)
+                .setPositiveButton("Si", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        finish();
+                        //super.finish();
+                    }
+                })
+                .setNegativeButton("No", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        //dialog.cancel();
+                        finish();
+                    }
+                });
+        AlertDialog titulo=alerta.create();
+        titulo.setTitle("Salida");
+        titulo.show();
+        //finish();
+        //super.onBackPressed();
 
     }
     public void consultarExistencias( String c) {

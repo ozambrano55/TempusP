@@ -106,7 +106,7 @@ public class PedidoActivity extends AppCompatActivity {
     final AdaptadorRecyclerView adaptadorRecyclerView=new AdaptadorRecyclerView(new InterfazClickRecyclerView() {
         @Override
 
-        public void onClick(View v, Pedido p) {
+       public void onClick(View v, Pedido p) {
            // Toast.makeText(PedidoActivity.this, "Daniel es "+p.toString(),Toast.LENGTH_LONG).show();
         }
     });
