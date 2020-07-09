@@ -29,7 +29,7 @@ import static com.example.sistemas.casalinda.PedidoActivity.t;
 
 public class BuscaNombreActivity extends AppCompatActivity {
     Connection connect;
-    String CODIGO, NOMBRE;
+    String CODIGO, NOMBRE,CANTIDAD;
     String NOMBRES,PRODUCTOS;
     ArrayList<Busca>buscaList;
    String t1="Parametro";
@@ -38,9 +38,11 @@ public class BuscaNombreActivity extends AppCompatActivity {
        public void onClick(View v, Busca b) {
            final TextView txcodigo=findViewById(R.id.txtCodigo);
            final TextView txnombre=findViewById(R.id.txtNombre);
-           claseGlobal objLectura=(claseGlobal)getApplicationContext();
+           final TextView txtcantidad=findViewById(R.id.txtCantidad);
+
            txcodigo.setText(b.getCodigo());
-            txnombre.setText(b.getNombre());
+           txnombre.setText(b.getNombre());
+           txtcantidad.setText(b.getCantidad());
 
        }
    });
@@ -55,6 +57,7 @@ public class BuscaNombreActivity extends AppCompatActivity {
         final TextView txcodigo=findViewById(R.id.txtCodigo);
         final TextView txnombre=findViewById(R.id.txtNombre);
         final EditText etBuscar=findViewById(R.id.edtBuscar);
+        claseGlobal objLectura=(claseGlobal)getApplicationContext();
         t1 = getIntent().getStringExtra(t);
         RecyclerView recyclerViewBusca =findViewById(R.id.pRecyclerB);
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(BuscaNombreActivity.this);
@@ -85,7 +88,7 @@ public class BuscaNombreActivity extends AppCompatActivity {
                         txcodigo.setText("");
                         txnombre.setText("");
                         adaptadorRecyclerViewB.eliminarTodo();
-                    consultaClienteProducto(t1, etBuscar.getText().toString());
+                    consultaClienteProducto(t1, etBuscar.getText().toString(),objLectura.getC_punto_venta().toString());
 
                     recyclerViewBusca.setAdapter(adaptadorRecyclerViewB);}
 
@@ -132,7 +135,7 @@ public class BuscaNombreActivity extends AppCompatActivity {
     }
 
 
-    public void consultaClienteProducto(String t, String c) {
+    public void consultaClienteProducto(String t, String c,String p) {
         try {
             String ConnectionResult = "";
 
@@ -144,9 +147,10 @@ public class BuscaNombreActivity extends AppCompatActivity {
                 ConnectionResult = "Revisar tu conexion a internet!";
             }
             else {
-                CallableStatement call = connect.prepareCall("{call sp_BuscaCP (?,?)}");
+                CallableStatement call = connect.prepareCall("{call sp_BuscaCP (?,?,?)}");
                 call.setString(1, t);
                 call.setString(2,c);
+                call.setString(3,p);
                 ResultSet rs=call.executeQuery();
 
                 if (rs != null) {
@@ -155,7 +159,8 @@ public class BuscaNombreActivity extends AppCompatActivity {
                         //  existenciaList.add(new Existencia(rs.getString(10),rs.getString(11),rs.getString(13),rs.getString(16)));
                         CODIGO=(rs.getString(1));
                         NOMBRE=(rs.getString(2));
-                        adaptadorRecyclerViewB.agregarBusca(new Busca(CODIGO,NOMBRE));
+                        CANTIDAD=(rs.getString(3));
+                        adaptadorRecyclerViewB.agregarBusca(new Busca(CODIGO,NOMBRE,CANTIDAD));
                     }
 
                 }

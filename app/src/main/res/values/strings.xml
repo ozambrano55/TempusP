@@ -39,4 +39,5 @@
     <string name="gran_mayor">Gran Mayor</string>
     <string name="milagro">Milagro</string>
     <string name="cantidad">Cant.</string>
+    <string name="busca_por_nombre_o_codigo">Busca por nombre o codigo</string>
 </resources>

@@ -10,6 +10,11 @@
 
     <TextView
         android:id="@+id/txtNombre"
+        android:layout_width="220dp"
+        android:layout_height="wrap_content" />
+
+    <TextView
+        android:id="@+id/txtCantidad"
         android:layout_width="match_parent"
         android:layout_height="wrap_content" />
 </LinearLayout>

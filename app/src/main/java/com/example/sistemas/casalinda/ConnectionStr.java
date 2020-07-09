@@ -18,9 +18,9 @@ String ip,db,DBUserNameStr,DBPasswordStr;
     public Connection connectionclasss()
     {
         ip = "190.110.214.14";
-        db = "siinf_casalinda_Ec";
+        db = "siinf_casalinda_ec";
         DBUserNameStr = "Android";
-        DBPasswordStr = "p!65or@lna#1520";
+        DBPasswordStr = "p!65or@lna#1522";
 
         StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
         StrictMode.setThreadPolicy(policy);
