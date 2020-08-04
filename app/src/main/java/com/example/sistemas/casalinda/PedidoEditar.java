@@ -203,14 +203,10 @@ public class PedidoEditar extends AppCompatActivity {
 
                     @Override
                     public void onTextChanged(CharSequence s, int start, int before, int count) {
-
-                    }
-
-                    @Override
-                    public void afterTextChanged(Editable s) {
                         try {
 
                             unitario = edUnit.getText().toString();
+                            cantidad=edCant.getText().toString();
                             if (unitario.equals("") || Double.parseDouble(unitario) < Double.parseDouble(pon)) {
                                 unitario = "0";
                                 //mensaje("Ingrese un Valor unitario", "Mayor o igual " +pon,0);
@@ -228,6 +224,11 @@ public class PedidoEditar extends AppCompatActivity {
                             salir(e.getMessage());
                         }
                     }
+
+                    @Override
+                    public void afterTextChanged(Editable s) {
+
+                    }
                 });
                 edCant.addTextChangedListener(new TextWatcher() {
                     @Override
@@ -237,13 +238,9 @@ public class PedidoEditar extends AppCompatActivity {
 
                     @Override
                     public void onTextChanged(CharSequence s, int start, int before, int count) {
-
-                    }
-
-                    @Override
-                    public void afterTextChanged(Editable s) {
                         try {
                             cantidadN = edCant.getText().toString();
+                            unitario = edUnit.getText().toString();
                             if (cantidadN.equals("") || Double.parseDouble(cantidadN) <= 0) {
                                 cantidadN = "0";
                                 //Toast.makeText(getApplicationContext(), "Ingrese Cantidad Mayor a 0 ó menor o igual a "+ca, Toast.LENGTH_LONG).show();
@@ -279,6 +276,11 @@ public class PedidoEditar extends AppCompatActivity {
                         } catch (Exception e) {
                             salir(e.getMessage());
                         }
+                    }
+
+                    @Override
+                    public void afterTextChanged(Editable s) {
+
                     }
                 });
 
