@@ -18,7 +18,7 @@ import java.util.List;
 public class AdaptadorRecyclerViewB extends  RecyclerView.Adapter<ViewHolderBusca> {
     private List <Busca>buscar;
     private InterfazClickRecyclerViewB interfazClickRecyclerViewB;
-public String A,B,C;
+public String A,B,C,D;
 
     public AdaptadorRecyclerViewB(InterfazClickRecyclerViewB interfazClickRecyclerViewB) {
         this.interfazClickRecyclerViewB=interfazClickRecyclerViewB;
@@ -54,7 +54,8 @@ public String A,B,C;
 
                    A=busca.getCodigo();
                    B=busca.getNombre();
-                    C=busca.getCantidad();
+                   C=busca.getCantidad();
+                   D=busca.getBodega();
 
             }catch (Exception e){}
         });
@@ -67,6 +68,7 @@ public String A,B,C;
         holder.getCodigo().setText(String.valueOf(busca.getCodigo()));
         holder.getNombre().setText(String.valueOf(busca.getNombre()));
         holder.getCantidad().setText(String.valueOf(busca.getCantidad()));
+        holder.getBodega().setText(String.valueOf(busca.getBodega()));
     }
     @Override
     public int getItemViewType(int position){

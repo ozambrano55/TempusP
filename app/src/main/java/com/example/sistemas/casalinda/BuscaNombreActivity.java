@@ -29,9 +29,8 @@ import static com.example.sistemas.casalinda.PedidoActivity.t;
 
 public class BuscaNombreActivity extends AppCompatActivity {
     Connection connect;
-    String CODIGO, NOMBRE,CANTIDAD;
-    String NOMBRES,PRODUCTOS;
-    ArrayList<Busca>buscaList;
+    String CODIGO, NOMBRE,CANTIDAD,BODEGA;
+
    String t1="Parametro";
    final AdaptadorRecyclerViewB adaptadorRecyclerViewB=new AdaptadorRecyclerViewB(new InterfazClickRecyclerViewB() {
        @Override
@@ -39,10 +38,12 @@ public class BuscaNombreActivity extends AppCompatActivity {
            final TextView txcodigo=findViewById(R.id.txtCodigo);
            final TextView txnombre=findViewById(R.id.txtNombre);
            final TextView txtcantidad=findViewById(R.id.txtCantidad);
+           final TextView txtBodega=findViewById(R.id.txtBodega);
 
            txcodigo.setText(b.getCodigo());
            txnombre.setText(b.getNombre());
            txtcantidad.setText(b.getCantidad());
+           txtBodega.setText(b.getBodega());
 
        }
    });
@@ -160,7 +161,8 @@ public class BuscaNombreActivity extends AppCompatActivity {
                         CODIGO=(rs.getString(1));
                         NOMBRE=(rs.getString(2));
                         CANTIDAD=(rs.getString(3));
-                        adaptadorRecyclerViewB.agregarBusca(new Busca(CODIGO,NOMBRE,CANTIDAD));
+                        BODEGA=(rs.getString(4));
+                        adaptadorRecyclerViewB.agregarBusca(new Busca(CODIGO,NOMBRE,CANTIDAD,BODEGA));
                     }
 
                 }

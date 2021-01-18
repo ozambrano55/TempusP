@@ -4,11 +4,13 @@ public class Busca {
     private String codigo;
     private String nombre;
     private String cantidad;
+    private String bodega;
 
-    public Busca(String codigo, String nombre, String cantidad) {
+    public Busca(String codigo, String nombre, String cantidad, String bodega) {
         this.codigo=codigo;
         this.nombre=nombre;
         this.cantidad=cantidad;
+        this.bodega=bodega;
     }
     public String getCodigo() {
         return codigo;
@@ -17,6 +19,7 @@ public class Busca {
         return nombre;
     }
     public String getCantidad(){return cantidad;}
+    public String getBodega(){return bodega;}
 
     public Busca (){}
     @Override
@@ -24,7 +27,8 @@ public class Busca {
         return "Busca{" +
                 "codigo='" + codigo + '\'' +
                 "nombre='" + nombre + '\'' +
-                ", cantidad=" + cantidad +
+                "cantidad='" + cantidad + '\'' +
+                ", bodega=" + bodega +
                 '}';
     }
 }

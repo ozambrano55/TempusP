@@ -8,7 +8,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.sistemas.casalinda.R;
 
 public class ViewHolderBusca extends RecyclerView.ViewHolder {
-    private TextView codigo, nombre,cantidad;
+    private TextView codigo, nombre,cantidad,bodega;
 
     public TextView getCodigo() {
         return codigo;
@@ -17,12 +17,14 @@ public class ViewHolderBusca extends RecyclerView.ViewHolder {
     public TextView getNombre() {
         return nombre;
     }
-    public TextView getCantidad(){return cantidad;}
+    public TextView getCantidad() {return cantidad;}
+    public TextView getBodega() {return bodega;}
 
     public ViewHolderBusca(View iteemView){
         super(iteemView);
         codigo=iteemView.findViewById(R.id.txtCodigo);
         nombre =iteemView.findViewById(R.id.txtNombre);
         cantidad=iteemView.findViewById(R.id.txtCantidad);
+        bodega=iteemView.findViewById(R.id.txtBodega);
     }
 }

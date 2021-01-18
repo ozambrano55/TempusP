@@ -24,6 +24,7 @@ import com.example.sistemas.casalinda.entidades.Ciudad;
 import com.example.sistemas.casalinda.entidades.Provincia;
 import com.example.sistemas.casalinda.entidades.TipoId;
 
+
 import java.sql.CallableStatement;
 import java.sql.Connection;
 import java.sql.ResultSet;
@@ -317,11 +318,8 @@ tipo.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
 
     private void grabaCliente(String ce, String no, String ap, String t, String di, String c, String te, String co) {
         String ConnectionResult = "";
-        claseGlobal objEscritura=(claseGlobal)getApplicationContext();
+       // claseGlobal objEscritura=(claseGlobal)getApplicationContext();
         claseGlobal objLectura=(claseGlobal)getApplicationContext();
-
-
-
         try {
             ConnectionStr conStr = new ConnectionStr();
             connect = conStr.connectionclasss();

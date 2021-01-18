@@ -17,10 +17,10 @@ String ip,db,DBUserNameStr,DBPasswordStr;
     @SuppressLint("NewApi")
     public Connection connectionclasss()
     {
-        ip = "190.110.214.14";
-        db = "siinf_casalinda_ec";
+        ip = "190.12.55.2";
+        db = "siinf_tempusp_ec";
         DBUserNameStr = "Android";
-        DBPasswordStr = "p!65or@lna#1522";
+        DBPasswordStr = "p!33or@ln@#ds2@";
 
         StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
         StrictMode.setThreadPolicy(policy);

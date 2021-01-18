@@ -79,7 +79,7 @@
 
         <TextView
             android:id="@+id/textView42"
-            android:layout_width="220dp"
+            android:layout_width="178dp"
             android:layout_height="wrap_content"
             android:text="NOMBRE"
             android:textColor="@color/common_google_signin_btn_text_dark_focused" />
@@ -91,6 +91,13 @@
             android:layout_weight="1"
             android:text="CANT"
             android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/textView37"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="BODEGA" />
     </LinearLayout>
 
     <View
